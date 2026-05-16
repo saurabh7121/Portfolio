@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Globe, Download } from 'lucide-react';
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { Counter } from './Hero';
+import ParticleText from './ParticleText';
 
 const socialLinks = [
   { icon: <FaGithub size={18} />, href: 'https://github.com/saurabh7121', label: 'GitHub' },
@@ -53,15 +54,26 @@ const HeroDesktop = () => (
             </span>
           </motion.div>
 
-          <h1
-            className="hero-name font-black leading-[0.88] tracking-tighter text-white mb-4"
-            style={{ fontSize: 'clamp(3.5rem, 12vw, 9rem)' }}
+          <div
+            className="relative mb-4 w-full"
+            style={{ height: 'clamp(200px, 40vh, 400px)', marginLeft: '-10px' }}
           >
-            SAURABH<br />
-            <span style={{ WebkitTextStroke: '1px rgba(255,255,255,0.15)', color: 'transparent' }}>
-              JADHAV.
-            </span>
-          </h1>
+            <ParticleText
+              text={"SAURABH\nJADHAV."}
+              particleColor="#FFFFFF"
+              particleSize={1.8}
+              particleDensity={3}
+              mouseRadius={120}
+              returnSpeed={0.06}
+              font={{
+                fontSize: "120px",
+                fontWeight: "900",
+                fontFamily: "Inter, sans-serif",
+              }}
+              horizontalAlign="left"
+              verticalAlign="center"
+            />
+          </div>
 
           <motion.div
             initial={{ opacity: 0, x: -20 }}

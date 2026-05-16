@@ -11,7 +11,9 @@
 [![Framer Motion](https://img.shields.io/badge/Framer_Motion-12.0-0055FF?style=flat-square&logo=framer&logoColor=white)](https://www.framer.com/motion)
 [![Netlify](https://img.shields.io/badge/Deployed_on-Netlify-00C7B7?style=flat-square&logo=netlify&logoColor=white)](https://saurabhxo.site)
 
-**[🌐 Live Site](https://saurabhxo.site)** &nbsp;·&nbsp; **[📄 Resume](https://ik.imagekit.io/vwc55jjck/CV_SaurabhJadhav.pdf)** &nbsp;·&nbsp; **[💼 LinkedIn](https://www.linkedin.com/in/jadhavsau777/)** &nbsp;·&nbsp; **[🐙 GitHub](https://github.com/saurabh7121)**
+**[🌐 saurabhxo.site ](https://saurabhxo.site)** &nbsp;·&nbsp; **[📄 Resume](https://ik.imagekit.io/vwc55jjck/CV_SaurabhJadhav.pdf)** &nbsp;·&nbsp; **[💼 LinkedIn](https://www.linkedin.com/in/jadhavsau777/)** &nbsp;·&nbsp; **[🐙 GitHub](https://github.com/saurabh7121)**
+
+**Website Version:** `0.1.1`
 
 </div>
 
@@ -28,6 +30,7 @@ The design philosophy is **noir-first**: deep blacks, film grain texture, glassm
 ## ✨ Key Features
 
 ### 🎨 Design & UX
+
 - **Dark Noir Aesthetic** — Deep `#080808` background, film grain overlay via SVG noise, glassmorphism surfaces
 - **Cursor Blob** — Radial gradient that follows mouse movement (desktop only), composited on the GPU
 - **Orbit Rings** — Decorative spinning rings in the hero section
@@ -35,6 +38,7 @@ The design philosophy is **noir-first**: deep blacks, film grain texture, glassm
 - **Custom Scrollbar** — Thin red-to-blue gradient scrollbar
 
 ### ⚡ Performance
+
 - **Zero TBT on Mobile** — Three.js is never requested on mobile; the `IS_MOBILE` check runs at module-parse time before any lazy imports
 - **Deferred 3D Canvas** — On desktop, Three.js loads via `requestIdleCallback` after the page is interactive, eliminating long tasks
 - **Code Splitting** — All below-fold sections (`About`, `Skills`, `Projects`, etc.) are lazy-loaded with `React.lazy` + `Suspense`
@@ -43,11 +47,13 @@ The design philosophy is **noir-first**: deep blacks, film grain texture, glassm
 - **Lazy Photo Loading** — Profile image uses `loading="lazy"` and `decoding="async"`
 
 ### 📱 Responsive
+
 - **Separate Mobile Hero** — `Hero.jsx` (mobile) and `HeroDesktop.jsx` (desktop) are split so Framer Motion (~132KB) is **never downloaded on mobile**
 - **Mobile CTA Row** — "Get In Touch" and "Resume" buttons are sized with explicit flex/padding overrides to prevent overflow on 320px screens
 - **Adaptive Grid** — All section layouts use CSS grid with `lg:` breakpoints
 
 ### 🔗 Integrations
+
 - **Resume via ImageKit** — CV PDF hosted on ImageKit CDN, served with `download` attribute for one-click save
 - **ETH Wallet Tip** — Copy-to-clipboard Ethereum address (`0x8162…bE1FD`) in the footer with animated copied state
 - **Social Links** — GitHub, LinkedIn, Twitter, personal site linked in hero and footer
@@ -56,19 +62,19 @@ The design philosophy is **noir-first**: deep blacks, film grain texture, glassm
 
 ## 🛠 Tech Stack
 
-| Category | Technology | Version |
-|---|---|---|
-| UI Framework | React | 19.2 |
-| Build Tool | Vite | 8.0 |
-| 3D Rendering | Three.js + React Three Fiber | 0.184 / 9.6 |
-| 3D Helpers | @react-three/drei | 10.7 |
-| Animation | Framer Motion | 12.0 |
-| Styling | Tailwind CSS v4 + Vanilla CSS | 4.2 |
-| Icons | Lucide React + React Icons | latest |
-| Routing | React Router DOM | 7.14 |
-| Utilities | clsx, tailwind-merge | latest |
-| Deployment | Netlify | — |
-| Asset CDN | ImageKit | — |
+| Category     | Technology                    | Version     |
+| ------------ | ----------------------------- | ----------- |
+| UI Framework | React                         | 19.2        |
+| Build Tool   | Vite                          | 8.0         |
+| 3D Rendering | Three.js + React Three Fiber  | 0.184 / 9.6 |
+| 3D Helpers   | @react-three/drei             | 10.7        |
+| Animation    | Framer Motion                 | 12.0        |
+| Styling      | Tailwind CSS v4 + Vanilla CSS | 4.2         |
+| Icons        | Lucide React + React Icons    | latest      |
+| Routing      | React Router DOM              | 7.14        |
+| Utilities    | clsx, tailwind-merge          | latest      |
+| Deployment   | Netlify                       | —           |
+| Asset CDN    | ImageKit                      | —           |
 
 ---
 
@@ -132,12 +138,12 @@ npm run dev
 
 ### Available Scripts
 
-| Command | Description |
-|---|---|
-| `npm run dev` | Start Vite dev server with HMR |
-| `npm run build` | Production build to `dist/` |
+| Command           | Description                      |
+| ----------------- | -------------------------------- |
+| `npm run dev`     | Start Vite dev server with HMR   |
+| `npm run build`   | Production build to `dist/`      |
 | `npm run preview` | Preview production build locally |
-| `npm run lint` | Run ESLint |
+| `npm run lint`    | Run ESLint                       |
 
 ---
 
@@ -152,6 +158,7 @@ The `public/_redirects` file ensures all routes resolve to `index.html` for Reac
 ```
 
 To deploy your own fork:
+
 1. Push to GitHub
 2. Connect repo to [Netlify](https://netlify.com)
 3. Set build command: `npm run build`
@@ -161,29 +168,29 @@ To deploy your own fork:
 
 ## 🗂 Sections
 
-| Section | Description |
-|---|---|
-| **Hero** | Name, role, CTA buttons (View Work / Get In Touch / Resume), social links, animated terminal card |
-| **About** | Bio, trait pills, "Currently Learning" tags, profile photo, location tag |
-| **Services** | Web dev, Frontend, Backend, Full Stack, AI Integration, Performance Optimization |
-| **Projects** | Accessible Financial Platform · Smart Campus Transport · Sign Language Converter |
-| **Experience** | Freelance developer timeline (2023–Present) |
-| **Skills** | Animated skill bars (React, Node.js, JS, MongoDB, Python, Git) + secondary tags |
-| **Contact** | Email form + contact details |
-| **Footer** | Nav links · Socials · ETH tip button · Scroll-to-top |
+| Section        | Description                                                                                       |
+| -------------- | ------------------------------------------------------------------------------------------------- |
+| **Hero**       | Name, role, CTA buttons (View Work / Get In Touch / Resume), social links, animated terminal card |
+| **About**      | Bio, trait pills, "Currently Learning" tags, profile photo, location tag                          |
+| **Services**   | Web dev, Frontend, Backend, Full Stack, AI Integration, Performance Optimization                  |
+| **Projects**   | Accessible Financial Platform · Smart Campus Transport · Sign Language Converter                  |
+| **Experience** | Freelance developer timeline (2023–Present)                                                       |
+| **Skills**     | Animated skill bars (React, Node.js, JS, MongoDB, Python, Git) + secondary tags                   |
+| **Contact**    | Email form + contact details                                                                      |
+| **Footer**     | Nav links · Socials · ETH tip button · Scroll-to-top                                              |
 
 ---
 
 ## 📬 Contact
 
-| | |
-|---|---|
-| 📧 Email | [work.jadhavsaurabh@gmail.com](mailto:work.jadhavsaurabh@gmail.com) |
+|             |                                                                           |
+| ----------- | ------------------------------------------------------------------------- |
+| 📧 Email    | [work.jadhavsaurabh@gmail.com](mailto:work.jadhavsaurabh@gmail.com)       |
 | 💼 LinkedIn | [linkedin.com/in/jadhavsau777](https://www.linkedin.com/in/jadhavsau777/) |
-| 🐙 GitHub | [github.com/saurabh7121](https://github.com/saurabh7121) |
-| 🐦 Twitter | [@jadhavsau777](https://twitter.com/jadhavsau777) |
-| 🌐 Website | [saurabhxo.site](https://saurabhxo.site) |
-| 📍 Location | Aurangabad, Maharashtra, India |
+| 🐙 GitHub   | [github.com/saurabh7121](https://github.com/saurabh7121)                  |
+| 🐦 Twitter  | [@jadhavsau777](https://twitter.com/jadhavsau777)                         |
+| 🌐 Website  | [saurabhxo.site](https://saurabhxo.site)                                  |
+| 📍 Location | Aurangabad, Maharashtra, India                                            |
 
 ---
 

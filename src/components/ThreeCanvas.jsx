@@ -2,6 +2,9 @@ import React, { useRef, useMemo, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Stars, Float, Sphere, MeshDistortMaterial, Torus, Box, Cylinder, Ring, Html } from '@react-three/drei';
 import * as THREE from 'three';
+import RotatingCubeGrid from './RotatingCubeGrid';
+import AbstractShapes from './AbstractShapes';
+import Footer3D from './Footer3D';
 
 /* ═══════════════════════════════════════════════
    SOLAR SYSTEM
@@ -472,9 +475,12 @@ const ThreeCanvas = () => {
         />
 
         <HeroOrb mouse={mouse} />
+        <RotatingCubeGrid />
         <OrbitRings />
         <Particles mouse={mouse} isMobile={isMobile} />
+        {!isMobile && <AbstractShapes />}
         {!isMobile && <Satellite mouse={mouse} />}
+        {!isMobile && <Footer3D />}
 
         {/* 🌌 SOLAR SYSTEM — desktop only, too heavy for mobile */}
         {!isMobile && <SolarSystem mouse={mouse} />}

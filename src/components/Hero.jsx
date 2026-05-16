@@ -1,6 +1,7 @@
 import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { ArrowRight, Globe, Download } from 'lucide-react';
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import ParticleText from './ParticleText';
 
 // ─── Mobile detection ─────────────────────────────────────────────────────────
 // Evaluated once at module parse time — not inside React.
@@ -68,7 +69,7 @@ const terminalLines = [
 const MobileHero = () => (
   <section
     id="home"
-    className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-20"
+    className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-32 pb-10"
   >
     <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
 
@@ -76,7 +77,7 @@ const MobileHero = () => (
       <div className="flex flex-col items-center text-center max-w-2xl mx-auto">
 
         {/* Status badge */}
-        <div className="hero-fade-in flex items-center gap-2 mb-8 glass-sm px-4 py-2 rounded-full"
+        <div className="hero-fade-in flex items-center gap-2 mt-4 mb-8 glass-sm px-4 py-2 rounded-full"
              style={{ animationDelay: '0.1s' }}>
           <div className="status-dot" />
           <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-[#a1a1aa]">
