@@ -6,16 +6,8 @@ import Hero from './components/Hero';
 // Lazy-load 404 page — never part of the initial bundle
 const NotFound = lazy(() => import('./components/NotFound'));
 
-// ─── Mobile detection (runs once at module load, not in React) ───────────────
-// Lighthouse mobile profile = Moto G Power, 360px wide.
-// We detect mobile BEFORE any lazy import so Three.js is never even
-// requested on mobile — the chunk never downloads, TBT drops to ~0.
-const IS_MOBILE = typeof window !== 'undefined' && window.innerWidth < 768;
-
-// ─── Lazy imports (desktop only for Three.js) ────────────────────────────────
-const ThreeCanvas = !IS_MOBILE
-  ? lazy(() => import('./components/ThreeCanvas'))
-  : null;
+// ─── Lazy imports ────────────────────────────────────────────────────────────
+const ThreeCanvas = lazy(() => import('./components/ThreeCanvas'));
 
 // Below-fold sections — always lazy regardless of device
 const About      = lazy(() => import('./components/About'));
@@ -90,13 +82,9 @@ const MobileBackground = () => (
 
 // ─── App ─────────────────────────────────────────────────────────────────────
 function App() {
-  // On desktop: defer Three.js until the browser is idle (prevents TBT)
-  // On mobile: never show canvas (IS_MOBILE = true → ThreeCanvas = null)
   const [showCanvas, setShowCanvas] = useState(false);
 
   useEffect(() => {
-    if (IS_MOBILE) return; // Skip entirely on mobile — nothing to schedule
-
     const schedule = typeof requestIdleCallback !== 'undefined'
       ? (cb) => requestIdleCallback(cb, { timeout: 4000 })
       : (cb) => setTimeout(cb, 500);
@@ -122,14 +110,12 @@ function App() {
             <div className="noise" aria-hidden="true" />
 
             {/* Background layer */}
-            {IS_MOBILE ? (
-              <MobileBackground />
+            {showCanvas ? (
+              <Suspense fallback={<MobileBackground />}>
+                <ThreeCanvas />
+              </Suspense>
             ) : (
-              showCanvas && ThreeCanvas && (
-                <Suspense fallback={null}>
-                  <ThreeCanvas />
-                </Suspense>
-              )
+              <MobileBackground />
             )}
 
             {/* UI layer */}

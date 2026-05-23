@@ -1,182 +1,243 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Code2 } from 'lucide-react';
+import { Code2, Layout, Server, Terminal } from 'lucide-react';
 
-const primarySkills = [
-  { name: 'React',       level: 90, color: '#61dafb' },
-  { name: 'JavaScript', level: 90, color: '#f7df1e' },
-  { name: 'Node.js',    level: 85, color: '#68a063' },
-  { name: 'Git',        level: 85, color: '#f05032' },
-  { name: 'MongoDB',    level: 80, color: '#47a248' },
-  { name: 'Python',     level: 75, color: '#3776ab' },
+const allSkills = [
+  // Frontend
+  { name: 'React', icon: 'devicon-react-original colored', color: '#61dafb', level: 'Expert', cat: 'Frontend' },
+  { name: 'Next.js', icon: 'devicon-nextjs-plain', color: '#010000ff', level: 'Expert', cat: 'Frontend' },
+  { name: 'JavaScript', icon: 'devicon-javascript-plain colored', color: '#f7df1e', level: 'Expert', cat: 'Frontend' },
+  { name: 'TypeScript', icon: 'devicon-typescript-plain ', color: '#3178c6', level: 'Advanced', cat: 'Frontend' },
+  { name: 'Tailwind CSS', icon: 'devicon-tailwindcss-original colored', color: '#38bdf8', level: 'Expert', cat: 'Frontend' },
+  { name: 'Figma', icon: 'devicon-figma-plain colored', color: '#f24e1e', level: 'Intermediate', cat: 'Frontend' },
+  { name: 'React Native', icon: 'devicon-reactnative-original colored', color: '#38bdf8', level: 'Intermediate', cat: 'Frontend' },
+  
+  // Backend
+  { name: 'Node.js', icon: 'devicon-nodejs-plain colored', color: '#68a063', level: 'Advanced', cat: 'Backend' },
+  { name: 'Express.js', icon: 'devicon-express-original colored', color: '#828282', level: 'Advanced', cat: 'Backend' },
+  { name: 'MongoDB', icon: 'devicon-mongodb-plain colored', color: '#47a248', level: 'Advanced', cat: 'Backend' },
+  { name: 'Python', icon: 'devicon-python-plain colored', color: '#3776ab', level: 'Intermediate', cat: 'Backend' },
+  { name: 'MySQL', icon: 'devicon-mysql-plain colored', color: '#00758f', level: 'Advanced', cat: 'Backend' },
+
+  // Tools & DevOps
+  { name: 'Docker', icon: 'devicon-docker-plain colored', color: '#2496ed', level: 'Intermediate', cat: 'DevOps' },
+  { name: 'Git', icon: 'devicon-git-plain colored', color: '#f05032', level: 'Expert', cat: 'DevOps' },
+  { name: 'Firebase', icon: 'devicon-firebase-plain colored', color: '#ffca28', level: 'Advanced', cat: 'DevOps' },
+  { name: 'Linux', icon: 'devicon-linux-plain ', color: '#f89820', level: 'Intermediate', cat: 'DevOps' },
 ];
 
-const techCloud = [
-  { name: 'Docker',          accent: null },
-  { name: 'Firebase',        accent: '#ef4444' },
-  { name: 'Express.js',      accent: null },
-  { name: 'REST APIs',       accent: '#3b82f6' },
-  { name: 'Tailwind CSS',    accent: '#38bdf8' },
-  { name: 'Linux',           accent: null },
-  { name: 'TypeScript',      accent: '#3b82f6' },
-  { name: 'MySQL',           accent: null },
-  { name: 'Next.js',         accent: null },
-  { name: 'Figma',           accent: '#ef4444' },
-  { name: 'Blockchain ↗',    accent: '#f59e0b' },
-  { name: 'AI / LLMs ↗',    accent: '#ef4444' },
-  { name: 'RAG Systems ↗',  accent: '#ef4444' },
-  { name: 'ML ↗',           accent: '#3b82f6' },
-  { name: 'Deployment ↗',   accent: '#a1a1aa' },
-  { name: 'IoT ↗',          accent: '#22c55e' },
-  { name: 'Open Source ↗',  accent: '#f59e0b' },
-];
-
-/* Animated skill bar */
-const SkillBar = ({ skill, i }) => (
-  <motion.div
-    initial={{ opacity: 0, x: -20 }}
-    whileInView={{ opacity: 1, x: 0 }}
-    viewport={{ once: true }}
-    transition={{ delay: i * 0.08, duration: 0.5 }}
-    className="group"
-  >
-    <div className="flex justify-between items-center mb-2">
-      <div className="flex items-center gap-2">
-        <div className="w-2 h-2 rounded-full" style={{ background: skill.color }} />
-        <span className="text-sm font-medium text-[#a1a1aa] group-hover:text-white transition-colors">{skill.name}</span>
-      </div>
-      <span className="text-xs font-bold font-mono" style={{ color: skill.color }}>{skill.level}%</span>
-    </div>
-    <div className="skill-bar">
-      <motion.div
-        className="skill-bar-fill"
-        initial={{ width: 0 }}
-        whileInView={{ width: `${skill.level}%` }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.2, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-        style={{ background: `linear-gradient(to right, ${skill.color}80, ${skill.color})` }}
-      />
-    </div>
-  </motion.div>
-);
-
-/* Hexagon-style skill chip */
-const TechChip = ({ tech, i }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    whileInView={{ opacity: 1, scale: 1 }}
-    viewport={{ once: true }}
-    transition={{ delay: i * 0.05, duration: 0.4 }}
-    whileHover={{ scale: 1.08, y: -2 }}
-    className="px-4 py-2 rounded-xl border text-xs font-medium cursor-default transition-all"
-    style={{
-      borderColor: tech.accent ? `${tech.accent}30` : 'rgba(255,255,255,0.06)',
-      color: tech.accent || '#555',
-      background: tech.accent ? `${tech.accent}08` : 'rgba(255,255,255,0.02)',
-    }}
-  >
-    {tech.name}
-  </motion.div>
-);
-
-/* Circular progress – decorative */
-const CircleProgress = ({ value, color }) => {
-  const r = 28;
-  const circ = 2 * Math.PI * r;
+const SkillMarquee = ({ skills, direction = 'left', speed = 40, activeCat }) => {
   return (
-    <svg width="72" height="72" className="rotate-[-90deg]">
-      <circle cx="36" cy="36" r={r} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="4" />
-      <motion.circle
-        cx="36" cy="36" r={r} fill="none"
-        stroke={color} strokeWidth="4" strokeLinecap="round"
-        strokeDasharray={circ}
-        initial={{ strokeDashoffset: circ }}
-        whileInView={{ strokeDashoffset: circ - (value / 100) * circ }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-      />
-    </svg>
+    <div className="flex overflow-hidden relative w-full group">
+      <div
+        className={`flex gap-4 sm:gap-6 lg:gap-8 whitespace-nowrap py-3 sm:py-4 lg:py-6 pr-4 sm:pr-6 lg:pr-8 pause-on-hover ${
+          direction === 'left' ? 'animate-marquee-left' : 'animate-marquee-right'
+        }`}
+        style={{ width: 'max-content' }}
+      >
+        {/* Render the skills list twice to ensure seamless loop */}
+        {[...skills, ...skills].map((skill, index) => {
+          const isDimmed = activeCat !== 'All' && skill.cat !== activeCat;
+          return (
+            <div
+              key={index}
+              className={`flex flex-col items-center justify-center gap-2 w-28 h-28 sm:w-36 sm:h-36 lg:w-44 lg:h-44 rounded-2xl lg:rounded-3xl bg-[#ffffff02] border border-white/05 shrink-0 transition-all duration-500 relative group/card cursor-default overflow-hidden skill-card ${
+                isDimmed ? 'opacity-15 blur-[1px] scale-95' : 'opacity-100 scale-100'
+              }`}
+              style={{
+                '--brand-color': skill.color,
+              }}
+            >
+              {/* Hover glow background */}
+              <div
+                className="absolute inset-0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none"
+                style={{ background: `radial-gradient(circle at center, ${skill.color}08 0%, transparent 70%)` }}
+              />
+
+              <i className={`${skill.icon} text-3xl sm:text-4xl lg:text-5xl transition-transform duration-300 group-hover/card:scale-105`} />
+              <span className="text-[#a1a1aa] font-medium text-xs sm:text-sm lg:text-base tracking-wide transition-colors group-hover/card:text-white mt-1">
+                {skill.name}
+              </span>
+
+              {/* Hover details pill */}
+              <span
+                className="absolute bottom-2.5 sm:bottom-4 px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold tracking-wider opacity-0 group-hover/card:opacity-100 transition-all duration-300 transform translate-y-1 group-hover/card:translate-y-0"
+                style={{
+                  background: `${skill.color}20`,
+                  border: `1px solid ${skill.color}35`,
+                  color: skill.color === '#ffffff' ? '#a1a1aa' : skill.color,
+                }}
+              >
+                {skill.level}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 
-const Skills = () => (
-  <section id="skills" className="py-28 relative overflow-hidden">
-    <div className="absolute right-0 bottom-0 w-80 h-80 bg-[#3b82f6] opacity-[0.03] blur-[120px] rounded-full pointer-events-none" />
+const Skills = () => {
+  const [activeCat, setActiveCat] = useState('All');
 
-    <div className="container mx-auto px-5 sm:px-8">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="mb-16 flex flex-col items-center text-center"
-      >
-        <span className="section-label">
-          <Code2 size={12} />
-          My Stack
-        </span>
-        <h2
-          className="font-black text-white leading-tight mb-4"
-          style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}
+  const categories = [
+    {
+      id: 'Frontend',
+      title: 'Frontend & Mobile',
+      desc: 'UI/UX development, Single Page Applications, responsive design, and cross-platform mobile apps.',
+      skillsCount: allSkills.filter((s) => s.cat === 'Frontend').length,
+      icon: <Layout className="w-5 h-5" />,
+      color: '#3b82f6',
+    },
+    {
+      id: 'Backend',
+      title: 'Backend & Databases',
+      desc: 'Secure API design, system architecture, relational & NoSQL databases, and query optimization.',
+      skillsCount: allSkills.filter((s) => s.cat === 'Backend').length,
+      icon: <Server className="w-5 h-5" />,
+      color: '#ef4444',
+    },
+    {
+      id: 'DevOps',
+      title: 'Tools & Infrastructure',
+      desc: 'Deployment, containerization, cloud hosting services, shell scripting, and version control.',
+      skillsCount: allSkills.filter((s) => s.cat === 'DevOps').length,
+      icon: <Terminal className="w-5 h-5" />,
+      color: '#a1a1aa',
+    },
+  ];
+
+  return (
+    <section id="skills" className="py-28 relative overflow-hidden">
+      <div className="absolute right-0 bottom-0 w-80 h-80 bg-[#3b82f6] opacity-[0.03] blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="container mx-auto px-5 sm:px-8">
+        {/* Local Styles for Marquee Animations */}
+        <style>{`
+          @keyframes marquee-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          @keyframes marquee-right {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+          }
+          .animate-marquee-left {
+            animation: marquee-left 35s linear infinite;
+          }
+          .animate-marquee-right {
+            animation: marquee-right 35s linear infinite;
+          }
+          .pause-on-hover:hover {
+            animation-play-state: paused;
+          }
+          .skill-card:hover {
+            border-color: var(--brand-color) !important;
+            box-shadow: 0 0 20px -5px var(--brand-color) !important;
+          }
+        `}</style>
+
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-16 flex flex-col items-center text-center"
         >
-          Technical{' '}
-          <span className="text-gradient-white">Skills</span>
-        </h2>
-        <div className="section-divider mx-auto" />
-      </motion.div>
-
-      <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-        {/* ── Left: Skill Bars ── */}
-        <div className="space-y-6">
-          <p className="text-[#555] text-sm mb-8 leading-relaxed">
-            Core proficiencies built through real-world projects and continuous learning.
+          <span className="section-label">
+            <Code2 size={12} />
+            My Stack
+          </span>
+          <h2
+            className="font-black text-white leading-tight mb-4"
+            style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}
+          >
+            Technical{' '}
+            <span className="text-gradient-white">Skills</span>
+          </h2>
+          <div className="section-divider mx-auto" />
+          <p className="text-[#555] mt-6 max-w-lg text-sm leading-relaxed">
+            A comprehensive list of languages, frameworks, and tools I specialize in. Click a domain to focus related tech.
           </p>
-          {primarySkills.map((skill, i) => (
-            <SkillBar key={skill.name} skill={skill} i={i} />
-          ))}
+        </motion.div>
+
+        {/* Domain Cards Filters */}
+        <div className="grid md:grid-cols-3 gap-6 mb-14">
+          {categories.map((cat) => {
+            const isActive = activeCat === cat.id;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCat(isActive ? 'All' : cat.id)}
+                className={`text-left p-6 rounded-2xl border transition-all duration-300 relative overflow-hidden group cursor-pointer ${
+                  isActive ? 'bg-[#ffffff03]' : 'bg-[#ffffff01] hover:bg-[#ffffff02]'
+                }`}
+                style={{
+                  borderColor: isActive ? cat.color : 'rgba(255, 255, 255, 0.05)',
+                  boxShadow: isActive ? `0 0 25px -8px ${cat.color}` : 'none',
+                }}
+              >
+                {/* Brand glow corner */}
+                <div
+                  className="absolute -top-12 -right-12 w-24 h-24 rounded-full opacity-10 blur-xl pointer-events-none transition-all group-hover:scale-125"
+                  style={{ backgroundColor: cat.color }}
+                />
+
+                <div className="flex items-center gap-3 mb-4">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center border transition-colors"
+                    style={{
+                      borderColor: isActive ? `${cat.color}40` : 'rgba(255, 255, 255, 0.08)',
+                      color: cat.color,
+                      background: `${cat.color}08`,
+                    }}
+                  >
+                    {cat.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold text-sm tracking-wide">{cat.title}</h3>
+                    <span className="text-[10px] text-[#555] font-mono">{cat.skillsCount} Technologies</span>
+                  </div>
+                </div>
+                <p className="text-[#555] text-xs leading-relaxed">{cat.desc}</p>
+
+                {/* Active indicator */}
+                <div
+                  className={`absolute bottom-3 right-4 text-[9px] font-mono tracking-widest uppercase transition-opacity ${
+                    isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'
+                  }`}
+                  style={{ color: cat.color }}
+                >
+                  {isActive ? '● Active' : 'Click to Focus'}
+                </div>
+              </button>
+            );
+          })}
         </div>
 
-        {/* ── Right: Visual + Tech Cloud ── */}
-        <div className="flex flex-col gap-10">
-          {/* Three mini circles */}
-          <div className="grid grid-cols-3 gap-4">
-            {[
-              { label: 'Frontend', val: 90, color: '#3b82f6' },
-              { label: 'Backend', val: 85, color: '#ef4444' },
-              { label: 'DevOps', val: 65, color: '#a1a1aa' },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.12 }}
-                className="card p-5 flex flex-col items-center gap-2"
-              >
-                <div className="relative">
-                  <CircleProgress value={item.val} color={item.color} />
-                  <span className="absolute inset-0 flex items-center justify-center text-xs font-black text-white">
-                    {item.val}%
-                  </span>
-                </div>
-                <span className="text-[11px] text-[#555] uppercase tracking-widest font-medium">{item.label}</span>
-              </motion.div>
-            ))}
-          </div>
+        {/* Sliding Window Animations */}
+        <div className="flex flex-col gap-4 relative mt-10">
+          {/* Gradient fades for seamless scrolling effect */}
+          <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-16 lg:w-32 bg-gradient-to-r from-[#080808] to-transparent z-10 pointer-events-none" />
+          <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-16 lg:w-32 bg-gradient-to-l from-[#080808] to-transparent z-10 pointer-events-none" />
 
-          {/* Tech Cloud */}
-          <div>
-            <p className="text-[#333] text-xs uppercase tracking-widest mb-4 font-bold">Also familiar with</p>
-            <div className="flex flex-wrap gap-2">
-              {techCloud.map((t, i) => (
-                <TechChip key={t.name} tech={t} i={i} />
-              ))}
-            </div>
-          </div>
+          <SkillMarquee
+            skills={allSkills.slice(0, Math.ceil(allSkills.length / 2))}
+            direction="left"
+            speed={40}
+            activeCat={activeCat}
+          />
+          <SkillMarquee
+            skills={allSkills.slice(Math.ceil(allSkills.length / 2))}
+            direction="right"
+            speed={45}
+            activeCat={activeCat}
+          />
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default Skills;
