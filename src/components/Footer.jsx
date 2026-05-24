@@ -8,8 +8,10 @@ const ETH_SHORT   = '0x8162…bE1FD';
 
 const navLinks = ['Home', 'About', 'Services', 'Projects', 'Skills', 'Contact'];
 
+const githubUsername = process.env.GITHUB_USERNAME || 'saurabh7121';
+
 const socials = [
-  { icon: <FaGithub size={16} />, href: 'https://github.com/saurabh7121' },
+  { icon: <FaGithub size={16} />, href: `https://github.com/${githubUsername}` },
   { icon: <FaLinkedin size={16} />, href: 'https://www.linkedin.com/in/jadhavsau777/' },
   { icon: <FaTwitter size={16} />, href: 'https://twitter.com/jadhavsau777' },
   { icon: <Globe size={16} />, href: 'https://saurabhxo.site' },

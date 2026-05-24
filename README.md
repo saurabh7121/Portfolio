@@ -45,6 +45,7 @@ The design philosophy is **noir-first**: deep blacks, film grain texture, glassm
 - **`content-visibility: auto`** — Off-screen sections are skipped during initial render, dramatically reducing TBT and LCP
 - **GPU-Composited Animations** — All animations use `transform` and `opacity` with `will-change` to stay on the compositor thread
 - **Lazy Photo Loading** — Profile image uses `loading="lazy"` and `decoding="async"`
+- **On-Demand API Fetching** — GitHub repositories are only fetched when the user explicitly expands the explorer section, reducing initial load bandwidth and CPU cycles.
 
 ### 📱 Responsive
 
@@ -54,6 +55,7 @@ The design philosophy is **noir-first**: deep blacks, film grain texture, glassm
 
 ### 🔗 Integrations
 
+- **GitHub Repository Explorer** — Dynamic integration with the GitHub REST API to fetch and display public repositories with search functionality, auto-generated language filters, stars/forks counters, and smooth Framer Motion expanding animations.
 - **Resume via ImageKit** — CV PDF hosted on ImageKit CDN, served with `download` attribute for one-click save
 - **ETH Wallet Tip** — Copy-to-clipboard Ethereum address (`0x8162…bE1FD`) in the footer with animated copied state
 - **Social Links** — GitHub, LinkedIn, Twitter, personal site linked in hero and footer
@@ -136,6 +138,29 @@ npm run dev
 # → http://localhost:5173
 ```
 
+### ⚙️ Customization & Environment Setup
+
+To personalize this portfolio with your own details and dynamically load your GitHub repositories:
+
+1. **Configure Environment Variables:**  
+   Create a `.env` file in the root directory and add:
+   ```env
+   GITHUB_USERNAME=your_github_username
+   GITHUB_TOKEN=your_personal_access_token
+   ```
+
+2. **Generate a GitHub Personal Access Token (PAT):**
+   - Navigate to your GitHub account **Settings** > **Developer Settings** > **Personal Access Tokens** > **Tokens (classic)**.
+   - Click **Generate new token (classic)**.
+   - Set a name/note and check the **public_repo** scope.
+   - Click **Generate token** at the bottom, copy it, and paste it under `GITHUB_TOKEN` in your `.env` file.
+
+> [!NOTE]
+> The `GITHUB_TOKEN` is used to authenticate requests to the GitHub REST API. This elevates the rate limit from 60 requests/hour (unauthenticated) to 5,000 requests/hour, preventing API rate-limiting issues during development and high traffic.
+
+3. **Production Deployment (e.g., Netlify / Vercel):**
+   - Make sure to define both `GITHUB_USERNAME` and `GITHUB_TOKEN` under your hosting provider's **Environment Variables** dashboard settings to ensure they are injected correctly during the production build.
+
 ### Available Scripts
 
 | Command           | Description                      |
@@ -173,7 +198,7 @@ To deploy your own fork:
 | **Hero**       | Name, role, CTA buttons (View Work / Get In Touch / Resume), social links, animated terminal card |
 | **About**      | Bio, trait pills, "Currently Learning" tags, profile photo, location tag                          |
 | **Services**   | Web dev, Frontend, Backend, Full Stack, AI Integration, Performance Optimization                  |
-| **Projects**   | Accessible Financial Platform · Smart Campus Transport · Sign Language Converter                  |
+| **Projects**   | Featured projects (Accessible Financial Platform, etc.) + **interactive GitHub Repository Explorer** (dynamic fetch, language filter tabs, repository search, stars/forks) |
 | **Experience** | Freelance developer timeline (2023–Present)                                                       |
 | **Skills**     | Animated skill bars (React, Node.js, JS, MongoDB, Python, Git) + secondary tags                   |
 | **Contact**    | Email form + contact details                                                                      |

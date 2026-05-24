@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 import { Mail, MapPin, Send, MessageSquare, Loader2 } from 'lucide-react';
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
 
+const githubUsername = process.env.GITHUB_USERNAME || 'saurabh7121';
+
 const socials = [
-  { icon: <FaGithub size={18} />, href: 'https://github.com/saurabh7121', label: 'GitHub', color: '#ffffff' },
+  { icon: <FaGithub size={18} />, href: `https://github.com/${githubUsername}`, label: 'GitHub', color: '#ffffff' },
   { icon: <FaLinkedin size={18} />, href: 'https://www.linkedin.com/in/jadhavsau777/', label: 'LinkedIn', color: '#3b82f6' },
   { icon: <FaTwitter size={18} />, href: 'https://twitter.com/jadhavsau777', label: 'Twitter', color: '#1d9bf0' },
 ];

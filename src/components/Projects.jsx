@@ -198,7 +198,15 @@ const Projects = () => {
   useEffect(() => {
     if (showRepos && repos.length === 0) {
       setLoading(true);
-      fetch('https://api.github.com/users/saurabh7121/repos?sort=updated&per_page=100')
+      const username = process.env.GITHUB_USERNAME || 'saurabh7121';
+      const token = process.env.GITHUB_TOKEN;
+
+      const headers = {};
+      if (token) {
+        headers['Authorization'] = `token ${token}`;
+      }
+
+      fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`, { headers })
         .then((res) => {
           if (!res.ok) {
             throw new Error('Failed to fetch repositories');

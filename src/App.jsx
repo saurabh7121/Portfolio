@@ -6,7 +6,7 @@ import Hero from './components/Hero';
 // Lazy-load 404 page — never part of the initial bundle
 const NotFound = lazy(() => import('./components/NotFound'));
 
-// ─── Lazy imports ────────────────────────────────────────────────────────────
+// ─── Lazy imports & Configurations ───────────────────────────────────────────
 const ThreeCanvas = lazy(() => import('./components/ThreeCanvas'));
 
 // Below-fold sections — always lazy regardless of device
@@ -23,8 +23,7 @@ const SectionFallback = () => (
   <div style={{ minHeight: '40vh' }} aria-hidden="true" />
 );
 
-// ─── Pure CSS animated background for mobile ─────────────────────────────────
-// Replaces Three.js on mobile. Zero JS cost, zero TBT contribution.
+// ─── Pure CSS animated background (used as fallback/loading phase) ───────────
 const MobileBackground = () => (
   <div
     aria-hidden="true"
@@ -80,23 +79,66 @@ const MobileBackground = () => (
   </div>
 );
 
+// ─── Premium Loader Screen ───────────────────────────────────────────────────
+const PremiumLoader = ({ fadeOut }) => (
+  <div
+    style={{
+      position: 'fixed',
+      inset: 0,
+      zIndex: 9999,
+      background: '#080808',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      opacity: fadeOut ? 0 : 1,
+      pointerEvents: fadeOut ? 'none' : 'auto',
+      transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+    }}
+  >
+    <div className="loader-ring" />
+    <span className="loader-text">INITIALIZING ENGINE...</span>
+
+    <style>{`
+      .loader-ring {
+        width: 44px;
+        height: 44px;
+        border: 2px solid rgba(255, 255, 255, 0.03);
+        border-top-color: #ef4444;
+        border-bottom-color: #3b82f6;
+        border-radius: 50%;
+        animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        margin-bottom: 24px;
+      }
+      .loader-text {
+        font-family: monospace;
+        font-size: 10px;
+        color: #444;
+        letter-spacing: 0.3em;
+        animation: pulse 1.8s ease-in-out infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 1; }
+      }
+    `}</style>
+  </div>
+);
+
 // ─── App ─────────────────────────────────────────────────────────────────────
 function App() {
-  const [showCanvas, setShowCanvas] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const schedule = typeof requestIdleCallback !== 'undefined'
-      ? (cb) => requestIdleCallback(cb, { timeout: 4000 })
-      : (cb) => setTimeout(cb, 500);
-
-    const id = schedule(() => setShowCanvas(true));
-    return () => {
-      if (typeof requestIdleCallback !== 'undefined') {
-        cancelIdleCallback(id);
-      } else {
-        clearTimeout(id);
-      }
-    };
+    // Safety timeout: automatically reveal site after 4.5 seconds if Canvas load hangs
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 4500);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -109,17 +151,24 @@ function App() {
             {/* Film grain — CSS only */}
             <div className="noise" aria-hidden="true" />
 
+            {/* Premium Fullscreen Loader */}
+            <PremiumLoader fadeOut={isLoaded} />
+
             {/* Background layer */}
-            {showCanvas ? (
-              <Suspense fallback={<MobileBackground />}>
-                <ThreeCanvas />
-              </Suspense>
-            ) : (
-              <MobileBackground />
-            )}
+            <Suspense fallback={<MobileBackground />}>
+              <ThreeCanvas onReady={() => setIsLoaded(true)} />
+            </Suspense>
 
             {/* UI layer */}
-            <div className="relative" style={{ zIndex: 10 }}>
+            <div
+              className="relative"
+              style={{
+                zIndex: 10,
+                opacity: isLoaded ? 1 : 0,
+                transform: isLoaded ? 'translateY(0px)' : 'translateY(15px)',
+                transition: 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            >
               <Navbar />
 
               <main>

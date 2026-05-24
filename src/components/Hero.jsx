@@ -49,8 +49,10 @@ const Counter = ({ target, suffix = '', label }) => {
 
 export { Counter };
 
+const githubUsername = process.env.GITHUB_USERNAME || 'saurabh7121';
+
 const socialLinks = [
-  { icon: <FaGithub size={18} />, href: 'https://github.com/saurabh7121', label: 'GitHub' },
+  { icon: <FaGithub size={18} />, href: `https://github.com/${githubUsername}`, label: 'GitHub' },
   { icon: <FaLinkedin size={18} />, href: 'https://www.linkedin.com/in/jadhavsau777/', label: 'LinkedIn', hoverColor: 'hover:text-[#3b82f6]' },
   { icon: <FaTwitter size={18} />, href: 'https://twitter.com/jadhavsau777', label: 'Twitter', hoverColor: 'hover:text-[#1d9bf0]' },
   { icon: <Globe size={18} />, href: 'https://saurabhxo.site', label: 'Website', hoverColor: 'hover:text-[#ef4444]' },

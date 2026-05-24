@@ -248,7 +248,7 @@ const Plexus = ({ mouse, isMobile }) => {
 /* ═══════════════════════════════════════════════
    MAIN CANVAS COMPONENT
 ═══════════════════════════════════════════════ */
-const ThreeCanvas = () => {
+const ThreeCanvas = ({ onReady }) => {
   const mouse = useRef([0, 0]);
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
@@ -279,6 +279,9 @@ const ThreeCanvas = () => {
           alpha: false,
         }}
         dpr={isMobile ? [1, 1] : [1, 1.5]}
+        onCreated={() => {
+          if (onReady) onReady();
+        }}
       >
         {/* Lights */}
         <ambientLight intensity={0.25} />

@@ -13,6 +13,7 @@ const navLinks = [
 ];
 
 const Navbar = () => {
+  const githubUsername = process.env.GITHUB_USERNAME || 'saurabh7121';
   const [scrolled, setScrolled]     = useState(false);
   const [visible, setVisible]       = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -92,7 +93,7 @@ const Navbar = () => {
               {/* Right actions */}
               <div className="flex items-center gap-3">
                 <div className="hidden md:flex items-center gap-3 pr-4 border-r border-white/10">
-                  <a href="https://github.com/saurabh7121" target="_blank" rel="noopener noreferrer"
+                  <a href={`https://github.com/${githubUsername}`} target="_blank" rel="noopener noreferrer"
                     className="text-[#71717a] hover:text-white transition-colors duration-200">
                     <FaGithub size={17} />
                   </a>
@@ -161,7 +162,7 @@ const Navbar = () => {
                       </motion.a>
                     ))}
                     <div className="pt-3 flex gap-3 border-t border-white/05 mt-2">
-                      <a href="https://github.com/saurabh7121" target="_blank" rel="noopener noreferrer"
+                      <a href={`https://github.com/${githubUsername}`} target="_blank" rel="noopener noreferrer"
                         className="text-[#71717a] hover:text-white transition-colors"><FaGithub size={18} /></a>
                       <a href="https://www.linkedin.com/in/jadhavsau777/" target="_blank" rel="noopener noreferrer"
                         className="text-[#71717a] hover:text-[#3b82f6] transition-colors"><FaLinkedin size={18} /></a>
