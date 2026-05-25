@@ -2,7 +2,7 @@
 
 # Saurabh Jadhav — Developer Portfolio
 
-**A high-performance, dark-themed developer portfolio built with React 19, Three.js, and Framer Motion.**
+**A high-performance, dark-themed developer portfolio built with React 19, Paper Design Shaders, and Framer Motion.**
 
 [![React](https://img.shields.io/badge/React-19.2-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-8.0-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev)
@@ -216,6 +216,35 @@ To deploy your own fork:
 | 🐦 Twitter  | [@jadhavsau777](https://twitter.com/jadhavsau777)                         |
 | 🌐 Website  | [saurabhxo.site](https://saurabhxo.site)                                  |
 | 📍 Location | Aurangabad, Maharashtra, India                                            |
+
+---
+
+## 🔭 Future Approach
+
+Planned improvements and features on the roadmap:
+
+### ✍️ Blog / Writing Section
+- Integrate a **blog** directly into the portfolio — either as a dedicated `/blog` route or embedded in the home page
+- Posts authored in **MDX** (Markdown + JSX) so code snippets, diagrams, and live components can be embedded inline
+- Categorised by topic (Web Dev, AI/ML, Open Source, Career) with a tag filter UI
+- **RSS feed** auto-generated at build time for readers who subscribe via feed readers
+- Reading-time estimate and progress indicator on each post
+- Possible CMS integration (e.g. **Hashnode API** or **Dev.to API**) to cross-post from an existing blog without duplicating content
+
+### 🛠 Product & DX Improvements
+| Area | Planned Change |
+|---|---|
+| **Dark / Light parity** | Fully tune every section for both modes (some components are still dark-first) |
+| **Testimonials** | A scrolling marquee section featuring short client / collaborator quotes |
+| **Case Studies** | Deep-dive pages per project with problem → approach → result narrative |
+| **Analytics** | Privacy-first analytics (Plausible or Umami) to understand real visitor behaviour without cookies |
+| **Contact form backend** | Replace the current mailto approach with a serverless function (Netlify Functions + Resend API) for reliable email delivery |
+| **Accessibility audit** | Full WCAG 2.1 AA pass — focus rings, ARIA labels, keyboard navigation for all interactive elements |
+| **PWA / Offline** | Service worker + manifest so the site installs as a PWA and works offline |
+
+### ⚡ Performance
+- Switch to **image CDN** transforms (ImageKit URL parameters) for responsive `srcset` on all project screenshots
+- Investigate **partial hydration** with React Server Components once RSC support stabilises in Vite
 
 ---
 
