@@ -27,7 +27,7 @@ const GlitchText = ({ text }) => {
 
 /* ─── Typewriter terminal lines ─────────────────────────────────────────── */
 const LINES = [
-  { txt: '$ cd /requested-page',  delay: 0,    color: '#a1a1aa' },
+  { txt: '$ cd /requested-page',  delay: 0,    color: 'var(--text-muted-1)' },
   { txt: '> ERROR: path not found', delay: 600, color: '#ef4444' },
   { txt: '> status: 404',          delay: 1100, color: '#f59e0b' },
   { txt: '> suggestion: go home',  delay: 1600, color: '#22c55e' },
@@ -149,8 +149,8 @@ const NotFound = () => {
 
           {/* Footer hint */}
           <p className="not-found-footer-hint">
-            <span className="text-[#333]">saurabhxo.site</span>
-            <span className="text-[#222]"> / </span>
+            <span className="text-muted-2">saurabhxo.site</span>
+            <span className="text-muted-2"> / </span>
             <span className="text-[#ef4444]">404</span>
           </p>
         </div>

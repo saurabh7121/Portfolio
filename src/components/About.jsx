@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { User, Cpu, Rocket, Globe, Code2, Zap, BookOpen, Star } from 'lucide-react';
-
+import { FaGithub } from 'react-icons/fa';
 const cardVariants = {
   hidden: { opacity: 0, y: 30 },
   visible: (i) => ({
@@ -13,7 +13,7 @@ const cardVariants = {
 const highlights = [
   { icon: <Rocket size={18} className="text-[#ef4444]" />, label: 'Years Experience', val: '2+' },
   { icon: <Globe size={18} className="text-[#3b82f6]" />, label: 'Projects Done', val: '15+' },
-  { icon: <Cpu size={18} className="text-white" />,        label: 'Technologies', val: '10+' },
+  { icon: <Cpu size={18} className="text-primary" />,        label: 'Technologies', val: '10+' },
 ];
 
 const traits = [
@@ -23,7 +23,7 @@ const traits = [
   { icon: <Rocket size={16} />, text: 'AI & ML integration' },
 ];
 
-const About = () => (
+const About = ({ theme }) => (
   <section id="about" className="py-28 relative overflow-hidden">
     {/* Subtle ambient */}
     <div className="absolute -top-40 right-0 w-96 h-96 bg-[#3b82f6] opacity-[0.03] blur-[160px] rounded-full pointer-events-none" />
@@ -41,7 +41,7 @@ const About = () => (
           About Me
         </span>
         <h2
-          className="section-heading font-black text-white leading-tight mb-4"
+          className="section-heading font-black text-primary leading-tight mb-4"
           style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}
         >
           Passionate about<br />
@@ -59,14 +59,14 @@ const About = () => (
           transition={{ duration: 0.7 }}
           className="space-y-6"
         >
-          <p className="text-[#a1a1aa] text-base sm:text-lg leading-relaxed">
+          <p className="text-muted-1 text-base sm:text-lg leading-relaxed">
             I'm a developer who enjoys solving real-world problems through technology.
             With a strong foundation in web development and backend systems, I focus on
             building{' '}
-            <span className="text-white font-medium">efficient, scalable,</span> and{' '}
-            <span className="text-white font-medium">user-friendly applications</span>.
+            <span className="text-primary font-medium">efficient, scalable,</span> and{' '}
+            <span className="text-primary font-medium">user-friendly applications</span>.
           </p>
-          <p className="text-[#555] leading-relaxed">
+          <p className="text-muted-1 leading-relaxed">
             I've worked on multiple projects including AI-powered systems, financial platforms,
             and productivity tools. I continuously explore new technologies and aim to create
             meaningful digital experiences that solve real user problems.
@@ -82,7 +82,7 @@ const About = () => (
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
-                className="flex items-center gap-2 px-4 py-2 glass-sm rounded-full border border-white/06 text-[#71717a] text-xs font-medium"
+                className="flex items-center gap-2 px-4 py-2 glass-sm rounded-full border border-border text-muted-1 text-xs font-medium"
               >
                 {t.icon}
                 {t.text}
@@ -108,9 +108,9 @@ const About = () => (
                 { label: 'AI / LLMs',       color: '#ef4444' },
                 { label: 'RAG Systems',     color: '#ef4444' },
                 { label: 'Machine Learning',color: '#3b82f6' },
-                { label: 'Deployment',      color: '#a1a1aa' },
+                { label: 'Deployment',      color: 'var(--text-muted-1)' },
                 { label: 'IoT',             color: '#22c55e' },
-                { label: 'Linux',           color: '#a1a1aa' },
+                { label: 'Linux',           color: 'var(--text-muted-1)' },
               ].map((item, i) => (
                 <motion.span
                   key={i}
@@ -134,9 +134,9 @@ const About = () => (
             {/* Open Source interest */}
             <div className="flex items-center gap-2 mt-4">
               <Star size={12} className="text-[#f59e0b] fill-[#f59e0b]" />
-              <span className="text-[11px] text-[#555]">
+              <span className="text-[11px] text-muted-1">
                 Interested in{' '}
-                <span className="text-white font-medium">Open Source</span>{' '}
+                <span className="text-primary font-medium">Open Source</span>{' '}
                 contributions
               </span>
             </div>
@@ -162,8 +162,8 @@ const About = () => (
           className="flex flex-col gap-6"
         >
           {/* Profile visual */}
-          <div className="relative">
-            <div className="aspect-square max-w-sm mx-auto rounded-3xl overflow-hidden card p-px">
+          <div className="relative max-w-sm mx-auto w-full">
+            <div className="aspect-square w-full rounded-3xl overflow-hidden card p-px">
               <div className="w-full h-full rounded-3xl relative overflow-hidden">
                 {/* Subtle grid overlay */}
                 <div className="absolute inset-0 bg-grid-pattern opacity-20 z-10 pointer-events-none" />
@@ -182,12 +182,12 @@ const About = () => (
                 <div
                   className="absolute bottom-0 left-0 right-0 z-20"
                   style={{
-                    background: 'linear-gradient(to top, rgba(8,8,8,0.85) 0%, rgba(8,8,8,0.3) 50%, transparent 100%)',
+                    background: 'linear-gradient(to top, var(--bg-main) 0%, transparent 100%)',
                     padding: '1.5rem 1rem 1rem',
                   }}
                 >
-                  <p className="text-white font-bold text-base text-center">Saurabh Jadhav</p>
-                  <p className="text-[#555] text-[10px] tracking-widest uppercase text-center">Software Developer</p>
+                  <p className="text-primary font-bold text-base text-center">Saurabh Jadhav</p>
+                  <p className="text-muted-1 text-[10px] tracking-widest uppercase text-center">Software Developer</p>
                   <div className="flex gap-1 justify-center mt-2">
                     <div className="w-8 h-0.5 bg-[#ef4444] rounded-full" />
                     <div className="w-8 h-0.5 bg-[#3b82f6] rounded-full" />
@@ -199,7 +199,7 @@ const About = () => (
             <motion.div
               animate={{ y: [0, -6, 0] }}
               transition={{ duration: 3, repeat: Infinity }}
-              className="absolute -bottom-4 -right-4 glass-sm px-4 py-2 rounded-xl border border-white/08 text-xs font-bold text-white"
+              className="absolute -bottom-4 right-2 md:-right-4 glass-sm px-4 py-2 rounded-xl border border-border text-xs font-bold text-primary z-30 whitespace-nowrap"
             >
               Maharashtra, India 🇮🇳
             </motion.div>
@@ -218,13 +218,15 @@ const About = () => (
                 className="card p-4 text-center"
               >
                 <div className="flex justify-center mb-2">{h.icon}</div>
-                <div className="text-2xl font-black text-white">{h.val}</div>
-                <div className="text-[10px] text-[#555] uppercase tracking-widest mt-0.5">{h.label}</div>
+                <div className="text-2xl font-black text-primary">{h.val}</div>
+                <div className="text-[10px] text-muted-1 uppercase tracking-widest mt-0.5">{h.label}</div>
               </motion.div>
             ))}
           </div>
         </motion.div>
       </div>
+
+
     </div>
   </section>
 );

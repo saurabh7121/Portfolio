@@ -5,23 +5,38 @@ import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
 
 const githubUsername = process.env.GITHUB_USERNAME || 'saurabh7121';
 
-const socials = [
-  { icon: <FaGithub size={18} />, href: `https://github.com/${githubUsername}`, label: 'GitHub', color: '#ffffff' },
-  { icon: <FaLinkedin size={18} />, href: 'https://www.linkedin.com/in/jadhavsau777/', label: 'LinkedIn', color: '#3b82f6' },
-  { icon: <FaTwitter size={18} />, href: 'https://twitter.com/jadhavsau777', label: 'Twitter', color: '#1d9bf0' },
-];
 
-const Contact = () => {
+
+const Contact = ({ theme }) => {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
 
+  const socials = [
+    { icon: <FaGithub size={18} />, href: `https://github.com/${githubUsername}`, label: 'GitHub', color: theme === 'dark' ? '#ffffff' : '#0f172a' },
+    { icon: <FaLinkedin size={18} />, href: 'https://www.linkedin.com/in/jadhavsau777/', label: 'LinkedIn', color: '#3b82f6' },
+    { icon: <FaTwitter size={18} />, href: 'https://twitter.com/jadhavsau777', label: 'Twitter', color: '#1d9bf0' },
+  ];
+
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setSending(true);
-    await new Promise(r => setTimeout(r, 1800));
+
+    const body = `Hi Saurabh,\n\n${form.message}\n\nFrom: ${form.name}\nEmail: ${form.email}`;
+    const encodedSubject = encodeURIComponent(form.subject);
+    const encodedBody = encodeURIComponent(body);
+    const toEmail = 'work.jadhavsaurabh@gmail.com';
+
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      window.location.href = `mailto:${toEmail}?subject=${encodedSubject}&body=${encodedBody}`;
+    } else {
+      window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${toEmail}&su=${encodedSubject}&body=${encodedBody}`, '_blank');
+    }
+
     setSending(false);
     setSent(true);
   };
@@ -45,14 +60,14 @@ const Contact = () => {
             Contact
           </span>
           <h2
-            className="font-black text-white leading-tight mb-4"
+            className="font-black text-primary leading-tight mb-4"
             style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}
           >
             Let's Build{' '}
             <span className="text-gradient-red">Something</span> Together
           </h2>
           <div className="section-divider mx-auto" />
-          <p className="text-[#555] max-w-md mt-4 text-sm leading-relaxed">
+          <p className="text-muted-1 max-w-md mt-4 text-sm leading-relaxed">
             Have a project in mind? Looking for a developer to join your team? Let's talk.
           </p>
         </motion.div>
@@ -67,11 +82,11 @@ const Contact = () => {
             className="flex flex-col justify-between gap-8"
           >
             <div className="space-y-6">
-              <h3 className="text-white font-bold text-2xl leading-snug">
+              <h3 className="text-primary font-bold text-2xl leading-snug">
                 Open to freelance,<br />
-                <span className="text-[#71717a]">collaborations & full-time roles.</span>
+                <span className="text-muted-1">collaborations & full-time roles.</span>
               </h3>
-              <p className="text-[#444] leading-relaxed text-sm">
+              <p className="text-muted-1 leading-relaxed text-sm">
                 I'm always open to new opportunities, interesting problems, and exciting collaborations.
                 Don't hesitate — just say hello!
               </p>
@@ -93,17 +108,17 @@ const Contact = () => {
                   },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl glass-sm flex items-center justify-center flex-shrink-0 border border-white/06">
+                    <div className="w-10 h-10 rounded-xl glass-sm flex items-center justify-center flex-shrink-0 border border-border">
                       {item.icon}
                     </div>
                     <div>
-                      <p className="text-[10px] text-[#333] uppercase tracking-widest font-bold mb-0.5">{item.label}</p>
+                      <p className="text-[10px] text-muted-1 uppercase tracking-widest font-bold mb-0.5">{item.label}</p>
                       {item.href ? (
-                        <a href={item.href} className="text-white text-sm hover:text-[#ef4444] transition-colors">
+                        <a href={item.href} className="text-primary text-sm hover:text-[#ef4444] transition-colors">
                           {item.value}
                         </a>
                       ) : (
-                        <p className="text-white text-sm">{item.value}</p>
+                        <p className="text-primary text-sm">{item.value}</p>
                       )}
                     </div>
                   </div>
@@ -113,7 +128,7 @@ const Contact = () => {
 
             {/* Socials */}
             <div>
-              <p className="text-[#333] text-xs uppercase tracking-widest mb-4 font-bold">Find me on</p>
+              <p className="text-muted-1 text-xs uppercase tracking-widest mb-4 font-bold">Find me on</p>
               <div className="flex gap-3">
                 {socials.map((s, i) => (
                   <motion.a
@@ -122,10 +137,10 @@ const Contact = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.12, y: -2 }}
-                    className="w-11 h-11 rounded-xl glass-sm border border-white/06 flex items-center justify-center text-[#555] transition-all duration-200"
+                    className="w-11 h-11 rounded-xl glass-sm border border-border flex items-center justify-center text-muted-1 transition-all duration-200"
                     style={{ '--hover-color': s.color }}
                     onMouseEnter={(e) => e.currentTarget.style.color = s.color}
-                    onMouseLeave={(e) => e.currentTarget.style.color = '#555'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted-1)'}
                     aria-label={s.label}
                   >
                     {s.icon}
@@ -149,14 +164,14 @@ const Contact = () => {
                 className="card p-10 flex flex-col items-center justify-center text-center h-full gap-4"
               >
                 <div className="w-16 h-16 rounded-full flex items-center justify-center mb-2"
-                  style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)' }}>
-                  <Send size={24} className="text-green-500" />
+                  style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.2)' }}>
+                  <Mail size={24} className="text-[#3b82f6]" />
                 </div>
-                <h3 className="text-white font-bold text-xl">Message Sent!</h3>
-                <p className="text-[#555] text-sm">Thanks for reaching out. I'll get back to you soon.</p>
+                <h3 className="text-primary font-bold text-xl">Email Draft Created!</h3>
+                <p className="text-muted-1 text-sm">Your default email client has been opened. Just hit send from there!</p>
                 <button onClick={() => { setSent(false); setForm({ name: '', email: '', subject: '', message: '' }); }}
                   className="btn-outline mt-4">
-                  Send Another
+                  Write Another Message
                 </button>
               </motion.div>
             ) : (
@@ -164,7 +179,7 @@ const Contact = () => {
                 <div className="grid sm:grid-cols-2 gap-4">
                   {['name', 'email'].map((field) => (
                     <div key={field}>
-                      <label className="text-[10px] text-[#444] uppercase tracking-widest font-bold block mb-1.5">
+                      <label className="text-[10px] text-muted-1 uppercase tracking-widest font-bold block mb-1.5">
                         {field === 'name' ? 'Name' : 'Email'}
                       </label>
                       <input
@@ -174,20 +189,20 @@ const Contact = () => {
                         onChange={handleChange}
                         required
                         placeholder={field === 'name' ? 'Your name' : 'your@email.com'}
-                        className="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-[#333] outline-none transition-all"
+                        className="w-full px-4 py-3 rounded-xl text-sm text-primary placeholder:text-muted-2 outline-none transition-all"
                         style={{
-                          background: 'rgba(255,255,255,0.02)',
-                          border: '1px solid rgba(255,255,255,0.06)',
+                          background: 'var(--input-bg)',
+                          border: '1px solid var(--border-color)',
                         }}
                         onFocus={(e) => e.target.style.borderColor = 'rgba(59,130,246,0.4)'}
-                        onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.06)'}
+                        onBlur={(e) => e.target.style.borderColor = 'var(--border-color)'}
                       />
                     </div>
                   ))}
                 </div>
 
                 <div>
-                  <label className="text-[10px] text-[#444] uppercase tracking-widest font-bold block mb-1.5">Subject</label>
+                  <label className="text-[10px] text-muted-1 uppercase tracking-widest font-bold block mb-1.5">Subject</label>
                   <input
                     type="text"
                     name="subject"
@@ -195,15 +210,15 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     placeholder="What's this about?"
-                    className="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-[#333] outline-none transition-all"
-                    style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
+                    className="w-full px-4 py-3 rounded-xl text-sm text-primary placeholder:text-muted-2 outline-none transition-all"
+                    style={{ background: 'var(--input-bg)', border: '1px solid var(--border-color)' }}
                     onFocus={(e) => e.target.style.borderColor = 'rgba(59,130,246,0.4)'}
-                    onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.06)'}
+                    onBlur={(e) => e.target.style.borderColor = 'var(--border-color)'}
                   />
                 </div>
 
                 <div>
-                  <label className="text-[10px] text-[#444] uppercase tracking-widest font-bold block mb-1.5">Message</label>
+                  <label className="text-[10px] text-muted-1 uppercase tracking-widest font-bold block mb-1.5">Message</label>
                   <textarea
                     name="message"
                     value={form.message}
@@ -211,10 +226,10 @@ const Contact = () => {
                     required
                     rows="5"
                     placeholder="Tell me about your project…"
-                    className="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-[#333] outline-none transition-all resize-none"
-                    style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
+                    className="w-full px-4 py-3 rounded-xl text-sm text-primary placeholder:text-muted-2 outline-none transition-all resize-none"
+                    style={{ background: 'var(--input-bg)', border: '1px solid var(--border-color)' }}
                     onFocus={(e) => e.target.style.borderColor = 'rgba(59,130,246,0.4)'}
-                    onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.06)'}
+                    onBlur={(e) => e.target.style.borderColor = 'var(--border-color)'}
                   />
                 </div>
 

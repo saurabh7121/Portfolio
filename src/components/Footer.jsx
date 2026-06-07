@@ -85,7 +85,7 @@ const EthTipButton = () => {
       </motion.button>
 
       {/* Hint label */}
-      <span style={{ fontSize: '9px', color: '#333', letterSpacing: '0.08em' }}>
+      <span style={{ fontSize: '9px', color: 'var(--text-muted-2)', letterSpacing: '0.08em' }}>
         tap to copy · send ETH
       </span>
     </div>
@@ -93,11 +93,11 @@ const EthTipButton = () => {
 };
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
-const Footer = () => {
+const Footer = ({ theme }) => {
   const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
-    <footer className="relative border-t border-white/05 overflow-hidden">
+    <footer className="relative border-t border-border overflow-hidden">
       {/* Top gradient border */}
       <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#ef4444]/40 to-transparent" />
 
@@ -111,14 +111,14 @@ const Footer = () => {
           <div className="flex flex-col items-center md:items-start gap-3">
             <div className="flex items-center gap-3">
               <img
-                src="/logo.png"
+                src={theme === 'dark' ? '/dark.png' : '/light.png'}
                 alt="Saurabh Jadhav"
                 className="h-7 w-auto object-contain"
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
-              <span className="font-black text-white text-sm tracking-widest">SAURABH JADHAV</span>
+              <span className="font-black text-primary text-sm tracking-widest">SAURABH JADHAV</span>
             </div>
-            <p className="text-[#333] text-xs max-w-xs text-center md:text-left leading-relaxed">
+            <p className="text-muted-1 text-xs max-w-xs text-center md:text-left leading-relaxed">
               Software Developer — Building scalable apps &amp; intelligent systems.
             </p>
             {/* Red-Blue divider */}
@@ -134,7 +134,7 @@ const Footer = () => {
               <a
                 key={name}
                 href={`#${name.toLowerCase()}`}
-                className="text-xs text-[#444] hover:text-white transition-colors tracking-wider"
+                className="text-xs text-muted-1 hover:text-primary transition-colors tracking-wider"
               >
                 {name}
               </a>
@@ -149,17 +149,17 @@ const Footer = () => {
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#444] hover:text-white transition-colors"
+                className="text-muted-1 hover:text-primary transition-colors"
               >
                 {s.icon}
               </a>
             ))}
-            <div className="w-px h-4 bg-white/10" />
+            <div className="w-px h-4 bg-border" />
             <motion.button
               onClick={scrollTop}
               whileHover={{ scale: 1.1, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              className="w-9 h-9 rounded-xl glass-sm border border-white/08 flex items-center justify-center text-[#555] hover:text-white transition-all"
+              className="w-9 h-9 rounded-xl glass-sm border border-border flex items-center justify-center text-muted-1 hover:text-primary transition-all"
               aria-label="Scroll to top"
             >
               <ArrowUp size={14} />
@@ -168,7 +168,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom row */}
-        <div className="mt-8 pt-6 border-t border-white/05 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#333]">
+        <div className="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-muted-1">
           <span>
             © {new Date().getFullYear()} Saurabh Jadhav. All rights reserved.
           </span>

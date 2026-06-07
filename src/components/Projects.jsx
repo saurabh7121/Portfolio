@@ -3,68 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, FolderOpen, ChevronRight, Terminal, Search, Star, GitFork, ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
 
-const projects = [
-  {
-    title: 'Financial Authorization Platform',
-    desc: 'Accessible system to simplify financial consent using guided UI and verification. Focused on usability for rural and urban users.',
-    tech: ['React', 'Node.js', 'MongoDB', 'JWT'],
-    link: '#',
-    github: 'https://github.com/saurabh7121',
-    accent: '#ef4444',
-    featured: true,
-    icon: '💳',
-    codeLines: [
-      { txt: 'POST /api/consent/verify',   c: '#ef4444' },
-      { txt: '  status: "authorized" ✓',   c: '#22c55e' },
-      { txt: 'GET  /api/user/agreement',   c: '#3b82f6' },
-      { txt: '  jwt: valid · exp: 24h',    c: '#a1a1aa' },
-      { txt: 'DB  MongoDB · secure tx',    c: '#71717a' },
-    ],
-    pattern: 'radial-gradient(ellipse at 20% 50%, rgba(239,68,68,0.12) 0%, transparent 60%), radial-gradient(ellipse at 80% 50%, rgba(59,130,246,0.08) 0%, transparent 60%)',
-  },
-  {
-    title: 'Smart Campus Transport App',
-    desc: 'Mobile application for real-time bus tracking, route management and transport booking for campus students.',
-    tech: ['React Native', 'Firebase', 'Maps API'],
-    link: '#',
-    github: 'https://github.com/saurabh7121',
-    accent: '#3b82f6',
-    featured: false,
-    icon: '🚌',
-    codeLines: [
-      { txt: 'WS  live_bus_feed connected', c: '#3b82f6' },
-      { txt: '  buses: 12 active 🟢',       c: '#22c55e' },
-      { txt: 'GET /routes/campus-north',    c: '#a1a1aa' },
-      { txt: '  eta: 4 min · seats: 8',    c: '#f59e0b' },
-      { txt: 'Firebase Realtime DB ✓',      c: '#71717a' },
-    ],
-    pattern: 'radial-gradient(ellipse at 30% 40%, rgba(59,130,246,0.12) 0%, transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(34,197,94,0.06) 0%, transparent 60%)',
-  },
-  {
-    title: 'Sign Language Converter',
-    desc: 'ML-powered real-time application that converts sign language gestures into text, improving accessibility.',
-    tech: ['Python', 'OpenCV', 'ML', 'React'],
-    link: '#',
-    github: 'https://github.com/saurabh7121',
-    accent: '#a855f7',
-    featured: false,
-    icon: '🤟',
-    codeLines: [
-      { txt: 'model.predict(frame)',         c: '#a855f7' },
-      { txt: '  gesture: "Hello" 98.2%',    c: '#22c55e' },
-      { txt: 'OpenCV · frame: 60fps',       c: '#3b82f6' },
-      { txt: '  landmarks: 21 detected',    c: '#a1a1aa' },
-      { txt: 'output → text stream ✓',      c: '#71717a' },
-    ],
-    pattern: 'radial-gradient(ellipse at 50% 30%, rgba(168,85,247,0.12) 0%, transparent 60%), radial-gradient(ellipse at 50% 80%, rgba(59,130,246,0.06) 0%, transparent 60%)',
-  },
-];
+import { projects } from '../data/projectsData';
 
 /* Code preview card replacing the image */
 const CodePreview = ({ project }) => (
   <div
     className="h-48 sm:h-52 relative overflow-hidden flex flex-col justify-between"
-    style={{ background: project.pattern, backgroundColor: '#0d0d0d' }}
+    style={{ background: project.pattern, backgroundColor: 'var(--card-bg-solid)' }}
   >
     {/* Subtle grid */}
     <div className="absolute inset-0 bg-grid-pattern opacity-20" />
@@ -77,7 +22,7 @@ const CodePreview = ({ project }) => (
         <div className="w-2 h-2 rounded-full bg-[#22c55e]" />
       </div>
       <div className="flex-1 text-center">
-        <span className="text-[9px] font-mono text-[#333] tracking-wider">
+        <span className="text-[9px] font-mono text-muted-1 tracking-wider">
           {project.title.toLowerCase().replace(/ /g, '_')}.sh
         </span>
       </div>
@@ -131,33 +76,31 @@ const ProjectCard = ({ project, i }) => (
     transition={{ delay: i * 0.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
     className="card group relative overflow-hidden flex flex-col"
   >
-    {/* Featured tag */}
-    {project.featured && (
-      <div
-        className="absolute top-4 left-4 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest"
-        style={{ background: `${project.accent}20`, color: project.accent, border: `1px solid ${project.accent}30` }}
-      >
-        ★ Featured
-      </div>
-    )}
-
     {/* Code preview (replaces photo) */}
     <CodePreview project={project} />
 
     {/* Body */}
     <div className="p-6 relative z-10 flex flex-col flex-1">
+      {/* {project.featured && (
+        <div
+          className="w-fit flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest mb-3"
+          style={{ background: `${project.accent}20`, color: project.accent, border: `1px solid ${project.accent}30` }}
+        >
+          ★ Featured
+        </div>
+      )} */}
       <div className="flex items-start justify-between gap-3 mb-3">
-        <h3 className="text-white font-bold text-lg leading-tight tracking-tight">{project.title}</h3>
+        <h3 className="text-primary font-bold text-lg leading-tight tracking-tight">{project.title}</h3>
         <FolderOpen size={18} style={{ color: project.accent }} className="flex-shrink-0 mt-0.5" />
       </div>
-      <p className="text-[#555] text-sm leading-relaxed mb-5">{project.desc}</p>
+      <p className="text-muted-1 text-sm leading-relaxed mb-5">{project.desc}</p>
 
       {/* Tech stack */}
       <div className="flex flex-wrap gap-2 mb-6">
         {project.tech.map((t) => (
           <span
             key={t}
-            className="text-[10px] font-mono px-2.5 py-1 rounded-md border border-white/06 text-[#555]"
+            className="text-[10px] font-mono px-2.5 py-1 rounded-md border border-border text-muted-1"
             style={{ background: `${project.accent}08` }}
           >
             {t}
@@ -166,12 +109,12 @@ const ProjectCard = ({ project, i }) => (
       </div>
 
       {/* Links */}
-      <div className="flex items-center justify-between pt-4 border-t border-white/05 mt-auto">
+      <div className="flex items-center justify-between pt-4 border-t border-border mt-auto">
         <a
           href={project.github}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 text-xs text-[#555] hover:text-white transition-colors font-medium"
+          className="flex items-center gap-2 text-xs text-muted-1 hover:text-primary transition-colors font-medium"
         >
           <FaGithub size={14} /> Source Code
         </a>
@@ -188,7 +131,7 @@ const ProjectCard = ({ project, i }) => (
 );
 
 const Projects = () => {
-  const [showRepos, setShowRepos] = useState(false);
+  const [activeTab, setActiveTab] = useState('All');
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -196,7 +139,7 @@ const Projects = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('All');
 
   useEffect(() => {
-    if (showRepos && repos.length === 0) {
+    if (activeTab === 'GitHub' && repos.length === 0) {
       setLoading(true);
       const username = process.env.GITHUB_USERNAME || 'saurabh7121';
       const token = process.env.GITHUB_TOKEN;
@@ -224,7 +167,7 @@ const Projects = () => {
           setLoading(false);
         });
     }
-  }, [showRepos, repos.length]);
+  }, [activeTab, repos.length]);
 
   const getLanguageColor = (lang) => {
     const colors = {
@@ -253,6 +196,8 @@ const Projects = () => {
     return matchesSearch && matchesLang;
   });
 
+
+
   return (
     <section id="projects" className="py-28 relative overflow-hidden">
       <div className="absolute bottom-0 right-0 w-80 h-80 bg-[#ef4444] opacity-[0.03] blur-[120px] rounded-full pointer-events-none" />
@@ -270,45 +215,75 @@ const Projects = () => {
             My Work
           </span>
           <h2
-            className="font-black text-white leading-tight mb-4"
+            className="font-black text-primary leading-tight mb-4"
             style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}
           >
             Featured{' '}
             <span className="text-gradient-red">Projects</span>
           </h2>
           <div className="section-divider mx-auto" />
-          <p className="text-[#555] max-w-md mt-4 text-sm leading-relaxed">
+          <p className="text-muted-1 max-w-md mt-4 text-sm leading-relaxed">
             A selection of real-world projects built with modern technologies.
           </p>
         </motion.div>
 
-        {/* Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((p, i) => (
-            <ProjectCard key={i} project={p} i={i} />
-          ))}
+        {/* Category Tabs */}
+        <div className="flex flex-wrap justify-center gap-3 mb-10">
+          <button
+            onClick={() => setActiveTab('All')}
+            className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
+              activeTab === 'All'
+                ? 'bg-[#ef4444] text-white shadow-lg shadow-red-500/25'
+                : 'bg-primary/5 text-muted-1 hover:bg-primary/10 hover:text-primary'
+            }`}
+          >
+            Projects
+          </button>
+          <button
+            onClick={() => setActiveTab('GitHub')}
+            className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+              activeTab === 'GitHub'
+                ? 'bg-[#ef4444] text-white shadow-lg shadow-red-500/25'
+                : 'bg-primary/5 text-muted-1 hover:bg-primary/10 hover:text-primary'
+            }`}
+          >
+            <FaGithub size={16} /> GitHub Repo's
+          </button>
         </div>
 
-        {/* GitHub Subsection */}
-        <AnimatePresence>
-          {showRepos && (
+        <AnimatePresence mode="wait">
+          {activeTab === 'All' ? (
+            <motion.div 
+              key="all-projects"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {projects.map((p, i) => (
+                <ProjectCard key={p.title} project={p} i={i} />
+              ))}
+            </motion.div>
+          ) : (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="overflow-hidden mt-12 pt-12 border-t border-white/05"
+              key="github-repos"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+              className="mt-4"
             >
               {/* Header / Search / Filters */}
               <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
                 <div className="relative w-full md:max-w-xs">
-                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#555] w-4 h-4" />
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-1 w-4 h-4" />
                   <input
                     type="text"
                     placeholder="Search repositories..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full bg-[#0d0d0d] border border-white/05 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-[#333] outline-none transition-all focus:border-[#ef4444]/40"
+                    className="w-full bg-primary/2 border border-border rounded-xl pl-10 pr-4 py-2.5 text-sm text-primary placeholder:text-muted-2 outline-none transition-all focus:border-[#ef4444]/40"
                   />
                 </div>
 
@@ -321,7 +296,7 @@ const Projects = () => {
                       className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-300 ${
                         selectedLanguage === lang
                           ? 'bg-[#ef4444]/10 border-[#ef4444]/30 text-[#ef4444]'
-                          : 'bg-[#0d0d0d] border-white/05 text-[#555] hover:text-white hover:border-white/10'
+                          : 'bg-primary/2 border-border text-muted-1 hover:text-primary hover:border-primary/20'
                       }`}
                     >
                       {lang}
@@ -334,14 +309,14 @@ const Projects = () => {
               {loading ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-4">
                   <Loader2 className="animate-spin text-[#ef4444]" size={24} />
-                  <p className="text-[#555] text-sm">Fetching repositories...</p>
+                  <p className="text-muted-1 text-sm">Fetching repositories...</p>
                 </div>
               ) : error ? (
                 <div className="text-center py-20 text-red-500/80 text-sm">
                   Error loading repositories: {error}. Please try again later.
                 </div>
               ) : filteredRepos.length === 0 ? (
-                <div className="text-center py-20 text-[#555] text-sm">
+                <div className="text-center py-20 text-muted-1 text-sm">
                   No repositories found matching your search.
                 </div>
               ) : (
@@ -352,7 +327,7 @@ const Projects = () => {
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: idx * 0.05 }}
-                      className="bg-[#0d0d0d] border border-white/05 hover:border-[#ef4444]/20 p-5 rounded-2xl flex flex-col justify-between group transition-all duration-300 relative overflow-hidden"
+                      className="card border border-border hover:border-[#ef4444]/20 p-5 rounded-2xl flex flex-col justify-between group transition-all duration-300 relative overflow-hidden"
                     >
                       <div>
                         <div className="flex justify-between items-start mb-3">
@@ -361,20 +336,20 @@ const Projects = () => {
                             href={repo.html_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[#555] hover:text-white transition-colors"
+                            className="text-muted-1 hover:text-primary transition-colors"
                           >
                             <ExternalLink size={14} />
                           </a>
                         </div>
-                        <h4 className="text-white font-bold text-sm group-hover:text-[#ef4444] transition-colors mb-2 truncate">
+                        <h4 className="text-primary font-bold text-sm group-hover:text-[#ef4444] transition-colors mb-2 truncate">
                           {repo.name}
                         </h4>
-                        <p className="text-[#555] text-xs leading-relaxed mb-4 line-clamp-2 h-8">
+                        <p className="text-muted-1 text-xs leading-relaxed mb-4 line-clamp-2 h-8">
                           {repo.description || 'No description provided.'}
                         </p>
                       </div>
 
-                      <div className="flex items-center justify-between pt-3 border-t border-white/05 text-xs text-[#555]">
+                      <div className="flex items-center justify-between pt-3 border-t border-border text-xs text-muted-1">
                         <div className="flex items-center gap-1.5">
                           {repo.language && (
                             <>
@@ -403,23 +378,6 @@ const Projects = () => {
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="mt-12 text-center"
-        >
-          <button
-            onClick={() => setShowRepos(!showRepos)}
-            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-[#ef4444] to-[#f97316] shadow-lg shadow-red-500/20 hover:shadow-red-500/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 cursor-pointer"
-          >
-            <FaGithub size={16} />
-            {showRepos ? 'Hide Repositories' : 'Explore GitHub Repositories'}
-            {showRepos ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-          </button>
-        </motion.div>
       </div>
     </section>
   );

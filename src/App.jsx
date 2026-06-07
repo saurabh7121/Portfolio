@@ -1,13 +1,14 @@
 import { lazy, Suspense, useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-
+import CustomCursor from './components/CustomCursor';
+import GridPattern from './components/GridPattern';
 // Lazy-load 404 page — never part of the initial bundle
 const NotFound = lazy(() => import('./components/NotFound'));
 
 // ─── Lazy imports & Configurations ───────────────────────────────────────────
-const ThreeCanvas = lazy(() => import('./components/ThreeCanvas'));
 
 // Below-fold sections — always lazy regardless of device
 const About      = lazy(() => import('./components/About'));
@@ -18,66 +19,15 @@ const Skills     = lazy(() => import('./components/Skills'));
 const Contact    = lazy(() => import('./components/Contact'));
 const Footer     = lazy(() => import('./components/Footer'));
 
+// Blog pages
+const Blogs    = lazy(() => import('./components/Blogs'));
+const BlogPost = lazy(() => import('./components/BlogPost'));
+
 // Lightweight placeholder — maintains layout height while sections load
 const SectionFallback = () => (
   <div style={{ minHeight: '40vh' }} aria-hidden="true" />
 );
 
-// ─── Pure CSS animated background (used as fallback/loading phase) ───────────
-const MobileBackground = () => (
-  <div
-    aria-hidden="true"
-    style={{
-      position: 'fixed',
-      inset: 0,
-      zIndex: 0,
-      background: '#080808',
-      overflow: 'hidden',
-    }}
-  >
-    {/* Gradient orbs — CSS only, GPU composited */}
-    <div style={{
-      position: 'absolute',
-      top: '15%', left: '10%',
-      width: 320, height: 320,
-      borderRadius: '50%',
-      background: 'radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%)',
-      filter: 'blur(40px)',
-      animation: 'orb-float-1 8s ease-in-out infinite',
-      willChange: 'transform',
-    }} />
-    <div style={{
-      position: 'absolute',
-      top: '55%', right: '8%',
-      width: 260, height: 260,
-      borderRadius: '50%',
-      background: 'radial-gradient(circle, rgba(239,68,68,0.10) 0%, transparent 70%)',
-      filter: 'blur(40px)',
-      animation: 'orb-float-2 10s ease-in-out infinite',
-      willChange: 'transform',
-    }} />
-    <div style={{
-      position: 'absolute',
-      bottom: '20%', left: '40%',
-      width: 200, height: 200,
-      borderRadius: '50%',
-      background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)',
-      filter: 'blur(30px)',
-      animation: 'orb-float-1 12s ease-in-out infinite reverse',
-      willChange: 'transform',
-    }} />
-    <style>{`
-      @keyframes orb-float-1 {
-        0%, 100% { transform: translateY(0px) translateZ(0); }
-        50% { transform: translateY(-30px) translateZ(0); }
-      }
-      @keyframes orb-float-2 {
-        0%, 100% { transform: translateY(0px) translateX(0px) translateZ(0); }
-        50% { transform: translateY(25px) translateX(-15px) translateZ(0); }
-      }
-    `}</style>
-  </div>
-);
 
 // ─── Premium Loader Screen ───────────────────────────────────────────────────
 const PremiumLoader = ({ fadeOut }) => (
@@ -86,7 +36,7 @@ const PremiumLoader = ({ fadeOut }) => (
       position: 'fixed',
       inset: 0,
       zIndex: 9999,
-      background: '#080808',
+      background: 'var(--bg-main)',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -103,7 +53,7 @@ const PremiumLoader = ({ fadeOut }) => (
       .loader-ring {
         width: 44px;
         height: 44px;
-        border: 2px solid rgba(255, 255, 255, 0.03);
+        border: 2px solid var(--border-color);
         border-top-color: #ef4444;
         border-bottom-color: #3b82f6;
         border-radius: 50%;
@@ -113,7 +63,7 @@ const PremiumLoader = ({ fadeOut }) => (
       .loader-text {
         font-family: monospace;
         font-size: 10px;
-        color: #444;
+        color: var(--text-muted-1);
         letter-spacing: 0.3em;
         animation: pulse 1.8s ease-in-out infinite;
       }
@@ -129,35 +79,71 @@ const PremiumLoader = ({ fadeOut }) => (
   </div>
 );
 
+// ─── Page Transition Wrapper ──────────────────────────────────────────────────
+const PageWrapper = ({ children }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 15 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -15 }}
+    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+  >
+    {children}
+  </motion.div>
+);
+
 // ─── App ─────────────────────────────────────────────────────────────────────
 function App() {
+  const location = useLocation();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'light';
+  });
 
   useEffect(() => {
-    // Safety timeout: automatically reveal site after 4.5 seconds if Canvas load hangs
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 4500);
-    return () => clearTimeout(timer);
+    localStorage.setItem('theme', theme);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
+
+  useEffect(() => {
+    // Immediately reveal the site as there is no heavy background to load
+    setIsLoaded(true);
   }, []);
 
   return (
-    <Routes>
-      {/* ── Main portfolio ── */}
-      <Route
-        path="/"
-        element={
-          <div className="bg-[#080808] text-white min-h-screen overflow-x-hidden">
-            {/* Film grain — CSS only */}
-            <div className="noise" aria-hidden="true" />
+    <>
+      <CustomCursor />
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          {/* ── Main portfolio ── */}
+          <Route
+            path="/"
+            element={
+              <PageWrapper>
+                <div className="bg-[var(--bg-main)] text-primary min-h-screen overflow-x-hidden transition-colors duration-300">
+
 
             {/* Premium Fullscreen Loader */}
             <PremiumLoader fadeOut={isLoaded} />
 
-            {/* Background layer */}
-            <Suspense fallback={<MobileBackground />}>
-              <ThreeCanvas onReady={() => setIsLoaded(true)} />
-            </Suspense>
+            {/* Dynamic Grid Pattern Background */}
+            <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+              <GridPattern
+                squares={[
+                  [2, 4], [4, 4], [5, 1], [8, 2], [5, 3], [5, 5], [10, 10], [12, 15], [15, 10], [10, 15], [15, 10], [10, 15], [15, 10],
+                  [2, 7], [3, 12], [6, 8], [7, 14], [9, 5], [11, 3], [14, 6], [16, 12], [18, 4], [20, 15], [22, 8], [24, 2],
+                  [1, 1], [3, 3], [7, 7], [13, 13], [18, 18], [20, 5], [25, 10], [28, 6], [30, 14], [32, 4], [35, 12]
+                ]}
+                className="inset-x-0 inset-y-[-30%] h-[200%] skew-y-12 [mask-image:radial-gradient(900px_circle_at_center,white,transparent)]"
+              />
+            </div>
 
             {/* UI layer */}
             <div
@@ -169,16 +155,16 @@ function App() {
                 transition: 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
             >
-              <Navbar />
+              <Navbar theme={theme} toggleTheme={toggleTheme} />
 
               <main>
-                <Hero />
+                <Hero theme={theme} />
 
                 <Suspense fallback={<SectionFallback />}>
-                  <About />
+                  <About theme={theme} />
                 </Suspense>
                 <Suspense fallback={<SectionFallback />}>
-                  <Services />
+                  <Services theme={theme} />
                 </Suspense>
                 <Suspense fallback={<SectionFallback />}>
                   <Projects />
@@ -187,31 +173,66 @@ function App() {
                   <Experience />
                 </Suspense>
                 <Suspense fallback={<SectionFallback />}>
-                  <Skills />
+                  <Skills theme={theme} />
                 </Suspense>
                 <Suspense fallback={<SectionFallback />}>
-                  <Contact />
+                  <Contact theme={theme} />
                 </Suspense>
               </main>
 
               <Suspense fallback={null}>
-                <Footer />
+                <Footer theme={theme} />
               </Suspense>
             </div>
           </div>
-        }
-      />
+              </PageWrapper>
+            }
+          />
 
-      {/* ── 404 — catch all unknown routes ── */}
-      <Route
-        path="*"
-        element={
-          <Suspense fallback={<div className="bg-[#080808] min-h-screen" />}>
-            <NotFound />
-          </Suspense>
-        }
-      />
-    </Routes>
+          {/* ── Blog listing ── */}
+          <Route
+            path="/blogs"
+            element={
+              <PageWrapper>
+                <div className="bg-[var(--bg-main)] text-primary min-h-screen overflow-x-hidden transition-colors duration-300">
+                  <Navbar theme={theme} toggleTheme={toggleTheme} />
+                  <Suspense fallback={<SectionFallback />}>
+                    <Blogs />
+                  </Suspense>
+                </div>
+              </PageWrapper>
+            }
+          />
+
+          {/* ── Blog post ── */}
+          <Route
+            path="/blogs/:slug"
+            element={
+              <PageWrapper>
+                <div className="bg-[var(--bg-main)] text-primary min-h-screen overflow-x-hidden transition-colors duration-300">
+                  <Navbar theme={theme} toggleTheme={toggleTheme} />
+                  <Suspense fallback={<SectionFallback />}>
+                    <BlogPost />
+                  </Suspense>
+                </div>
+              </PageWrapper>
+            }
+          />
+
+          {/* ── 404 — catch all unknown routes ── */}
+          <Route
+            path="*"
+            element={
+              <PageWrapper>
+                <Suspense fallback={<div className="bg-[var(--bg-main)] min-h-screen transition-colors duration-300" />}>
+                  <NotFound />
+                </Suspense>
+              </PageWrapper>
+            }
+          />
+        </Routes>
+      </AnimatePresence>
+    </>
   );
 }
 

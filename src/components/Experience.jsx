@@ -32,7 +32,7 @@ const Experience = () => (
           My Journey
         </span>
         <h2
-          className="font-black text-white leading-tight mb-4"
+          className="font-black text-primary leading-tight mb-4"
           style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}
         >
           Work{' '}
@@ -74,7 +74,7 @@ const Experience = () => (
             <div className="card p-6 sm:p-8 mb-10 flex-1">
               <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
                 <div>
-                  <h3 className="text-white font-bold text-xl tracking-tight">{exp.company}</h3>
+                  <h3 className="text-primary font-bold text-xl tracking-tight">{exp.company}</h3>
                   <p className="font-semibold text-sm mt-0.5" style={{ color: exp.accent }}>{exp.role}</p>
                 </div>
                 {exp.current && (
@@ -85,7 +85,7 @@ const Experience = () => (
                 )}
               </div>
 
-              <div className="flex flex-wrap gap-4 mb-5 text-[#555] text-xs">
+              <div className="flex flex-wrap gap-4 mb-5 text-muted-1 text-xs">
                 <span className="flex items-center gap-1.5">
                   <Calendar size={12} /> {exp.period}
                 </span>
@@ -94,11 +94,11 @@ const Experience = () => (
                 </span>
               </div>
 
-              <p className="text-[#71717a] text-sm leading-relaxed mb-5">{exp.desc}</p>
+              <p className="text-muted-1 text-sm leading-relaxed mb-5">{exp.desc}</p>
 
               <div className="flex flex-wrap gap-2">
                 {exp.highlights.map((h) => (
-                  <span key={h} className="text-[10px] font-mono px-3 py-1.5 rounded-lg border border-white/06 text-[#555]"
+                  <span key={h} className="text-[10px] font-mono px-3 py-1.5 rounded-lg border border-border text-muted-1"
                     style={{ background: `${exp.accent}08` }}>
                     {h}
                   </span>
@@ -116,9 +116,9 @@ const Experience = () => (
           className="flex gap-6 sm:gap-10 items-center"
         >
           <div className="flex flex-col items-center flex-shrink-0 w-10">
-            <div className="w-3 h-3 rounded-full bg-white/10 border border-white/20 mx-auto" />
+            <div className="w-3 h-3 rounded-full bg-primary/10 border border-border mx-auto" />
           </div>
-          <p className="text-[#333] text-xs italic">The journey begins…</p>
+          <p className="text-muted-2 text-xs italic">The journey begins…</p>
         </motion.div>
       </div>
     </div>

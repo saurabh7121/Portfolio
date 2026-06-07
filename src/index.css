@@ -1,13 +1,17 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  --color-primary: #ffffff;
+  --color-primary: var(--text-main);
+  --color-dark: var(--bg-main);
+  --color-dark-2: var(--bg-surface);
+  --color-surface: var(--bg-surface);
+  --color-border: var(--border-color);
+  --color-muted-1: var(--text-muted-1);
+  --color-muted-2: var(--text-muted-2);
   --color-red-accent: #ef4444;
   --color-blue-accent: #3b82f6;
-  --color-dark: #080808;
-  --color-dark-2: #0f0f0f;
-  --color-surface: #141414;
-  --color-border: rgba(255, 255, 255, 0.06);
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 }
@@ -21,13 +25,86 @@ html { scroll-behavior: smooth; }
   font-family: var(--font-sans);
   line-height: 1.6;
   font-weight: 400;
-  color-scheme: dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: var(--color-dark);
+  
+  /* Theme colors - Light Mode (default) */
+  --bg-main: #f8fafc;        /* Slate 50 */
+  --bg-surface: #ffffff;     /* Pure white */
+  --text-main: #0f172a;      /* Slate 900 */
+  --text-muted-1: #475569;   /* Slate 600 */
+  --text-muted-2: #94a3b8;   /* Slate 400 */
+  --border-color: rgba(15, 23, 42, 0.08); /* Faint slate border */
+  
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(15, 23, 42, 0.08);
+  --glass-inner-rim: rgba(255, 255, 255, 0.9);
+  --glass-sm-bg: rgba(255, 255, 255, 0.85);
+  --glass-dark-bg: rgba(255, 255, 255, 0.95);
+  
+  --btn-primary-bg: #0f172a;
+  --btn-primary-text: #ffffff;
+  --btn-outline-border: rgba(15, 23, 42, 0.15);
+  --btn-outline-hover-bg: rgba(15, 23, 42, 0.04);
+  
+  --nav-pill-color: #475569;
+  --nav-pill-active-color: #0f172a;
+  --nav-pill-hover-bg: rgba(15, 23, 42, 0.04);
+  --nav-pill-active-bg: rgba(15, 23, 42, 0.08);
+  
+  --card-mouse-glow: rgba(15, 23, 42, 0.02);
+  --card-hover-border: rgba(15, 23, 42, 0.12);
+  --card-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08);
+  --card-hover-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.12);
+
+  --input-bg: rgba(15, 23, 42, 0.02);
+  --gradient-white-start: #0f172a;
+  --gradient-white-end: #475569;
+  --text-stroke: rgba(15, 23, 42, 0.22);
+  
+  color-scheme: light;
+  color: var(--text-main);
+  background-color: var(--bg-main);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.dark {
+  /* Theme colors - Dark Mode */
+  --bg-main: #080808;
+  --bg-surface: #141414;
+  --text-main: #ffffff;
+  --text-muted-1: #a1a1aa;    /* Gray 400 */
+  --text-muted-2: #555555;
+  --border-color: rgba(255, 255, 255, 0.06);
+  
+  --glass-bg: rgba(255, 255, 255, 0.025);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-inner-rim: rgba(255, 255, 255, 0.06);
+  --glass-sm-bg: rgba(255, 255, 255, 0.04);
+  --glass-dark-bg: rgba(8, 8, 8, 0.7);
+  
+  --btn-primary-bg: #ffffff;
+  --btn-primary-text: #000000;
+  --btn-outline-border: rgba(255, 255, 255, 0.15);
+  --btn-outline-hover-bg: rgba(255, 255, 255, 0.05);
+  
+  --nav-pill-color: #a1a1aa;
+  --nav-pill-active-color: #ffffff;
+  --nav-pill-hover-bg: rgba(255, 255, 255, 0.03);
+  --nav-pill-active-bg: rgba(255, 255, 255, 0.05);
+  
+  --card-mouse-glow: rgba(255, 255, 255, 0.03);
+  --card-hover-border: rgba(255, 255, 255, 0.12);
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --card-hover-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+
+  --input-bg: rgba(255, 255, 255, 0.02);
+  --gradient-white-start: #ffffff;
+  --gradient-white-end: #a1a1aa;
+  --text-stroke: rgba(255, 255, 255, 0.15);
+  
+  color-scheme: dark;
 }
 
 body {
@@ -35,21 +112,42 @@ body {
   min-width: 320px;
   min-height: 100vh;
   overflow-x: hidden;
-  background-color: var(--color-dark);
+  background-color: var(--bg-main);
+  color: var(--text-main);
 }
 
 /* ===================== SCROLLBAR ===================== */
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: var(--color-dark); }
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: var(--bg-main); }
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(to bottom, #ef4444, #3b82f6);
   border-radius: 10px;
 }
 
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted-2);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
 /* ===================== SELECTION ===================== */
 ::selection {
   background: rgba(239, 68, 68, 0.25);
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 /* ===================== TYPOGRAPHY ===================== */
@@ -68,7 +166,7 @@ body {
 }
 
 .text-gradient-white {
-  background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+  background: linear-gradient(135deg, var(--gradient-white-start) 0%, var(--gradient-white-end) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -76,22 +174,22 @@ body {
 
 /* ===================== GLASS ===================== */
 .glass {
-  background: rgba(255, 255, 255, 0.025);
+  background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--glass-border);
 }
 
 .glass-sm {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--glass-sm-bg);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
 }
 
 .glass-dark {
-  background: rgba(8, 8, 8, 0.7);
+  background: var(--glass-dark-bg);
   backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--glass-border);
 }
 
 /* ===================== BUTTONS ===================== */
@@ -100,8 +198,8 @@ body {
   align-items: center;
   gap: 0.5rem;
   padding: 0.875rem 2rem;
-  background: #ffffff;
-  color: #000000;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
   font-weight: 700;
   font-size: 0.8rem;
   letter-spacing: 0.1em;
@@ -124,7 +222,7 @@ body {
 }
 
 .btn-primary:hover::before { opacity: 1; }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 20px 40px rgba(255,255,255,0.15); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: var(--card-hover-shadow); }
 
 .btn-outline {
   display: inline-flex;
@@ -132,20 +230,20 @@ body {
   gap: 0.5rem;
   padding: 0.875rem 2rem;
   background: transparent;
-  color: #ffffff;
+  color: var(--text-main);
   font-weight: 600;
   font-size: 0.8rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   border-radius: 100px;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid var(--btn-outline-border);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .btn-outline:hover {
-  border-color: rgba(255,255,255,0.5);
-  background: rgba(255,255,255,0.05);
+  border-color: var(--text-main);
+  background: var(--btn-outline-hover-bg);
   transform: translateY(-2px);
 }
 
@@ -161,13 +259,13 @@ section {
   gap: 0.5rem;
   padding: 0.3rem 1rem;
   border-radius: 100px;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #a1a1aa;
+  color: var(--text-muted-1);
   margin-bottom: 1.5rem;
 }
 
@@ -181,8 +279,11 @@ section {
 
 /* ===================== CARDS ===================== */
 .card {
-  background: var(--color-surface);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 var(--glass-inner-rim), var(--card-shadow);
   border-radius: 1.25rem;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
@@ -193,7 +294,7 @@ section {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.03), transparent 40%);
+  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--card-mouse-glow), transparent 40%);
   opacity: 0;
   transition: opacity 0.3s;
   pointer-events: none;
@@ -201,7 +302,7 @@ section {
 }
 
 .card:hover::before { opacity: 1; }
-.card:hover { border-color: rgba(255,255,255,0.12); transform: translateY(-4px); box-shadow: 0 25px 60px rgba(0,0,0,0.6); }
+.card:hover { border-color: var(--card-hover-border); transform: translateY(-4px); box-shadow: var(--card-hover-shadow); }
 
 /* ===================== ANIMATIONS ===================== */
 @keyframes float {
@@ -341,10 +442,11 @@ section {
   height: 200%;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.03;
+  /* Reduced opacity — subtle grain, not a distraction */
+  opacity: 0.015;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-  animation: noise-move 8s steps(2) infinite;
-  /* Promote to GPU compositor layer — avoids main-thread repaints */
+  /* steps(8) gives 8 grain frames — organic feel, no harsh strobing */
+  animation: noise-move 20s steps(8) infinite;
   will-change: transform;
   transform: translateZ(0);
 }
@@ -394,18 +496,17 @@ section {
   transform: translateX(-50%);
 }
 
-/* ===================== NAV ===================== */
 .nav-pill {
   padding: 0.5rem 1.25rem;
   border-radius: 100px;
   font-size: 0.75rem;
   font-weight: 500;
-  color: #71717a;
+  color: var(--nav-pill-color);
   transition: all 0.2s;
   letter-spacing: 0.05em;
 }
-.nav-pill:hover { color: #ffffff; background: rgba(255,255,255,0.05); }
-.nav-pill.active { color: #ffffff; background: rgba(255,255,255,0.08); }
+.nav-pill:hover { color: var(--nav-pill-active-color); background: var(--nav-pill-hover-bg); }
+.nav-pill.active { color: var(--nav-pill-active-color); background: var(--nav-pill-active-bg); }
 
 /* ===================== STATUS DOT ===================== */
 .status-dot {
@@ -448,7 +549,7 @@ section {
 .orbit-ring {
   position: absolute;
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.04);
+  border: 1px solid var(--border-color);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -524,7 +625,7 @@ section:not(#home) {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: var(--color-dark);
+  background: var(--bg-main);
 }
 
 .not-found-content {
@@ -574,10 +675,10 @@ section:not(#home) {
   font-weight: 900;
   letter-spacing: -0.04em;
   line-height: 1;
-  color: #ffffff;
+  color: var(--text-main);
   position: relative;
   /* Faint outline duplicate */
-  -webkit-text-stroke: 1px rgba(255,255,255,0.08);
+  -webkit-text-stroke: 1px var(--text-stroke);
 }
 
 /* Pseudo-element glitch layers */
@@ -630,14 +731,14 @@ section:not(#home) {
 .not-found-heading {
   font-size: clamp(1.4rem, 4vw, 2rem);
   font-weight: 800;
-  color: #ffffff;
+  color: var(--text-main);
   letter-spacing: -0.02em;
   margin-bottom: 0.75rem;
 }
 
 .not-found-sub {
   font-size: 0.95rem;
-  color: #555;
+  color: var(--text-muted-1);
   line-height: 1.7;
   margin-bottom: 2rem;
   max-width: 420px;
@@ -647,8 +748,8 @@ section:not(#home) {
 .not-found-terminal {
   width: 100%;
   max-width: 380px;
-  background: rgba(255,255,255,0.025);
-  border: 1px solid rgba(255,255,255,0.07);
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
   border-radius: 1rem;
   overflow: hidden;
   margin-bottom: 2.5rem;
@@ -660,8 +761,8 @@ section:not(#home) {
   align-items: center;
   gap: 6px;
   padding: 0.65rem 1rem;
-  background: rgba(255,255,255,0.03);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: var(--btn-outline-hover-bg);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .not-found-dot {
@@ -675,7 +776,7 @@ section:not(#home) {
   margin-left: 6px;
   font-size: 10px;
   font-family: var(--font-mono);
-  color: #444;
+  color: var(--text-muted-2);
   letter-spacing: 0.08em;
   display: flex;
   align-items: center;

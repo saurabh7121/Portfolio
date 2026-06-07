@@ -41,7 +41,7 @@ const SkillMarquee = ({ skills, direction = 'left', speed = 40, activeCat }) => 
           return (
             <div
               key={index}
-              className={`flex flex-col items-center justify-center gap-2 w-28 h-28 sm:w-36 sm:h-36 lg:w-44 lg:h-44 rounded-2xl lg:rounded-3xl bg-[#ffffff02] border border-white/05 shrink-0 transition-all duration-500 relative group/card cursor-default overflow-hidden skill-card ${
+              className={`flex flex-col items-center justify-center gap-2 w-28 h-28 sm:w-36 sm:h-36 lg:w-44 lg:h-44 rounded-2xl lg:rounded-3xl bg-primary/2 border border-border shrink-0 transition-all duration-500 relative group/card cursor-default overflow-hidden skill-card ${
                 isDimmed ? 'opacity-15 blur-[1px] scale-95' : 'opacity-100 scale-100'
               }`}
               style={{
@@ -55,7 +55,7 @@ const SkillMarquee = ({ skills, direction = 'left', speed = 40, activeCat }) => 
               />
 
               <i className={`${skill.icon} text-3xl sm:text-4xl lg:text-5xl transition-transform duration-300 group-hover/card:scale-105`} />
-              <span className="text-[#a1a1aa] font-medium text-xs sm:text-sm lg:text-base tracking-wide transition-colors group-hover/card:text-white mt-1">
+              <span className="text-muted-1 font-medium text-xs sm:text-sm lg:text-base tracking-wide transition-colors group-hover/card:text-primary mt-1">
                 {skill.name}
               </span>
 
@@ -65,7 +65,7 @@ const SkillMarquee = ({ skills, direction = 'left', speed = 40, activeCat }) => 
                 style={{
                   background: `${skill.color}20`,
                   border: `1px solid ${skill.color}35`,
-                  color: skill.color === '#ffffff' ? '#a1a1aa' : skill.color,
+                  color: skill.color === '#ffffff' || skill.color === '#0f172a' ? 'var(--text-muted-1)' : skill.color,
                 }}
               >
                 {skill.level}
@@ -78,15 +78,22 @@ const SkillMarquee = ({ skills, direction = 'left', speed = 40, activeCat }) => 
   );
 };
 
-const Skills = () => {
+const Skills = ({ theme }) => {
   const [activeCat, setActiveCat] = useState('All');
+
+  const resolvedSkills = allSkills.map(s => {
+    if (s.name === 'Next.js') {
+      return { ...s, color: theme === 'dark' ? '#ffffff' : '#0f172a' };
+    }
+    return s;
+  });
 
   const categories = [
     {
       id: 'Frontend',
       title: 'Frontend & Mobile',
       desc: 'UI/UX development, Single Page Applications, responsive design, and cross-platform mobile apps.',
-      skillsCount: allSkills.filter((s) => s.cat === 'Frontend').length,
+      skillsCount: resolvedSkills.filter((s) => s.cat === 'Frontend').length,
       icon: <Layout className="w-5 h-5" />,
       color: '#3b82f6',
     },
@@ -94,7 +101,7 @@ const Skills = () => {
       id: 'Backend',
       title: 'Backend & Databases',
       desc: 'Secure API design, system architecture, relational & NoSQL databases, and query optimization.',
-      skillsCount: allSkills.filter((s) => s.cat === 'Backend').length,
+      skillsCount: resolvedSkills.filter((s) => s.cat === 'Backend').length,
       icon: <Server className="w-5 h-5" />,
       color: '#ef4444',
     },
@@ -102,7 +109,7 @@ const Skills = () => {
       id: 'DevOps',
       title: 'Tools & Infrastructure',
       desc: 'Deployment, containerization, cloud hosting services, shell scripting, and version control.',
-      skillsCount: allSkills.filter((s) => s.cat === 'DevOps').length,
+      skillsCount: resolvedSkills.filter((s) => s.cat === 'DevOps').length,
       icon: <Terminal className="w-5 h-5" />,
       color: '#a1a1aa',
     },
@@ -150,14 +157,14 @@ const Skills = () => {
             My Stack
           </span>
           <h2
-            className="font-black text-white leading-tight mb-4"
+            className="font-black text-primary leading-tight mb-4"
             style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}
           >
             Technical{' '}
-            <span className="text-gradient-white">Skills</span>
+            <span className="text-gradient-red">Skills</span>
           </h2>
           <div className="section-divider mx-auto" />
-          <p className="text-[#555] mt-6 max-w-lg text-sm leading-relaxed">
+          <p className="text-muted-1 mt-6 max-w-lg text-sm leading-relaxed">
             A comprehensive list of languages, frameworks, and tools I specialize in. Click a domain to focus related tech.
           </p>
         </motion.div>
@@ -171,10 +178,10 @@ const Skills = () => {
                 key={cat.id}
                 onClick={() => setActiveCat(isActive ? 'All' : cat.id)}
                 className={`text-left p-6 rounded-2xl border transition-all duration-300 relative overflow-hidden group cursor-pointer ${
-                  isActive ? 'bg-[#ffffff03]' : 'bg-[#ffffff01] hover:bg-[#ffffff02]'
+                  isActive ? 'bg-primary/5' : 'bg-primary/2 hover:bg-primary/5'
                 }`}
                 style={{
-                  borderColor: isActive ? cat.color : 'rgba(255, 255, 255, 0.05)',
+                  borderColor: isActive ? cat.color : 'var(--border-color)',
                   boxShadow: isActive ? `0 0 25px -8px ${cat.color}` : 'none',
                 }}
               >
@@ -188,7 +195,7 @@ const Skills = () => {
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center border transition-colors"
                     style={{
-                      borderColor: isActive ? `${cat.color}40` : 'rgba(255, 255, 255, 0.08)',
+                      borderColor: isActive ? `${cat.color}40` : 'var(--border-color)',
                       color: cat.color,
                       background: `${cat.color}08`,
                     }}
@@ -196,11 +203,11 @@ const Skills = () => {
                     {cat.icon}
                   </div>
                   <div>
-                    <h3 className="text-white font-bold text-sm tracking-wide">{cat.title}</h3>
-                    <span className="text-[10px] text-[#555] font-mono">{cat.skillsCount} Technologies</span>
+                    <h3 className="text-primary font-bold text-sm tracking-wide">{cat.title}</h3>
+                    <span className="text-[10px] text-muted-2 font-mono">{cat.skillsCount} Technologies</span>
                   </div>
                 </div>
-                <p className="text-[#555] text-xs leading-relaxed">{cat.desc}</p>
+                <p className="text-muted-1 text-xs leading-relaxed">{cat.desc}</p>
 
                 {/* Active indicator */}
                 <div
@@ -219,17 +226,17 @@ const Skills = () => {
         {/* Sliding Window Animations */}
         <div className="flex flex-col gap-4 relative mt-10">
           {/* Gradient fades for seamless scrolling effect */}
-          <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-16 lg:w-32 bg-gradient-to-r from-[#080808] to-transparent z-10 pointer-events-none" />
-          <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-16 lg:w-32 bg-gradient-to-l from-[#080808] to-transparent z-10 pointer-events-none" />
+          <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-16 lg:w-32 bg-gradient-to-r from-[var(--bg-main)] to-transparent z-10 pointer-events-none" />
+          <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-16 lg:w-32 bg-gradient-to-l from-[var(--bg-main)] to-transparent z-10 pointer-events-none" />
 
           <SkillMarquee
-            skills={allSkills.slice(0, Math.ceil(allSkills.length / 2))}
+            skills={resolvedSkills.slice(0, Math.ceil(resolvedSkills.length / 2))}
             direction="left"
             speed={40}
             activeCat={activeCat}
           />
           <SkillMarquee
-            skills={allSkills.slice(Math.ceil(allSkills.length / 2))}
+            skills={resolvedSkills.slice(Math.ceil(resolvedSkills.length / 2))}
             direction="right"
             speed={45}
             activeCat={activeCat}

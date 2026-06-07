@@ -18,14 +18,43 @@ const socialLinks = [
 ];
 
 const terminalLines = [
-  { txt: '> name: Saurabh Jadhav', c: '#a1a1aa' },
+  { txt: '> name: Saurabh Jadhav', c: 'var(--text-muted-1)' },
   { txt: '> role: Software Dev',   c: '#3b82f6' },
   { txt: '> status: available',    c: '#22c55e' },
-  { txt: '> stack: React, Node',   c: '#a1a1aa' },
+  { txt: '> stack: React, Node',   c: 'var(--text-muted-1)' },
   { txt: '> passion: building++',  c: '#ef4444' },
 ];
 
-const HeroDesktop = () => (
+const MagneticWrapper = ({ children }) => {
+  const [position, setPosition] = React.useState({ x: 0, y: 0 });
+  const ref = React.useRef(null);
+
+  const handleMouse = (e) => {
+    const { clientX, clientY } = e;
+    const { height, width, left, top } = ref.current.getBoundingClientRect();
+    const middleX = clientX - (left + width / 2);
+    const middleY = clientY - (top + height / 2);
+    setPosition({ x: middleX * 0.2, y: middleY * 0.2 });
+  };
+
+  const reset = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouse}
+      onMouseLeave={reset}
+      animate={{ x: position.x, y: position.y }}
+      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+const HeroDesktop = ({ theme }) => (
   <section
     id="home"
     className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-20"
@@ -51,7 +80,7 @@ const HeroDesktop = () => (
             className="flex items-center gap-2 mb-8 glass-sm px-4 py-2 rounded-full"
           >
             <div className="status-dot" />
-            <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-[#a1a1aa]">
+            <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-muted-1">
               Available for Projects
             </span>
           </motion.div>
@@ -62,7 +91,7 @@ const HeroDesktop = () => (
           >
             <ParticleText
               text={"SAURABH\nJADHAV."}
-              particleColor="#FFFFFF"
+              particleColor={theme === 'dark' ? '#FFFFFF' : '#0f172a'}
               particleSize={1.8}
               particleDensity={3}
               mouseRadius={120}
@@ -84,7 +113,7 @@ const HeroDesktop = () => (
             className="flex items-center gap-3 mb-6"
           >
             <div className="section-divider" style={{ margin: 0 }} />
-            <p className="text-sm font-semibold tracking-[0.2em] uppercase text-[#71717a]">
+            <p className="text-sm font-semibold tracking-[0.2em] uppercase text-muted-1">
               Software Developer
             </p>
           </motion.div>
@@ -93,9 +122,9 @@ const HeroDesktop = () => (
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="text-base sm:text-lg text-[#555] leading-relaxed max-w-lg mb-10"
+            className="text-base sm:text-lg text-muted-1 leading-relaxed max-w-lg mb-10"
           >
-            A <span className="text-white font-medium italic">Software Developer</span> building
+            A <span className="text-primary font-medium italic">Software Developer</span> building
             scalable web apps &amp; intelligent systems with clean UI/UX.
           </motion.p>
 
@@ -105,34 +134,26 @@ const HeroDesktop = () => (
             transition={{ delay: 0.75 }}
             className="flex flex-wrap items-center gap-4 mb-12"
           >
-            <motion.a
-              href="#projects"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              className="btn-primary"
-            >
-              View Work <ArrowRight size={15} />
-            </motion.a>
-            <motion.a
-              href="#contact"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              className="btn-outline"
-            >
-              Get In Touch
-            </motion.a>
-            {/* <motion.a
-              href="https://ik.imagekit.io/vwc55jjck/CV_SaurabhJadhav.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              download="CV_SaurabhJadhav.pdf"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              className="btn-outline flex items-center gap-2"
-              aria-label="Download Resume"
-            >
-              <Download size={14} /> Resume
-            </motion.a> */}
+            <MagneticWrapper>
+              <motion.a
+                href="#projects"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="btn-primary"
+              >
+                View Work <ArrowRight size={15} />
+              </motion.a>
+            </MagneticWrapper>
+            <MagneticWrapper>
+              <motion.a
+                href="#contact"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="btn-outline"
+              >
+                Get In Touch
+              </motion.a>
+            </MagneticWrapper>
           </motion.div>
 
           <motion.div
@@ -148,16 +169,16 @@ const HeroDesktop = () => (
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.15, y: -2 }}
-                className={`text-[#444] hover:text-white transition-all duration-200 ${s.hoverColor || ''}`}
+                className={`text-muted-1 hover:text-primary transition-all duration-200 ${s.hoverColor || ''}`}
                 aria-label={s.label}
               >
                 {s.icon}
               </motion.a>
             ))}
-            <div className="ml-2 w-px h-5 bg-white/10" />
+            <div className="ml-2 w-px h-5 bg-border" />
             <a
               href="mailto:work.jadhavsaurabh@gmail.com"
-              className="text-[11px] text-[#444] hover:text-white transition-colors tracking-wider font-mono"
+              className="text-[11px] text-muted-1 hover:text-primary transition-colors tracking-wider font-mono"
             >
               work.jadhavsaurabh@gmail.com
             </a>
@@ -191,13 +212,13 @@ const HeroDesktop = () => (
             <motion.div
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 glass rounded-3xl p-6 w-64 border border-white/08 glow-white"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 glass rounded-3xl p-6 w-64 border border-border"
             >
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#ef4444]" />
                 <div className="w-2.5 h-2.5 rounded-full bg-[#f59e0b]" />
                 <div className="w-2.5 h-2.5 rounded-full bg-[#22c55e]" />
-                <span className="ml-2 text-[#333] text-[10px] font-mono">saurabh.sh</span>
+                <span className="ml-2 text-muted-1 text-[10px] font-mono">saurabh.sh</span>
               </div>
               {terminalLines.map((line, i) => (
                 <motion.div

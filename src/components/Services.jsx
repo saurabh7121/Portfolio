@@ -116,9 +116,18 @@ const getTechIconClass = (techName) => {
   return mapping[techName] || null;
 };
 
-const Services = () => {
+const Services = ({ theme }) => {
   const [activeId, setActiveId] = useState('frontend');
-  const activeTab = services.find((s) => s.id === activeId) || services[0];
+
+  // Make Next.js theme accent dynamic: white for dark mode, Slate 950 for light mode
+  const resolvedServices = services.map(s => {
+    if (s.id === 'nextjs') {
+      return { ...s, accent: theme === 'dark' ? '#ffffff' : '#0f172a' };
+    }
+    return s;
+  });
+
+  const activeTab = resolvedServices.find((s) => s.id === activeId) || resolvedServices[0];
 
   return (
     <section id="services" className="py-28 relative overflow-hidden">
@@ -138,14 +147,14 @@ const Services = () => {
             What I Offer
           </span>
           <h2
-            className="font-black text-white leading-tight mb-4"
+            className="font-black text-primary leading-tight mb-4"
             style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}
           >
             Services &{' '}
             <span className="text-gradient-blue">Expertise</span>
           </h2>
           <div className="section-divider mx-auto" />
-          <p className="text-[#555] max-w-md mt-4 text-sm leading-relaxed">
+          <p className="text-muted-1 max-w-md mt-4 text-sm leading-relaxed">
             From concept to deployment — I deliver end-to-end solutions that are fast, elegant, and scalable.
           </p>
         </motion.div>
@@ -154,7 +163,7 @@ const Services = () => {
         <div className="grid lg:grid-cols-12 gap-8 items-start mt-10">
           {/* Left Column: Tab Selectors */}
           <div className="lg:col-span-5 flex flex-col gap-3">
-            {services.map((s) => {
+            {resolvedServices.map((s) => {
               const isActive = activeId === s.id;
               return (
                 <motion.button
@@ -162,10 +171,10 @@ const Services = () => {
                   onClick={() => setActiveId(s.id)}
                   whileHover={{ x: isActive ? 0 : 6 }}
                   className={`text-left w-full flex items-center justify-between p-4.5 rounded-2xl border transition-all duration-300 group cursor-pointer ${
-                    isActive ? 'bg-[#ffffff03]' : 'bg-transparent hover:bg-[#ffffff01]'
+                    isActive ? 'bg-primary/5' : 'bg-transparent hover:bg-primary/2'
                   }`}
                   style={{
-                    borderColor: isActive ? s.accent : 'rgba(255, 255, 255, 0.04)',
+                    borderColor: isActive ? s.accent : 'var(--border-color)',
                     boxShadow: isActive ? `0 0 25px -8px ${s.accent}` : 'none',
                   }}
                 >
@@ -173,7 +182,7 @@ const Services = () => {
                     <div
                       className="w-9 h-9 rounded-xl flex items-center justify-center border transition-colors shrink-0"
                       style={{
-                        borderColor: isActive ? `${s.accent}30` : 'rgba(255, 255, 255, 0.06)',
+                        borderColor: isActive ? `${s.accent}30` : 'var(--border-color)',
                         color: s.accent,
                         background: `${s.accent}08`,
                       }}
@@ -182,7 +191,7 @@ const Services = () => {
                     </div>
                     <span
                       className={`font-bold text-sm tracking-wide transition-colors ${
-                        isActive ? 'text-white' : 'text-[#555] group-hover:text-[#a1a1aa]'
+                        isActive ? 'text-primary' : 'text-muted-1 group-hover:text-primary'
                       }`}
                     >
                       {s.title}
@@ -191,7 +200,7 @@ const Services = () => {
 
                   <span
                     className={`text-[10px] font-mono tracking-widest transition-opacity ${
-                      isActive ? 'opacity-50 text-white' : 'opacity-0 group-hover:opacity-30 text-[#888]'
+                      isActive ? 'opacity-50 text-primary' : 'opacity-0 group-hover:opacity-30 text-muted-1'
                     }`}
                   >
                     {s.tag}
@@ -214,7 +223,7 @@ const Services = () => {
                 style={{ borderColor: `${activeTab.accent}20` }}
               >
                 {/* Large decorative watermark tag */}
-                <div className="absolute right-6 top-6 text-8xl font-black text-white/[0.015] select-none pointer-events-none font-mono">
+                <div className="absolute right-6 top-6 text-8xl font-black text-primary/[0.015] select-none pointer-events-none font-mono">
                   {activeTab.tag}
                 </div>
 
@@ -233,19 +242,19 @@ const Services = () => {
                       Service Detail
                     </span>
                   </div>
-                  <h3 className="text-white text-2xl sm:text-3xl font-black mb-4 tracking-tight">
+                  <h3 className="text-primary text-2xl sm:text-3xl font-black mb-4 tracking-tight">
                     {activeTab.title}
                   </h3>
-                  <p className="text-[#a1a1aa] text-sm leading-relaxed mb-8 max-w-xl">{activeTab.desc}</p>
+                  <p className="text-muted-1 text-sm leading-relaxed mb-8 max-w-xl">{activeTab.desc}</p>
 
                   {/* Focus list */}
                   <div className="mb-8">
-                    <h4 className="text-xs uppercase tracking-widest text-[#555] font-bold mb-4">
+                    <h4 className="text-xs uppercase tracking-widest text-muted-1 font-bold mb-4">
                       Core Focus & Deliverables
                     </h4>
                     <ul className="grid sm:grid-cols-2 gap-3.5">
                       {activeTab.deliverables.map((item, index) => (
-                        <li key={index} className="flex items-start gap-2.5 text-xs text-[#71717a] leading-relaxed">
+                        <li key={index} className="flex items-start gap-2.5 text-xs text-muted-1 leading-relaxed">
                           <span
                             className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0"
                             style={{ backgroundColor: activeTab.accent }}
@@ -258,8 +267,8 @@ const Services = () => {
                 </div>
 
                 {/* Tech stack */}
-                <div className="pt-6 border-t border-white/05 flex flex-wrap gap-2 items-center">
-                  <span className="text-[10px] uppercase tracking-widest text-[#444] font-bold mr-2">
+                <div className="pt-6 border-t border-border flex flex-wrap gap-2 items-center">
+                  <span className="text-[10px] uppercase tracking-widest text-muted-1 font-bold mr-2">
                     Key Stack:
                   </span>
                   {activeTab.tech.map((t) => {
@@ -267,12 +276,12 @@ const Services = () => {
                     return (
                       <span
                         key={t}
-                        className="text-[10px] font-mono px-3 py-1.5 rounded-md bg-white/02 border border-white/05 text-[#888] flex items-center gap-2 hover:bg-white/05 transition-colors"
+                        className="text-[10px] font-mono px-3 py-1.5 rounded-md bg-primary/2 border border-border text-muted-1 flex items-center gap-2 hover:bg-primary/5 transition-colors"
                       >
                         {iconClass ? (
                           <i className={`${iconClass} text-xs`} />
                         ) : (
-                          <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary/20" />
                         )}
                         {t}
                       </span>

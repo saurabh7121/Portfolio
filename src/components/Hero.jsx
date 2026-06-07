@@ -39,10 +39,10 @@ const Counter = ({ target, suffix = '', label }) => {
 
   return (
     <div ref={ref} className="text-center">
-      <div className="text-3xl md:text-4xl font-black text-white">
+      <div className="text-3xl md:text-4xl font-black text-primary">
         {count}{suffix}
       </div>
-      <div className="text-xs text-[#555] uppercase tracking-widest mt-1">{label}</div>
+      <div className="text-xs text-muted-1 uppercase tracking-widest mt-1">{label}</div>
     </div>
   );
 };
@@ -59,10 +59,10 @@ const socialLinks = [
 ];
 
 const terminalLines = [
-  { txt: '> name: Saurabh Jadhav', c: '#a1a1aa' },
+  { txt: '> name: Saurabh Jadhav', c: 'var(--text-muted-1)' },
   { txt: '> role: Software Dev',   c: '#3b82f6' },
   { txt: '> status: available',    c: '#22c55e' },
-  { txt: '> stack: React, Node',   c: '#a1a1aa' },
+  { txt: '> stack: React, Node',   c: 'var(--text-muted-1)' },
   { txt: '> passion: building++',  c: '#ef4444' },
 ];
 
@@ -82,18 +82,18 @@ const MobileHero = () => (
         <div className="hero-fade-in flex items-center gap-2 mt-4 mb-8 glass-sm px-4 py-2 rounded-full"
              style={{ animationDelay: '0.1s' }}>
           <div className="status-dot" />
-          <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-[#a1a1aa]">
+          <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-muted-1">
             Available for Projects
           </span>
         </div>
 
         {/* Name */}
         <h1
-          className="hero-fade-in hero-name font-black leading-[0.88] tracking-tighter text-white mb-4"
+          className="hero-fade-in hero-name font-black leading-[0.88] tracking-tighter text-primary mb-4"
           style={{ fontSize: 'clamp(3.5rem, 18vw, 7rem)', animationDelay: '0.15s' }}
         >
           SAURABH<br />
-          <span style={{ WebkitTextStroke: '1px rgba(255,255,255,0.15)', color: 'transparent' }}>
+          <span style={{ WebkitTextStroke: '1px var(--text-stroke)', color: 'transparent' }}>
             JADHAV.
           </span>
         </h1>
@@ -102,15 +102,15 @@ const MobileHero = () => (
         <div className="hero-fade-in flex items-center gap-3 mb-6"
              style={{ animationDelay: '0.25s' }}>
           <div className="section-divider" style={{ margin: 0 }} />
-          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-[#71717a]">
+          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-muted-1">
             Software Developer
           </p>
         </div>
 
         {/* Tagline */}
-        <p className="hero-fade-in text-base text-[#555] leading-relaxed max-w-lg mb-10"
+        <p className="hero-fade-in text-base text-muted-1 leading-relaxed max-w-lg mb-10"
            style={{ animationDelay: '0.3s' }}>
-          A <span className="text-white font-medium italic">Software Developer</span> building
+          A <span className="text-primary font-medium italic">Software Developer</span> building
           scalable web apps &amp; intelligent systems with clean UI/UX.
         </p>
 
@@ -140,24 +140,6 @@ const MobileHero = () => (
             >
               Get In Touch
             </a>
-            {/* <a
-              href="https://ik.imagekit.io/vwc55jjck/CV_SaurabhJadhav.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              download="CV_SaurabhJadhav.pdf"
-              className="btn-outline"
-              aria-label="Download Resume"
-              style={{
-                flex: 1,
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '6px',
-                padding: '0.75rem 1rem',
-              }}
-            >
-              <Download size={14} /> Resume
-            </a> */}
           </div>
         </div>
 
@@ -170,7 +152,7 @@ const MobileHero = () => (
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
-              className={`text-[#444] hover:text-white transition-colors duration-200 ${s.hoverColor || ''}`}
+              className={`text-muted-1 hover:text-primary transition-colors duration-200 ${s.hoverColor || ''}`}
               aria-label={s.label}
             >
               {s.icon}
@@ -180,14 +162,14 @@ const MobileHero = () => (
         <div className="hero-fade-in mb-8" style={{ animationDelay: '0.52s' }}>
           <a
             href="mailto:work.jadhavsaurabh@gmail.com"
-            className="text-[11px] text-[#444] hover:text-white transition-colors tracking-wider font-mono"
+            className="text-[11px] text-muted-1 hover:text-primary transition-colors tracking-wider font-mono"
           >
             work.jadhavsaurabh@gmail.com
           </a>
         </div>
 
         {/* Stats */}
-        <div className="hero-fade-in flex justify-center gap-10 pt-6 border-t border-white/05 w-full"
+        <div className="hero-fade-in flex justify-center gap-10 pt-6 border-t border-border w-full"
              style={{ animationDelay: '0.55s' }}>
           <Counter target={2}  suffix="+" label="Years Exp." />
           <Counter target={15} suffix="+" label="Projects" />
@@ -196,12 +178,12 @@ const MobileHero = () => (
 
         {/* Terminal card */}
         <div className="hero-fade-in mt-8 w-full" style={{ animationDelay: '0.6s' }}>
-          <div className="css-float glass rounded-2xl p-5 border border-white/08">
+          <div className="css-float glass rounded-2xl p-5 border border-border">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-2.5 h-2.5 rounded-full bg-[#ef4444]" />
               <div className="w-2.5 h-2.5 rounded-full bg-[#f59e0b]" />
               <div className="w-2.5 h-2.5 rounded-full bg-[#22c55e]" />
-              <span className="ml-2 text-[#333] text-[10px] font-mono">saurabh.sh</span>
+              <span className="ml-2 text-muted-1 text-[10px] font-mono">saurabh.sh</span>
             </div>
             {terminalLines.map((line, i) => (
               <div
@@ -229,7 +211,7 @@ const MobileHero = () => (
 );
 
 // ─── Main Hero — routes to mobile or desktop version ─────────────────────────
-const Hero = () => {
+const Hero = ({ theme }) => {
   const cursorRef = useRef(null);
 
   useEffect(() => {
@@ -252,7 +234,7 @@ const Hero = () => {
     <>
       <div ref={cursorRef} className="cursor-blob" aria-hidden="true" />
       <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
-        <DesktopHero />
+        <DesktopHero theme={theme} />
       </Suspense>
     </>
   );
