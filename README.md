@@ -46,7 +46,6 @@ The design features a highly performant **Light/Dark theme architecture**, drive
 
 ### ⚡ Performance & Architecture
 
-- **Zero 3D Overhead** — Stripped heavy Three.js dependencies in favor of pure CSS/SVG aesthetics for instantaneous load times and zero TBT.
 - **Code Splitting** — All sections and pages are lazy-loaded with `React.lazy` + `Suspense`.
 - **`content-visibility: auto`** — Off-screen sections are skipped during initial render.
 - **GPU-Composited Animations** — Hardware-accelerated `transform` and `opacity` properties.

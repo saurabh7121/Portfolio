@@ -1,10 +1,31 @@
 export const projects = [
+   {
+    title: 'CADMarket',
+    desc: 'Full-stack marketplace for buying and selling CAD designs. Features secure authentication, admin-only CAD uploads, Cloudinary image storage, shopping cart, guest checkout, Razorpay payments, and instant ZIP file downloads.',
+    tech: ['React', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Cloudinary', 'Razorpay'],
+    category: 'Web',
+    link: 'https://cadmarket.netlify.app/',
+    github: 'https://github.com/saurabh7121/CADMarket',
+    accent: '#f97316',
+    featured: true,
+    icon: '📐',
+    codeLines: [
+      { txt: 'JWT auth initialized ✓',           c: '#22c55e' },
+      { txt: 'Admin CAD upload active 📂',       c: '#f97316' },
+      { txt: 'POST /api/designs/upload',         c: 'var(--text-muted-1)' },
+      { txt: 'Cloudinary image sync ✓',          c: '#3b82f6' },
+      { txt: 'Razorpay payment verified 💳',     c: '#eab308' },
+      { txt: 'ZIP download generated 📦',        c: 'var(--text-muted-2)' },
+    ],
+    pattern:
+      'radial-gradient(ellipse at 30% 40%, rgba(249,115,22,0.12) 0%, transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(59,130,246,0.08) 0%, transparent 60%)',
+  },
   {
     title: 'LeetCode Tracker',
     desc: 'Full-stack application to track LeetCode progress, manage solved problems, monitor coding streaks, and visualize performance analytics.',
     tech: ['React', 'Node.js', 'MongoDB', 'Express'],
     category: 'Fullstack',
-    link: '#',
+    // link: '#',
     github: 'https://github.com/saurabh7121/Leetcode_Tracker',
     accent: '#f59e0b',
     featured: true,
@@ -20,26 +41,7 @@ export const projects = [
       'radial-gradient(ellipse at 20% 50%, rgba(245,158,11,0.12) 0%, transparent 60%), radial-gradient(ellipse at 80% 50%, rgba(59,130,246,0.08) 0%, transparent 60%)',
   },
 
-  {
-    title: 'Smart Campus Transport',
-    desc: 'Mobile application for real-time bus tracking, route management, transport booking, and live ETA updates for campus students.',
-    tech: ['React Native', 'Firebase', 'Google Maps API'],
-    category: 'Mobile',
-    link: '#',
-    github: 'https://github.com/saurabh7121/Smart_Campus_Transport',
-    accent: '#3b82f6',
-    featured: false,
-    icon: '🚌',
-    codeLines: [
-      { txt: 'WS  live_bus_feed connected', c: '#3b82f6' },
-      { txt: '  buses: 12 active 🟢',       c: '#22c55e' },
-      { txt: 'GET /routes/campus-north',    c: 'var(--text-muted-1)' },
-      { txt: '  eta: 4 min · seats: 8',     c: '#f59e0b' },
-      { txt: 'Firebase Realtime DB ✓',      c: 'var(--text-muted-2)' },
-    ],
-    pattern:
-      'radial-gradient(ellipse at 30% 40%, rgba(59,130,246,0.12) 0%, transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(34,197,94,0.06) 0%, transparent 60%)',
-  },
+ 
 
   {
     title: 'Medical Chatbot',

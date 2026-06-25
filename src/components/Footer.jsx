@@ -180,7 +180,7 @@ const Footer = ({ theme }) => {
           {/* <motion.a href="https://www.buymeacoffee.com/jadhavsaurabh" ... /> */}
 
           <span className="flex items-center gap-1.5">
-            Built with <Heart size={11} className="text-[#ef4444] fill-[#ef4444]" /> using React &amp; Three.js
+            Built with <Heart size={11} className="text-[#ef4444] fill-[#ef4444]" /> using React &amp; Framer Motion
           </span>
         </div>
       </div>

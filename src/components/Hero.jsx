@@ -172,7 +172,7 @@ const MobileHero = () => (
         <div className="hero-fade-in flex justify-center gap-10 pt-6 border-t border-border w-full"
              style={{ animationDelay: '0.55s' }}>
           <Counter target={2}  suffix="+" label="Years Exp." />
-          <Counter target={15} suffix="+" label="Projects" />
+          <Counter target={4} suffix="+" label="Projects" />
           <Counter target={10} suffix="+" label="Tech" />
         </div>
 

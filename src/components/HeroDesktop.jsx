@@ -199,7 +199,7 @@ const HeroDesktop = ({ theme }) => (
             className="grid grid-cols-3 gap-8 w-full"
           >
             <Counter target={2}  suffix="+" label="Years Exp." />
-            <Counter target={15} suffix="+" label="Projects" />
+            <Counter target={4} suffix="+" label="Projects" />
             <Counter target={10} suffix="+" label="Technologies" />
           </motion.div>
 

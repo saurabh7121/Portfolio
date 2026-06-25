@@ -68,67 +68,272 @@ const CodePreview = ({ project }) => (
   </div>
 );
 
-const ProjectCard = ({ project, i }) => (
-  <motion.article
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: '-80px' }}
-    transition={{ delay: i * 0.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-    className="card group relative overflow-hidden flex flex-col"
-  >
-    {/* Code preview (replaces photo) */}
-    <CodePreview project={project} />
+/* Live Website Preview component mimicking a browser mockup */
+const WebsitePreview = ({ project }) => {
+  const [isLoading, setIsLoading] = useState(true);
 
-    {/* Body */}
-    <div className="p-6 relative z-10 flex flex-col flex-1">
-      {/* {project.featured && (
-        <div
-          className="w-fit flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest mb-3"
-          style={{ background: `${project.accent}20`, color: project.accent, border: `1px solid ${project.accent}30` }}
-        >
-          ★ Featured
+  return (
+    <a
+      href={project.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="h-48 sm:h-52 relative overflow-hidden flex flex-col justify-between group/preview border-b border-border"
+      style={{ backgroundColor: 'var(--card-bg-solid)' }}
+    >
+      {/* Header bar mimicking browser window */}
+      <div className="relative z-20 flex items-center gap-2 px-4 py-2 border-b border-border bg-background/50 backdrop-blur-md">
+        <div className="flex gap-1.5 flex-shrink-0">
+          <div className="w-2 h-2 rounded-full bg-[#ef4444]" />
+          <div className="w-2 h-2 rounded-full bg-[#f59e0b]" />
+          <div className="w-2 h-2 rounded-full bg-[#22c55e]" />
         </div>
-      )} */}
-      <div className="flex items-start justify-between gap-3 mb-3">
-        <h3 className="text-primary font-bold text-lg leading-tight tracking-tight">{project.title}</h3>
-        <FolderOpen size={18} style={{ color: project.accent }} className="flex-shrink-0 mt-0.5" />
-      </div>
-      <p className="text-muted-1 text-sm leading-relaxed mb-5">{project.desc}</p>
-
-      {/* Tech stack */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        {project.tech.map((t) => (
-          <span
-            key={t}
-            className="text-[10px] font-mono px-2.5 py-1 rounded-md border border-border text-muted-1"
-            style={{ background: `${project.accent}08` }}
-          >
-            {t}
+        <div className="flex-1 text-center truncate px-2">
+          <span className="text-[9px] font-mono text-muted-1 tracking-wider bg-primary/5 px-2 py-0.5 rounded border border-border">
+            {project.link.replace(/^https?:\/\/(www\.)?/, '')}
           </span>
-        ))}
+        </div>
+        <ExternalLink size={10} className="text-muted-1 group-hover/preview:text-primary transition-colors" />
       </div>
 
-      {/* Links */}
-      <div className="flex items-center justify-between pt-4 border-t border-border mt-auto">
-        <a
-          href={project.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 text-xs text-muted-1 hover:text-primary transition-colors font-medium"
-        >
-          <FaGithub size={14} /> Source Code
-        </a>
-        <a
-          href={project.link}
-          className="flex items-center gap-1.5 text-xs font-bold transition-all hover:gap-2"
-          style={{ color: project.accent }}
-        >
-          Live Demo <ExternalLink size={12} />
-        </a>
+      {/* Website iframe loaded */}
+      <div className="relative flex-1 bg-white overflow-hidden">
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-xs z-10">
+            <Loader2 className="animate-spin text-primary" size={16} />
+          </div>
+        )}
+        <iframe
+          src={project.link}
+          title={`${project.title} Preview`}
+          className="w-[200%] h-[200%] origin-top-left border-none pointer-events-none"
+          style={{
+            transform: 'scale(0.5)',
+          }}
+          onLoad={() => setIsLoading(false)}
+        />
       </div>
-    </div>
-  </motion.article>
-);
+
+      {/* Hover overlay hint */}
+      <div className="absolute inset-0 z-10 bg-black/0 group-hover/preview:bg-black/5 transition-colors duration-300 pointer-events-none flex items-center justify-center">
+        <div className="opacity-0 group-hover/preview:opacity-100 transform translate-y-2 group-hover/preview:translate-y-0 transition-all duration-300 glass-sm px-3 py-1.5 rounded-full text-[10px] font-bold text-primary flex items-center gap-1.5 shadow-lg">
+          Visit Site <ChevronRight size={10} />
+        </div>
+      </div>
+    </a>
+  );
+};
+
+const getRepoPath = (githubUrl) => {
+  if (!githubUrl) return null;
+  const match = githubUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+  if (match) {
+    return `${match[1]}/${match[2]}`;
+  }
+  return null;
+};
+
+/* Live GitHub Repository Preview component */
+const GitHubRepoPreview = ({ project }) => {
+  const repoPath = getRepoPath(project.github);
+  const [repoData, setRepoData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!repoPath) {
+      setLoading(false);
+      return;
+    }
+
+    const cacheKey = `gh-repo-${repoPath}`;
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        // Cache for 1 hour (3600000 ms)
+        if (Date.now() - parsed.timestamp < 3600000) {
+          setRepoData(parsed.data);
+          setLoading(false);
+          return;
+        }
+      } catch (e) {
+        // ignore cache errors
+      }
+    }
+
+    fetch(`https://api.github.com/repos/${repoPath}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch');
+        return res.json();
+      })
+      .then((data) => {
+        const stored = { timestamp: Date.now(), data };
+        localStorage.setItem(cacheKey, JSON.stringify(stored));
+        setRepoData(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  }, [repoPath]);
+
+  const stars = repoData?.stargazers_count ?? 1;
+  const forks = repoData?.forks_count ?? 0;
+  const language = repoData?.language ?? project.tech[0] ?? 'JavaScript';
+  const size = repoData?.size ? `${Math.round(repoData.size / 1024)} MB` : '1.2 MB';
+
+  const getLanguageColor = (lang) => {
+    const colors = {
+      JavaScript: '#f7df1e',
+      TypeScript: '#3178c6',
+      HTML: '#e34c26',
+      CSS: '#563d7c',
+      Python: '#3572A5',
+      Go: '#00ADD8',
+      Rust: '#dea584',
+      Java: '#b07219',
+      Ruby: '#701516',
+      C: '#555555',
+      'C++': '#f34b7d',
+      Shell: '#89e051',
+    };
+    return colors[lang] || '#a1a1aa';
+  };
+
+  return (
+    <a
+      href={project.github}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="h-48 sm:h-52 relative overflow-hidden flex flex-col justify-between group/repo border-b border-border bg-[#0d1117] text-[#c9d1d9] p-5 font-sans"
+    >
+      <div className="absolute inset-0 bg-dot-pattern opacity-10" />
+
+      {/* Header */}
+      <div className="relative z-10 flex items-center justify-between pb-3 border-b border-[#21262d]">
+        <div className="flex items-center gap-2">
+          <FaGithub size={16} className="text-[#8b949e] group-hover/repo:text-[#58a6ff] transition-colors" />
+          <span className="text-[11px] font-mono text-[#8b949e] truncate max-w-[200px]">
+            {repoPath || 'saurabh7121/' + project.title.toLowerCase().replace(/ /g, '_')}
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-[#30363d] bg-[#161b22] text-[9px] font-medium font-mono text-[#8b949e]">
+          public
+        </div>
+      </div>
+
+      {/* Main content */}
+      <div className="relative z-10 flex-1 flex flex-col justify-center py-2">
+        <h4 className="text-sm font-semibold text-[#58a6ff] group-hover/repo:underline mb-1 flex items-center gap-1">
+          {repoPath ? repoPath.split('/')[1] : project.title}
+        </h4>
+        <p className="text-[11px] text-[#8b949e] line-clamp-2 leading-relaxed">
+          {repoData?.description || project.desc}
+        </p>
+      </div>
+
+      {/* Footer / Stats */}
+      <div className="relative z-10 flex items-center justify-between pt-2.5 border-t border-[#21262d] text-[10px] text-[#8b949e] font-mono">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: getLanguageColor(language) }} />
+            <span>{language}</span>
+          </div>
+
+          <div className="flex items-center gap-1 hover:text-[#58a6ff] transition-colors">
+            <Star size={12} />
+            <span>{stars}</span>
+          </div>
+
+          {forks > 0 && (
+            <div className="flex items-center gap-1 hover:text-[#58a6ff] transition-colors">
+              <GitFork size={12} />
+              <span>{forks}</span>
+            </div>
+          )}
+        </div>
+
+        <div className="text-[#8b949e]">
+          <span>{size}</span>
+        </div>
+      </div>
+
+      {/* Hover overlay */}
+      <div className="absolute inset-0 z-20 bg-black/0 group-hover/repo:bg-black/10 transition-colors duration-300 pointer-events-none flex items-center justify-center">
+        <div className="opacity-0 group-hover/repo:opacity-100 transform translate-y-2 group-hover/repo:translate-y-0 transition-all duration-300 bg-[#21262d]/95 backdrop-blur-md border border-[#30363d] px-3.5 py-2 rounded-xl text-[10px] font-bold text-[#c9d1d9] flex items-center gap-2 shadow-xl">
+          <FaGithub size={12} className="text-[#58a6ff]" /> View Repository <ChevronRight size={10} />
+        </div>
+      </div>
+    </a>
+  );
+};
+
+const ProjectCard = ({ project, i }) => {
+  const hasLiveLink = project.link && project.link !== '#';
+
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ delay: i * 0.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      className="card group relative overflow-hidden flex flex-col"
+    >
+      {/* Website Preview if link exists, otherwise GitHub repo preview if github URL exists, otherwise Code Preview */}
+      {hasLiveLink ? (
+        <WebsitePreview project={project} />
+      ) : project.github ? (
+        <GitHubRepoPreview project={project} />
+      ) : (
+        <CodePreview project={project} />
+      )}
+
+      {/* Body */}
+      <div className="p-6 relative z-10 flex flex-col flex-1">
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <h3 className="text-primary font-bold text-lg leading-tight tracking-tight">{project.title}</h3>
+          <FolderOpen size={18} style={{ color: project.accent }} className="flex-shrink-0 mt-0.5" />
+        </div>
+        <p className="text-muted-1 text-sm leading-relaxed mb-5">{project.desc}</p>
+
+        {/* Tech stack */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {project.tech.map((t) => (
+            <span
+              key={t}
+              className="text-[10px] font-mono px-2.5 py-1 rounded-md border border-border text-muted-1"
+              style={{ background: `${project.accent}08` }}
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+
+        {/* Links */}
+        <div className="flex items-center justify-between pt-4 border-t border-border mt-auto">
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-xs text-muted-1 hover:text-primary transition-colors font-medium"
+          >
+            <FaGithub size={14} /> Source Code
+          </a>
+          {hasLiveLink && (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-bold transition-all hover:gap-2"
+              style={{ color: project.accent }}
+            >
+              Live Demo <ExternalLink size={12} />
+            </a>
+          )}
+        </div>
+      </div>
+    </motion.article>
+  );
+};
 
 const Projects = () => {
   const [activeTab, setActiveTab] = useState('All');

@@ -77,6 +77,8 @@ const TerminalLines = () => {
   );
 };
 
+const IS_MOBILE = typeof window !== 'undefined' && window.innerWidth < 768;
+
 /* ─── Main 404 page ─────────────────────────────────────────────────────── */
 const NotFound = () => {
   const navigate = useNavigate();
@@ -84,6 +86,7 @@ const NotFound = () => {
 
   // Subtle cursor glow — desktop only
   useEffect(() => {
+    if (IS_MOBILE) return;
     const move = (e) => {
       if (!blobRef.current) return;
       blobRef.current.style.transform =
@@ -96,7 +99,7 @@ const NotFound = () => {
   return (
     <>
       {/* Cursor blob */}
-      <div ref={blobRef} className="cursor-blob" aria-hidden="true" />
+      {!IS_MOBILE && <div ref={blobRef} className="cursor-blob" aria-hidden="true" />}
 
       {/* Film grain */}
       <div className="noise" aria-hidden="true" />

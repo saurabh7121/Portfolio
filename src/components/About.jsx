@@ -12,7 +12,7 @@ const cardVariants = {
 
 const highlights = [
   { icon: <Rocket size={18} className="text-[#ef4444]" />, label: 'Years Experience', val: '2+' },
-  { icon: <Globe size={18} className="text-[#3b82f6]" />, label: 'Projects Done', val: '15+' },
+  { icon: <Globe size={18} className="text-[#3b82f6]" />, label: 'Projects Done', val: '4+' },
   { icon: <Cpu size={18} className="text-primary" />,        label: 'Technologies', val: '10+' },
 ];
 
