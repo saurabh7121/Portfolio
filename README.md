@@ -18,6 +18,15 @@
 
 ---
 
+## 📸 Screenshots
+
+<div align="center">
+  <img src="ProjectPhotos/site1.png" alt="Portfolio Preview - Dark Mode" width="48%" />
+  <img src="ProjectPhotos/site2.png" alt="Portfolio Preview - Projects" width="48%" />
+</div>
+
+---
+
 ## 📖 Overview
 
 This is my personal developer portfolio — designed to be fast, visually striking, and fully responsive. It showcases my skills, projects, blog posts, and experience as a Software Developer based in Maharashtra, India.
