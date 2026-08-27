@@ -145,6 +145,8 @@ npm run dev
 
 ### ⚙️ Customization & Environment Setup
 
+For a complete guide on how to customize your branding, copy, links, projects, and styling to make the portfolio your own, check out the **[info.md](./info.md)** checklist at the root of the repository.
+
 To personalize the GitHub Explorer:
 
 1. **Configure Environment Variables:**  

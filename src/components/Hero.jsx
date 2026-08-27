@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { ArrowRight, Globe, Download } from 'lucide-react';
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
-import ParticleText from './ParticleText';
+import { AnimatedShinyText } from './ui/AnimatedShinyText';
 
 // ─── Mobile detection ─────────────────────────────────────────────────────────
 // Evaluated once at module parse time — not inside React.
@@ -73,18 +73,17 @@ const MobileHero = () => (
     id="home"
     className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-32 pb-10"
   >
-    <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
-
     <div className="container mx-auto px-5 relative z-10">
       <div className="flex flex-col items-center text-center max-w-2xl mx-auto">
 
         {/* Status badge */}
-        <div className="hero-fade-in flex items-center gap-2 mt-4 mb-8 glass-sm px-4 py-2 rounded-full"
-             style={{ animationDelay: '0.1s' }}>
-          <div className="status-dot" />
-          <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-muted-1">
-            Available for Projects
-          </span>
+        <div className="hero-fade-in flex items-center mb-8 mt-4" style={{ animationDelay: '0.1s' }}>
+          <div className="px-4 py-2 rounded-none border-2 border-black bg-white flex items-center gap-2 shadow-[2px_2px_0px_#0a0a0a]">
+            <div className="w-2.5 h-2.5 rounded-none bg-[#22c55e] border border-black animate-pulse" />
+            <AnimatedShinyText className="text-[11px] font-bold tracking-[0.25em] uppercase text-black">
+              Available for Projects
+            </AnimatedShinyText>
+          </div>
         </div>
 
         {/* Name */}
@@ -93,7 +92,7 @@ const MobileHero = () => (
           style={{ fontSize: 'clamp(3.5rem, 18vw, 7rem)', animationDelay: '0.15s' }}
         >
           SAURABH<br />
-          <span style={{ WebkitTextStroke: '1px var(--text-stroke)', color: 'transparent' }}>
+          <span style={{ WebkitTextStroke: '2px var(--text-stroke)', color: 'transparent' }}>
             JADHAV.
           </span>
         </h1>
@@ -178,18 +177,20 @@ const MobileHero = () => (
 
         {/* Terminal card */}
         <div className="hero-fade-in mt-8 w-full" style={{ animationDelay: '0.6s' }}>
-          <div className="css-float glass rounded-2xl p-5 border border-border">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#ef4444]" />
-              <div className="w-2.5 h-2.5 rounded-full bg-[#f59e0b]" />
-              <div className="w-2.5 h-2.5 rounded-full bg-[#22c55e]" />
-              <span className="ml-2 text-muted-1 text-[10px] font-mono">saurabh.sh</span>
+          <div className="p-5 bg-white border-2 border-black rounded-none shadow-[4px_4px_0px_#0a0a0a] text-left">
+            <div className="flex items-center gap-2 mb-4 border-b-2 border-black pb-3">
+              <div className="flex gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-none border border-black bg-[#ff5f56]" />
+                <div className="w-2.5 h-2.5 rounded-none border border-black bg-[#ffbd2e]" />
+                <div className="w-2.5 h-2.5 rounded-none border border-black bg-[#27c93f]" />
+              </div>
+              <span className="ml-2 text-black text-[10px] font-mono font-bold uppercase">saurabh.sh</span>
             </div>
             {terminalLines.map((line, i) => (
               <div
                 key={i}
                 className="hero-fade-in text-[11px] font-mono mb-1.5"
-                style={{ color: line.c, animationDelay: `${0.7 + i * 0.1}s` }}
+                style={{ color: '#0a0a0a', animationDelay: `${0.7 + i * 0.1}s` }}
               >
                 {line.txt}
                 {i === 4 && <span className="animate-blink">_</span>}
@@ -200,13 +201,6 @@ const MobileHero = () => (
       </div>
     </div>
 
-    {/* Scroll hint */}
-    <div
-      className="hero-fade-in absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10"
-      style={{ animationDelay: '1s' }}
-    >
-      <div className="scroll-line" />
-    </div>
   </section>
 );
 

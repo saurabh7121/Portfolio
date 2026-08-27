@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Code2, Layout, Server, Terminal } from 'lucide-react';
+import { ScrollReveal, StaggerContainer, StaggerItem } from './ui/ScrollReveal';
 
 const allSkills = [
   // Frontend
@@ -35,38 +36,23 @@ const SkillMarquee = ({ skills, direction = 'left', speed = 40, activeCat }) => 
         }`}
         style={{ width: 'max-content' }}
       >
-        {/* Render the skills list twice to ensure seamless loop */}
         {[...skills, ...skills].map((skill, index) => {
           const isDimmed = activeCat !== 'All' && skill.cat !== activeCat;
           return (
             <div
               key={index}
-              className={`flex flex-col items-center justify-center gap-2 w-28 h-28 sm:w-36 sm:h-36 lg:w-44 lg:h-44 rounded-2xl lg:rounded-3xl bg-primary/2 border border-border shrink-0 transition-all duration-500 relative group/card cursor-default overflow-hidden skill-card ${
+              className={`flex flex-col items-center justify-center gap-2 w-28 h-28 sm:w-36 sm:h-36 lg:w-44 lg:h-44 border-2 border-black bg-white shrink-0 transition-all duration-150 relative group/card cursor-default overflow-hidden rounded-none skill-card ${
                 isDimmed ? 'opacity-15 blur-[1px] scale-95' : 'opacity-100 scale-100'
               }`}
-              style={{
-                '--brand-color': skill.color,
-              }}
             >
-              {/* Hover glow background */}
-              <div
-                className="absolute inset-0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none"
-                style={{ background: `radial-gradient(circle at center, ${skill.color}08 0%, transparent 70%)` }}
-              />
-
               <i className={`${skill.icon} text-3xl sm:text-4xl lg:text-5xl transition-transform duration-300 group-hover/card:scale-105`} />
-              <span className="text-muted-1 font-medium text-xs sm:text-sm lg:text-base tracking-wide transition-colors group-hover/card:text-primary mt-1">
+              <span className="text-black font-black uppercase text-xs sm:text-xs lg:text-sm tracking-wide mt-1">
                 {skill.name}
               </span>
 
               {/* Hover details pill */}
               <span
-                className="absolute bottom-2.5 sm:bottom-4 px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold tracking-wider opacity-0 group-hover/card:opacity-100 transition-all duration-300 transform translate-y-1 group-hover/card:translate-y-0"
-                style={{
-                  background: `${skill.color}20`,
-                  border: `1px solid ${skill.color}35`,
-                  color: skill.color === '#ffffff' || skill.color === '#0f172a' ? 'var(--text-muted-1)' : skill.color,
-                }}
+                className="absolute bottom-2.5 sm:bottom-4 px-2 py-0.5 rounded-none border border-black text-[9px] font-mono font-bold tracking-wider opacity-0 group-hover/card:opacity-100 transition-all duration-300 transform translate-y-1 group-hover/card:translate-y-0 bg-white text-black"
               >
                 {skill.level}
               </span>
@@ -117,7 +103,7 @@ const Skills = ({ theme }) => {
 
   return (
     <section id="skills" className="py-28 relative overflow-hidden">
-      <div className="absolute right-0 bottom-0 w-80 h-80 bg-[#3b82f6] opacity-[0.03] blur-[120px] rounded-full pointer-events-none" />
+      {/* No ambient glows */}
 
       <div className="container mx-auto px-5 sm:px-8">
         {/* Local Styles for Marquee Animations */}
@@ -139,19 +125,23 @@ const Skills = ({ theme }) => {
           .pause-on-hover:hover {
             animation-play-state: paused;
           }
+          .skill-card {
+            border-radius: 0 !important;
+            border-width: 2px !important;
+            border-color: var(--border-color) !important;
+            background-color: var(--bg-surface) !important;
+            color: var(--text-main) !important;
+          }
           .skill-card:hover {
-            border-color: var(--brand-color) !important;
-            box-shadow: 0 0 20px -5px var(--brand-color) !important;
+            box-shadow: 4px 4px 0px var(--border-color) !important;
+            transform: translate(-2px, -2px);
+            background-color: #FFD600 !important;
+            color: #000000 !important;
           }
         `}</style>
 
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-16 flex flex-col items-center text-center"
-        >
+        <ScrollReveal variant="blur-in" className="mb-16 flex flex-col items-center text-center">
           <span className="section-label">
             <Code2 size={12} />
             My Stack
@@ -167,68 +157,63 @@ const Skills = ({ theme }) => {
           <p className="text-muted-1 mt-6 max-w-lg text-sm leading-relaxed">
             A comprehensive list of languages, frameworks, and tools I specialize in. Click a domain to focus related tech.
           </p>
-        </motion.div>
+        </ScrollReveal>
 
         {/* Domain Cards Filters */}
-        <div className="grid md:grid-cols-3 gap-6 mb-14">
+        <StaggerContainer staggerDelay={0.1} className="grid md:grid-cols-3 gap-6 mb-14">
           {categories.map((cat) => {
             const isActive = activeCat === cat.id;
             return (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCat(isActive ? 'All' : cat.id)}
-                className={`text-left p-6 rounded-2xl border transition-all duration-300 relative overflow-hidden group cursor-pointer ${
-                  isActive ? 'bg-primary/5' : 'bg-primary/2 hover:bg-primary/5'
-                }`}
-                style={{
-                  borderColor: isActive ? cat.color : 'var(--border-color)',
-                  boxShadow: isActive ? `0 0 25px -8px ${cat.color}` : 'none',
-                }}
-              >
-                {/* Brand glow corner */}
-                <div
-                  className="absolute -top-12 -right-12 w-24 h-24 rounded-full opacity-10 blur-xl pointer-events-none transition-all group-hover:scale-125"
-                  style={{ backgroundColor: cat.color }}
-                />
-
-                <div className="flex items-center gap-3 mb-4">
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center border transition-colors"
-                    style={{
-                      borderColor: isActive ? `${cat.color}40` : 'var(--border-color)',
-                      color: cat.color,
-                      background: `${cat.color}08`,
-                    }}
-                  >
-                    {cat.icon}
-                  </div>
-                  <div>
-                    <h3 className="text-primary font-bold text-sm tracking-wide">{cat.title}</h3>
-                    <span className="text-[10px] text-muted-2 font-mono">{cat.skillsCount} Technologies</span>
-                  </div>
-                </div>
-                <p className="text-muted-1 text-xs leading-relaxed">{cat.desc}</p>
-
-                {/* Active indicator */}
-                <div
-                  className={`absolute bottom-3 right-4 text-[9px] font-mono tracking-widest uppercase transition-opacity ${
-                    isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'
+              <StaggerItem key={cat.id} variant="zoom-in">
+                <button
+                  onClick={() => setActiveCat(isActive ? 'All' : cat.id)}
+                  className={`text-left w-full h-full p-6 rounded-none border-2 border-[var(--border-color)] transition-all duration-150 relative overflow-hidden group cursor-pointer ${
+                    isActive
+                      ? 'bg-[#FFD600] text-black shadow-[6px_6px_0px_var(--border-color)] translate-x-[-3px] translate-y-[-3px]'
+                      : 'bg-[var(--bg-surface)] text-[var(--text-main)] hover:shadow-[6px_6px_0px_var(--border-color)] hover:translate-x-[-3px] hover:translate-y-[-3px]'
                   }`}
-                  style={{ color: cat.color }}
                 >
-                  {isActive ? '● Active' : 'Click to Focus'}
-                </div>
-              </button>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div
+                      className={`w-10 h-10 rounded-none flex items-center justify-center border-2 border-[var(--border-color)] transition-colors ${
+                        isActive ? 'bg-[var(--border-color)] text-[var(--bg-main)]' : 'bg-[var(--bg-main)] text-[var(--text-main)]'
+                      }`}
+                    >
+                      {cat.icon}
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-sm tracking-wide uppercase">{cat.title}</h3>
+                      <span className="text-[9px] text-[var(--text-muted-1)] font-mono font-bold uppercase tracking-wider">{cat.skillsCount} Technologies</span>
+                    </div>
+                  </div>
+                  <p className={`text-xs leading-relaxed mb-6 ${isActive ? 'text-black' : 'text-[var(--text-muted-1)]'}`}>
+                    {cat.desc}
+                  </p>
+
+                  {/* Active indicator */}
+                  <div
+                    className={`absolute bottom-3 right-4 text-[9px] font-mono font-bold tracking-widest uppercase transition-opacity ${
+                      isActive ? 'opacity-100 text-black' : 'opacity-0 group-hover:opacity-100 text-[var(--text-muted-1)]'
+                    }`}
+                  >
+                    {isActive ? '● Active' : 'Click to Focus'}
+                  </div>
+                </button>
+              </StaggerItem>
             );
           })}
-        </div>
+        </StaggerContainer>
 
         {/* Sliding Window Animations */}
-        <div className="flex flex-col gap-4 relative mt-10">
-          {/* Gradient fades for seamless scrolling effect */}
-          <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-16 lg:w-32 bg-gradient-to-r from-[var(--bg-main)] to-transparent z-10 pointer-events-none" />
-          <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-16 lg:w-32 bg-gradient-to-l from-[var(--bg-main)] to-transparent z-10 pointer-events-none" />
-
+        <ScrollReveal
+          variant="fade-up"
+          delay={0.2}
+          className="flex flex-col gap-4 relative mt-10"
+          style={{
+            maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
+            WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)'
+          }}
+        >
           <SkillMarquee
             skills={resolvedSkills.slice(0, Math.ceil(resolvedSkills.length / 2))}
             direction="left"
@@ -241,7 +226,7 @@ const Skills = ({ theme }) => {
             speed={45}
             activeCat={activeCat}
           />
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

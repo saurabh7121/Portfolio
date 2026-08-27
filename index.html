@@ -8,7 +8,7 @@
     <meta name="description" content="Saurabh Jadhav — Software Developer based in Maharashtra, India. Building scalable web apps and intelligent systems." />
     <meta name="keywords" content="Saurabh Jadhav, Software Developer, React, Node.js, Portfolio, Web Developer India" />
     <meta name="author" content="Saurabh Jadhav" />
-    <meta name="theme-color" content="#080808" />
+    <meta name="theme-color" content="#ffffff" />
     <meta property="og:title" content="Saurabh Jadhav | Software Developer" />
     <meta property="og:description" content="Building scalable web apps &amp; intelligent systems with clean UI/UX." />
     <meta property="og:type" content="website" />
@@ -32,23 +32,20 @@
       This prevents fonts from blocking FCP.
     -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap"
       rel="stylesheet"
       media="print"
       onload="this.media='all'"
     />
     <!-- Fallback for no-JS: browser still loads fonts -->
     <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
     </noscript>
     <script>
       (function() {
-        const theme = localStorage.getItem('theme') || 'light';
-        if (theme === 'dark') {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
+        // Editorial theme is light-only by default
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
       })();
     </script>
   </head>

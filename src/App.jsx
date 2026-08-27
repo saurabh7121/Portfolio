@@ -1,10 +1,14 @@
 import { lazy, Suspense, useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import Lenis from 'lenis';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import CustomCursor from './components/CustomCursor';
-import GridPattern from './components/GridPattern';
+import { DotPattern } from './components/ui/DotPattern';
+import { ScrollProgressBar } from './components/ui/ScrollReveal';
+import { GeometricMeshBackground } from './components/ui/GeometricMeshBackground';
+
 // Lazy-load 404 page — never part of the initial bundle
 const NotFound = lazy(() => import('./components/NotFound'));
 
@@ -43,37 +47,32 @@ const PremiumLoader = ({ fadeOut }) => (
       justifyContent: 'center',
       opacity: fadeOut ? 0 : 1,
       pointerEvents: fadeOut ? 'none' : 'auto',
-      transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+      transition: 'opacity 0.5s ease',
     }}
   >
     <div className="loader-ring" />
-    <span className="loader-text">INITIALIZING ENGINE...</span>
+    <span className="loader-text">LOADING...</span>
 
     <style>{`
       .loader-ring {
-        width: 44px;
-        height: 44px;
-        border: 2px solid var(--border-color);
-        border-top-color: #ef4444;
-        border-bottom-color: #3b82f6;
-        border-radius: 50%;
-        animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        width: 40px;
+        height: 40px;
+        border: 3px solid var(--border-color);
+        border-top-color: #FFD600;
+        border-radius: 0;
+        animation: spin 0.8s linear infinite;
         margin-bottom: 24px;
       }
       .loader-text {
-        font-family: monospace;
-        font-size: 10px;
-        color: var(--text-muted-1);
+        font-family: 'Space Grotesk', monospace;
+        font-size: 11px;
+        font-weight: 800;
+        color: var(--text-main);
         letter-spacing: 0.3em;
-        animation: pulse 1.8s ease-in-out infinite;
       }
       @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
-      }
-      @keyframes pulse {
-        0%, 100% { opacity: 0.4; }
-        50% { opacity: 1; }
       }
     `}</style>
   </div>
@@ -100,6 +99,25 @@ function App() {
   });
 
   useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem('theme', theme);
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
@@ -119,6 +137,7 @@ function App() {
 
   return (
     <>
+      <ScrollProgressBar />
       <CustomCursor />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
@@ -133,17 +152,8 @@ function App() {
             {/* Premium Fullscreen Loader */}
             <PremiumLoader fadeOut={isLoaded} />
 
-            {/* Dynamic Grid Pattern Background */}
-            <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-              <GridPattern
-                squares={[
-                  [2, 4], [4, 4], [5, 1], [8, 2], [5, 3], [5, 5], [10, 10], [12, 15], [15, 10], [10, 15], [15, 10], [10, 15], [15, 10],
-                  [2, 7], [3, 12], [6, 8], [7, 14], [9, 5], [11, 3], [14, 6], [16, 12], [18, 4], [20, 15], [22, 8], [24, 2],
-                  [1, 1], [3, 3], [7, 7], [13, 13], [18, 18], [20, 5], [25, 10], [28, 6], [30, 14], [32, 4], [35, 12]
-                ]}
-                className="inset-x-0 inset-y-[-30%] h-[200%] skew-y-12 [mask-image:radial-gradient(900px_circle_at_center,white,transparent)]"
-              />
-            </div>
+            {/* Geometric Low-Poly Mesh Background matching reference image */}
+            <GeometricMeshBackground theme={theme} />
 
             {/* UI layer */}
             <div

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, ArrowUp, Globe, Copy, Check } from 'lucide-react';
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { ScrollReveal } from './ui/ScrollReveal';
 
 const ETH_ADDRESS = '0x81629432ECCFb8C6EcAe87e849Afe9c3244bE1FD';
 const ETH_SHORT   = '0x8162…bE1FD';
@@ -29,33 +30,17 @@ const EthTipButton = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+    <div className="flex flex-col items-center gap-1">
       <motion.button
         onClick={handleCopy}
-        whileHover={{ scale: 1.05, y: -1 }}
+        whileHover={{ scale: 1.04 }}
         whileTap={{ scale: 0.96 }}
         aria-label="Copy Ethereum address to send a tip"
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '7px',
-          padding: '6px 14px',
-          borderRadius: '999px',
-          background: copied ? 'rgba(34,197,94,0.08)' : 'rgba(99,102,241,0.08)',
-          border: copied
-            ? '1px solid rgba(34,197,94,0.3)'
-            : '1px solid rgba(99,102,241,0.28)',
-          color: copied ? '#4ade80' : '#818cf8',
-          fontSize: '11px',
-          fontWeight: 600,
-          letterSpacing: '0.04em',
-          cursor: 'pointer',
-          transition: 'background 0.25s, border-color 0.25s, color 0.25s',
-          whiteSpace: 'nowrap',
-        }}
+        className={`inline-flex items-center gap-1.5 px-3 py-1 border-2 border-black font-mono text-[9px] font-bold uppercase tracking-wider text-black transition-all cursor-pointer shadow-[2px_2px_0px_#0a0a0a] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_#0a0a0a] ${
+          copied ? 'bg-[#22c55e]' : 'bg-[#FFD600] hover:bg-[#ffe240]'
+        }`}
       >
-        {/* Ethereum diamond glyph */}
-        <span style={{ fontSize: '13px', lineHeight: 1 }}>⟠</span>
+        <span className="text-xs leading-none">⟠</span>
 
         <AnimatePresence mode="wait" initial={false}>
           {copied ? (
@@ -65,7 +50,7 @@ const EthTipButton = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.18 }}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+              className="inline-flex items-center gap-1"
             >
               <Check size={11} /> Copied!
             </motion.span>
@@ -76,7 +61,7 @@ const EthTipButton = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.18 }}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+              className="inline-flex items-center gap-1"
             >
               {ETH_SHORT} <Copy size={10} />
             </motion.span>
@@ -84,8 +69,7 @@ const EthTipButton = () => {
         </AnimatePresence>
       </motion.button>
 
-      {/* Hint label */}
-      <span style={{ fontSize: '9px', color: 'var(--text-muted-2)', letterSpacing: '0.08em' }}>
+      <span className="text-[8px] text-[#666666] font-mono font-bold uppercase tracking-wider">
         tap to copy · send ETH
       </span>
     </div>
@@ -98,33 +82,27 @@ const Footer = ({ theme }) => {
 
   return (
     <footer className="relative border-t border-border overflow-hidden">
-      {/* Top gradient border */}
-      <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#ef4444]/40 to-transparent" />
+      {/* Top heavy border */}
+      <div className="absolute top-0 left-0 right-0 h-[3px] bg-[var(--border-color)]" />
 
-      {/* Ambient glows */}
-      <div className="absolute bottom-0 left-0 w-64 h-32 bg-[#ef4444] opacity-[0.03] blur-[80px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-64 h-32 bg-[#3b82f6] opacity-[0.03] blur-[80px] rounded-full pointer-events-none" />
-
-      <div className="container mx-auto px-5 sm:px-8 py-12">
+      <ScrollReveal variant="fade-up" className="container mx-auto px-5 sm:px-8 py-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Brand */}
           <div className="flex flex-col items-center md:items-start gap-3">
             <div className="flex items-center gap-3">
               <img
-                src={theme === 'dark' ? '/dark.png' : '/light.png'}
+                src="/light.png"
                 alt="Saurabh Jadhav"
                 className="h-7 w-auto object-contain"
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
-              <span className="font-black text-primary text-sm tracking-widest">SAURABH JADHAV</span>
             </div>
             <p className="text-muted-1 text-xs max-w-xs text-center md:text-left leading-relaxed">
               Software Developer — Building scalable apps &amp; intelligent systems.
             </p>
-            {/* Red-Blue divider */}
             <div className="flex gap-1">
-              <div className="w-6 h-[2px] rounded-full bg-[#ef4444]" />
-              <div className="w-6 h-[2px] rounded-full bg-[#3b82f6]" />
+              <div className="w-8 h-[3px] bg-[var(--border-color)]" />
+              <div className="w-8 h-[3px] bg-[#FFD600]" />
             </div>
           </div>
 
@@ -142,24 +120,25 @@ const Footer = ({ theme }) => {
           </nav>
 
           {/* Socials + scroll-to-top */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {socials.map((s, i) => (
-              <a
+              <motion.a
                 key={i}
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-1 hover:text-primary transition-colors"
+                whileHover={{ scale: 1.05 }}
+                className="w-9 h-9 rounded-none border-2 border-black flex items-center justify-center text-black bg-white hover:bg-[#FFD600] transition-all duration-150 block shadow-[2px_2px_0px_#0a0a0a] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_#0a0a0a]"
               >
                 {s.icon}
-              </a>
+              </motion.a>
             ))}
-            <div className="w-px h-4 bg-border" />
+            <div className="w-px h-5 bg-black mx-1" />
             <motion.button
               onClick={scrollTop}
-              whileHover={{ scale: 1.1, y: -2 }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="w-9 h-9 rounded-xl glass-sm border border-border flex items-center justify-center text-muted-1 hover:text-primary transition-all"
+              className="w-9 h-9 rounded-none border-2 border-black flex items-center justify-center text-black bg-white hover:bg-[#FFD600] transition-all shadow-[2px_2px_0px_#0a0a0a] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_#0a0a0a]"
               aria-label="Scroll to top"
             >
               <ArrowUp size={14} />
@@ -168,22 +147,16 @@ const Footer = ({ theme }) => {
         </div>
 
         {/* Bottom row */}
-        <div className="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-muted-1">
-          <span>
+        <div className="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-muted-1 text-center sm:text-left">
+          <span className="text-center sm:text-left">
             © {new Date().getFullYear()} Saurabh Jadhav. All rights reserved.
           </span>
 
-          {/* ETH Wallet Tip Button */}
-          <EthTipButton />
-
-          {/* Buy Me a Coffee — commented out, replaced by ETH wallet above */}
-          {/* <motion.a href="https://www.buymeacoffee.com/jadhavsaurabh" ... /> */}
-
-          <span className="flex items-center gap-1.5">
-            Built with <Heart size={11} className="text-[#ef4444] fill-[#ef4444]" /> using React &amp; Framer Motion
+          <span className="flex items-center justify-center sm:justify-start gap-1.5">
+            <EthTipButton />
           </span>
         </div>
-      </div>
+      </ScrollReveal>
     </footer>
   );
 };

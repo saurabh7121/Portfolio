@@ -58,32 +58,18 @@ const CustomCursor = () => {
   return (
     <>
       <motion.div
-        className="fixed top-0 left-0 w-4 h-4 bg-[#ef4444] rounded-full pointer-events-none mix-blend-difference z-[9999]"
+        className="fixed top-0 left-0 w-5 h-5 bg-[#FFD600] border-2 border-black rounded-none pointer-events-none z-[9999] shadow-[2px_2px_0px_#0a0a0a]"
         animate={{
-          x: mousePosition.x - 8,
-          y: mousePosition.y - 8,
-          scale: isHovering ? 2 : 1,
+          x: mousePosition.x - 10,
+          y: mousePosition.y - 10,
+          scale: isHovering ? 1.3 : 1,
+          rotate: isHovering ? 45 : 0
         }}
         transition={{
           type: 'spring',
-          stiffness: 150,
-          damping: 15,
+          stiffness: 450,
+          damping: 24,
           mass: 0.1,
-        }}
-      />
-      <motion.div
-        className="fixed top-0 left-0 w-8 h-8 border border-[#ef4444] rounded-full pointer-events-none z-[9998]"
-        animate={{
-          x: mousePosition.x - 16,
-          y: mousePosition.y - 16,
-          scale: isHovering ? 1.5 : 1,
-          opacity: isHovering ? 0 : 1,
-        }}
-        transition={{
-          type: 'spring',
-          stiffness: 100,
-          damping: 25,
-          mass: 0.5,
         }}
       />
     </>

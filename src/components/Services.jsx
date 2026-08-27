@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Globe, Layout, Server, Code, Zap, Layers, Smartphone } from 'lucide-react';
+import { MagicCard } from './ui/MagicCard';
+import { ScrollReveal, StaggerContainer, StaggerItem } from './ui/ScrollReveal';
 
 const services = [
   {
@@ -119,7 +121,6 @@ const getTechIconClass = (techName) => {
 const Services = ({ theme }) => {
   const [activeId, setActiveId] = useState('frontend');
 
-  // Make Next.js theme accent dynamic: white for dark mode, Slate 950 for light mode
   const resolvedServices = services.map(s => {
     if (s.id === 'nextjs') {
       return { ...s, accent: theme === 'dark' ? '#ffffff' : '#0f172a' };
@@ -132,16 +133,11 @@ const Services = ({ theme }) => {
   return (
     <section id="services" className="py-28 relative overflow-hidden">
       {/* Ambient glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-64 bg-[#ef4444] opacity-[0.025] blur-[120px] rounded-full pointer-events-none" />
+      {/* No ambient glows in editorial theme */}
 
       <div className="container mx-auto px-5 sm:px-8">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-16 flex flex-col items-center text-center"
-        >
+        <ScrollReveal variant="blur-in" className="mb-16 flex flex-col items-center text-center">
           <span className="section-label">
             <Code size={12} />
             What I Offer
@@ -157,61 +153,49 @@ const Services = ({ theme }) => {
           <p className="text-muted-1 max-w-md mt-4 text-sm leading-relaxed">
             From concept to deployment — I deliver end-to-end solutions that are fast, elegant, and scalable.
           </p>
-        </motion.div>
+        </ScrollReveal>
 
         {/* Tab Layout Grid */}
         <div className="grid lg:grid-cols-12 gap-8 items-start mt-10">
           {/* Left Column: Tab Selectors */}
-          <div className="lg:col-span-5 flex flex-col gap-3">
+          <StaggerContainer staggerDelay={0.08} className="lg:col-span-5 flex flex-col gap-3">
             {resolvedServices.map((s) => {
               const isActive = activeId === s.id;
               return (
-                <motion.button
-                  key={s.id}
-                  onClick={() => setActiveId(s.id)}
-                  whileHover={{ x: isActive ? 0 : 6 }}
-                  className={`text-left w-full flex items-center justify-between p-4.5 rounded-2xl border transition-all duration-300 group cursor-pointer ${
-                    isActive ? 'bg-primary/5' : 'bg-transparent hover:bg-primary/2'
-                  }`}
-                  style={{
-                    borderColor: isActive ? s.accent : 'var(--border-color)',
-                    boxShadow: isActive ? `0 0 25px -8px ${s.accent}` : 'none',
-                  }}
-                >
-                  <div className="flex items-center gap-4">
-                    <div
-                      className="w-9 h-9 rounded-xl flex items-center justify-center border transition-colors shrink-0"
-                      style={{
-                        borderColor: isActive ? `${s.accent}30` : 'var(--border-color)',
-                        color: s.accent,
-                        background: `${s.accent}08`,
-                      }}
-                    >
-                      {s.icon}
-                    </div>
-                    <span
-                      className={`font-bold text-sm tracking-wide transition-colors ${
-                        isActive ? 'text-primary' : 'text-muted-1 group-hover:text-primary'
-                      }`}
-                    >
-                      {s.title}
-                    </span>
-                  </div>
-
-                  <span
-                    className={`text-[10px] font-mono tracking-widest transition-opacity ${
-                      isActive ? 'opacity-50 text-primary' : 'opacity-0 group-hover:opacity-30 text-muted-1'
+                <StaggerItem key={s.id} variant="slide-right">
+                  <motion.button
+                    onClick={() => setActiveId(s.id)}
+                    whileHover={{ x: isActive ? 0 : 4 }}
+                    className={`text-left w-full flex items-center justify-between p-4.5 rounded-none border-2 border-black transition-all duration-150 group cursor-pointer ${
+                      isActive
+                        ? 'bg-[#FFD600] text-black shadow-[4px_4px_0px_#0a0a0a] translate-x-[-2px] translate-y-[-2px]'
+                        : 'bg-white text-[#0a0a0a] hover:bg-neutral-50'
                     }`}
                   >
-                    {s.tag}
-                  </span>
-                </motion.button>
+                    <div className="flex items-center gap-4">
+                      <div
+                        className={`w-9 h-9 rounded-none flex items-center justify-center border-2 border-black transition-colors shrink-0 ${
+                          isActive ? 'bg-black text-white' : 'bg-[#f5f5f0] text-black'
+                        }`}
+                      >
+                        {s.icon}
+                      </div>
+                      <span className="font-bold text-sm tracking-wide uppercase">
+                        {s.title}
+                      </span>
+                    </div>
+
+                    <span className="text-[10px] font-mono font-bold tracking-widest uppercase">
+                      {s.tag}
+                    </span>
+                  </motion.button>
+                </StaggerItem>
               );
             })}
-          </div>
+          </StaggerContainer>
 
           {/* Right Column: Sliding Detail Panel */}
-          <div className="lg:col-span-7 min-h-[380px]">
+          <ScrollReveal variant="slide-left" className="lg:col-span-7 min-h-[380px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab.id}
@@ -219,78 +203,67 @@ const Services = ({ theme }) => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                className="card p-8 sm:p-10 relative overflow-hidden flex flex-col justify-between"
-                style={{ borderColor: `${activeTab.accent}20` }}
+                className="h-full"
               >
-                {/* Large decorative watermark tag */}
-                <div className="absolute right-6 top-6 text-8xl font-black text-primary/[0.015] select-none pointer-events-none font-mono">
-                  {activeTab.tag}
-                </div>
-
-                {/* Glow back */}
-                <div
-                  className="absolute -top-24 -left-24 w-48 h-48 rounded-full opacity-[0.08] blur-3xl pointer-events-none"
-                  style={{ backgroundColor: activeTab.accent }}
-                />
-
-                <div>
-                  <div className="flex items-center gap-3 mb-6">
-                    <span
-                      className="text-xs font-mono uppercase tracking-widest font-bold"
-                      style={{ color: activeTab.accent }}
-                    >
-                      Service Detail
-                    </span>
+                <div className="p-8 sm:p-10 relative overflow-hidden flex flex-col justify-between h-full bg-white border-2 border-black shadow-[6px_6px_0px_#0a0a0a]">
+                  {/* Large decorative watermark tag */}
+                  <div className="absolute right-6 top-6 text-8xl font-black text-black/[0.03] select-none pointer-events-none font-mono">
+                    {activeTab.tag}
                   </div>
-                  <h3 className="text-primary text-2xl sm:text-3xl font-black mb-4 tracking-tight">
-                    {activeTab.title}
-                  </h3>
-                  <p className="text-muted-1 text-sm leading-relaxed mb-8 max-w-xl">{activeTab.desc}</p>
 
-                  {/* Focus list */}
-                  <div className="mb-8">
-                    <h4 className="text-xs uppercase tracking-widest text-muted-1 font-bold mb-4">
-                      Core Focus & Deliverables
-                    </h4>
-                    <ul className="grid sm:grid-cols-2 gap-3.5">
-                      {activeTab.deliverables.map((item, index) => (
-                        <li key={index} className="flex items-start gap-2.5 text-xs text-muted-1 leading-relaxed">
-                          <span
-                            className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0"
-                            style={{ backgroundColor: activeTab.accent }}
-                          />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Tech stack */}
-                <div className="pt-6 border-t border-border flex flex-wrap gap-2 items-center">
-                  <span className="text-[10px] uppercase tracking-widest text-muted-1 font-bold mr-2">
-                    Key Stack:
-                  </span>
-                  {activeTab.tech.map((t) => {
-                    const iconClass = getTechIconClass(t);
-                    return (
-                      <span
-                        key={t}
-                        className="text-[10px] font-mono px-3 py-1.5 rounded-md bg-primary/2 border border-border text-muted-1 flex items-center gap-2 hover:bg-primary/5 transition-colors"
-                      >
-                        {iconClass ? (
-                          <i className={`${iconClass} text-xs`} />
-                        ) : (
-                          <span className="w-1.5 h-1.5 rounded-full bg-primary/20" />
-                        )}
-                        {t}
+                  <div>
+                    <div className="flex items-center gap-3 mb-6">
+                      <span className="text-xs font-mono uppercase tracking-widest font-bold text-[#E53935]">
+                        Service Detail
                       </span>
-                    );
-                  })}
+                    </div>
+                    <h3 className="text-[#0a0a0a] text-2xl sm:text-3xl font-black mb-4 tracking-tight uppercase">
+                      {activeTab.title}
+                    </h3>
+                    <p className="text-[#666666] text-sm leading-relaxed mb-8 max-w-xl">{activeTab.desc}</p>
+
+                    {/* Focus list */}
+                    <div className="mb-8">
+                      <h4 className="text-xs uppercase tracking-widest text-[#0a0a0a] font-black mb-4">
+                        Core Focus & Deliverables
+                      </h4>
+                      <ul className="grid sm:grid-cols-2 gap-3.5">
+                        {activeTab.deliverables.map((item, index) => (
+                          <li key={index} className="flex items-start gap-2.5 text-xs text-[#666666] leading-relaxed font-semibold uppercase tracking-wide">
+                            <span className="w-2.5 h-2.5 rounded-none border border-black bg-[#E53935] mt-1 shrink-0" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Tech stack */}
+                  <div className="pt-6 border-t border-black flex flex-wrap gap-2 items-center">
+                    <span className="text-[10px] uppercase tracking-widest text-[#0a0a0a] font-black mr-2">
+                      Key Stack:
+                    </span>
+                    {activeTab.tech.map((t) => {
+                      const iconClass = getTechIconClass(t);
+                      return (
+                        <span
+                          key={t}
+                          className="text-[10px] font-mono font-bold uppercase tracking-wider px-3 py-1.5 bg-white border-2 border-black text-[#0a0a0a] flex items-center gap-2 hover:bg-[#FFD600] transition-colors"
+                        >
+                          {iconClass ? (
+                            <i className={`${iconClass} text-xs`} />
+                          ) : (
+                            <span className="w-1.5 h-1.5 rounded-none bg-black" />
+                          )}
+                          {t}
+                        </span>
+                      );
+                    })}
+                  </div>
                 </div>
               </motion.div>
             </AnimatePresence>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>
