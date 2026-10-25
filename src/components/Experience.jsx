@@ -1,7 +1,11 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { motion, useScroll, useSpring } from 'framer-motion';
 import { Briefcase, MapPin, Calendar } from 'lucide-react';
-import { ScrollReveal, StaggerContainer, StaggerItem } from './ui/ScrollReveal';
+import {
+  ScrollReveal,
+  StaggerContainer,
+  StaggerItem,
+} from './ui/ScrollReveal';
 
 const experiences = [
   {
@@ -10,26 +14,35 @@ const experiences = [
     period: 'Jul 2026 – Jul 2026',
     location: 'Chhatrapati Sambhajinagar, Maharashtra, India',
     desc: 'Worked on a real-client B2B/B2C computer hardware e-commerce platform. Designed MySQL database schemas and relationships and developed REST APIs using PHP and CodeIgniter 4 for authentication, products, categories, brands, offers, customers, orders, inventory, admin management, and reports.',
-    highlights: ['PHP & CodeIgniter 4', 'MySQL Database Design', 'REST API Development', 'E-Commerce Backend'],
+    highlights: [
+      'PHP & CodeIgniter 4',
+      'MySQL Database Design',
+      'REST API Development',
+      'E-Commerce Backend',
+    ],
     accent: '#3b82f6',
     current: false,
   },
-
   {
-    company: 'Freelance Developer',
+    company: 'Developer',
     role: 'Software Developer',
     period: '2026 – Present',
     location: 'Maharashtra, India',
     desc: 'Built multiple web applications using React, Node.js, and MongoDB. Delivered scalable, high-quality solutions for diverse clients spanning fintech, transport, and AI domains.',
-    highlights: ['React & Node.js Apps', 'Client Delivery', 'AI Features', 'UI/UX Design'],
+    highlights: [
+      'React & Node.js Apps',
+      'Client Delivery',
+      'AI Features',
+      'UI/UX Design',
+    ],
     accent: '#3b82f6',
     current: true,
   },
-
 ];
 
 const Experience = () => {
   const containerRef = useRef(null);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start end', 'end center'],
@@ -42,86 +55,121 @@ const Experience = () => {
   });
 
   return (
-    <section id="experience" ref={containerRef} className="py-28 relative overflow-hidden">
-      {/* No ambient glows */}
-
+    <section
+      id="experience"
+      ref={containerRef}
+      className="relative overflow-hidden bg-white py-28 text-black transition-colors duration-300 dark:bg-black dark:text-white"
+    >
       <div className="container mx-auto px-5 sm:px-8">
         {/* Header */}
-        <ScrollReveal variant="blur-in" className="mb-16 flex flex-col items-center text-center">
+        <ScrollReveal
+          variant="blur-in"
+          className="mb-16 flex flex-col items-center text-center"
+        >
           <span className="section-label">
             <Briefcase size={12} />
             My Journey
           </span>
+
           <h2
-            className="font-black text-primary leading-tight mb-4"
+            className="mb-4 font-black leading-tight text-black dark:text-white"
             style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}
           >
             Work{' '}
             <span className="text-gradient-blue">Experience</span>
           </h2>
+
           <div className="section-divider mx-auto" />
         </ScrollReveal>
 
         {/* Timeline */}
-        <div className="max-w-3xl mx-auto relative">
+        <div className="relative mx-auto max-w-3xl">
           {experiences.map((exp, i) => (
-            <div key={i} className="relative flex gap-6 sm:gap-10">
-              {/* Timeline stem */}
-              <div className="flex flex-col items-center flex-shrink-0 relative">
+            <div key={exp.company} className="relative flex gap-6 sm:gap-10">
+              {/* Timeline Node and Progress Line */}
+              <div className="relative flex flex-shrink-0 flex-col items-center">
                 <motion.div
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
-                  viewport={{ once: false, amount: 0.5 }}
-                  transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-                  className="w-10 h-10 rounded-none border-2 border-black flex items-center justify-center flex-shrink-0 z-10 bg-white shadow-[2px_2px_0px_#0a0a0a]"
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 200,
+                    damping: 15,
+                  }}
+                  className="z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center border-2 border-black bg-white text-black shadow-[2px_2px_0px_#0a0a0a] transition-colors duration-300 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_#52525b]"
                 >
-                  <Briefcase size={16} className="text-black" />
+                  <Briefcase size={16} />
                 </motion.div>
-                
-                {/* Animated scroll-driven fill line */}
+
                 {i < experiences.length - 1 && (
-                  <div className="w-0.5 flex-1 my-2 bg-black relative overflow-hidden">
+                  <div className="relative my-2 w-0.5 flex-1 overflow-hidden bg-gray-200 dark:bg-zinc-800">
                     <motion.div
-                      className="absolute top-0 left-0 right-0 w-full bg-[#E53935] origin-top"
+                      className="absolute inset-x-0 top-0 h-full w-full origin-top bg-red-600 dark:bg-red-500"
                       style={{ scaleY: lineHeight }}
                     />
                   </div>
                 )}
               </div>
 
-              {/* Content card */}
-              <ScrollReveal variant="slide-right" delay={i * 0.15} className="flex-1 mb-10">
-                <div className="p-6 sm:p-8 bg-white border-2 border-black rounded-none shadow-[6px_6px_0px_#0a0a0a]">
-                  <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
-                    <div>
-                      <h3 className="text-[#0a0a0a] font-black text-xl tracking-tight uppercase">{exp.company}</h3>
-                      <p className="font-bold text-sm mt-0.5 uppercase tracking-wide text-[#E53935]">{exp.role}</p>
+              {/* Experience Card */}
+              <ScrollReveal
+                variant="slide-right"
+                delay={i * 0.15}
+                className="mb-10 min-w-0 flex-1"
+              >
+                <div className="border-2 border-black bg-white p-6 text-black shadow-[6px_6px_0px_#0a0a0a] transition-colors duration-300 dark:border-zinc-800 dark:bg-[#090909] dark:text-white dark:shadow-[6px_6px_0px_#27272a] sm:p-8">
+                  {/* Company and Current Badge */}
+                  <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <h3 className="break-words text-xl font-black uppercase tracking-tight text-black dark:text-white">
+                        {exp.company}
+                      </h3>
+
+                      <p className="mt-0.5 text-sm font-bold uppercase tracking-wide text-red-600 dark:text-red-400">
+                        {exp.role}
+                      </p>
                     </div>
+
                     {exp.current && (
-                      <span className="px-3 py-1 rounded-none border-2 border-black text-[9px] font-mono font-bold uppercase tracking-wider bg-[#FFD600] text-black shadow-[2px_2px_0px_#0a0a0a]">
+                      <span className="border-2 border-black bg-[#FFD600] px-3 py-1 font-mono text-[9px] font-bold uppercase tracking-wider text-black shadow-[2px_2px_0px_#0a0a0a] dark:border-zinc-700 dark:shadow-[2px_2px_0px_#52525b]">
                         Current
                       </span>
                     )}
                   </div>
 
-                  <div className="flex flex-wrap gap-4 mb-5 text-[#666666] font-mono text-[10px] font-bold uppercase tracking-wider">
+                  {/* Period and Location */}
+                  <div className="mb-5 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[10px] font-bold uppercase tracking-wider text-gray-600 dark:text-zinc-400">
                     <span className="flex items-center gap-1.5">
-                      <Calendar size={12} /> {exp.period}
+                      <Calendar
+                        size={12}
+                        className="flex-shrink-0 text-blue-600 dark:text-blue-400"
+                      />
+                      {exp.period}
                     </span>
+
                     <span className="flex items-center gap-1.5">
-                      <MapPin size={12} /> {exp.location}
+                      <MapPin
+                        size={12}
+                        className="flex-shrink-0 text-blue-600 dark:text-blue-400"
+                      />
+                      {exp.location}
                     </span>
                   </div>
 
-                  <p className="text-[#666666] text-sm leading-relaxed mb-5">{exp.desc}</p>
+                  {/* Description */}
+                  <p className="mb-5 text-sm leading-relaxed text-gray-700 dark:text-zinc-300">
+                    {exp.desc}
+                  </p>
 
+                  {/* Technology Tags */}
                   <div className="flex flex-wrap gap-2">
-                    {exp.highlights.map((h) => (
+                    {exp.highlights.map((highlight) => (
                       <span
-                        key={h}
-                        className="text-[10px] font-mono font-bold uppercase tracking-wider px-3 py-1.5 bg-white border-2 border-black text-[#0a0a0a]"
+                        key={highlight}
+                        className="border-2 border-black bg-gray-50 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-wider text-black transition-colors duration-200 hover:bg-[#FFD600] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-[#FFD600] dark:hover:bg-[#FFD600] dark:hover:text-black"
                       >
-                        {h}
+                        {highlight}
                       </span>
                     ))}
                   </div>
@@ -130,12 +178,19 @@ const Experience = () => {
             </div>
           ))}
 
-          {/* Start node */}
-          <ScrollReveal variant="fade-up" delay={0.2} className="flex gap-6 sm:gap-10 items-center">
-            <div className="flex flex-col items-center flex-shrink-0 w-10">
-              <div className="w-3 h-3 rounded-none bg-black border border-black mx-auto" />
+          {/* Timeline End Node */}
+          <ScrollReveal
+            variant="fade-up"
+            delay={0.2}
+            className="flex items-center gap-6 sm:gap-10"
+          >
+            <div className="flex w-10 flex-shrink-0 flex-col items-center">
+              <div className="mx-auto h-3 w-3 border border-black bg-black dark:border-zinc-500 dark:bg-zinc-700" />
             </div>
-            <p className="text-muted-2 text-xs italic font-mono uppercase font-bold tracking-wider">The journey begins…</p>
+
+            <p className="font-mono text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-zinc-500">
+              The journey begins…
+            </p>
           </ScrollReveal>
         </div>
       </div>

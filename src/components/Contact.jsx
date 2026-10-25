@@ -1,35 +1,96 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, MapPin, Send, MessageSquare, Loader2, Copy, Check, Sparkles } from 'lucide-react';
+import {
+  Mail,
+  MapPin,
+  Send,
+  MessageSquare,
+  Loader2,
+  Copy,
+  Check,
+  Sparkles,
+} from 'lucide-react';
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
-import { ScrollReveal, StaggerContainer, StaggerItem } from './ui/ScrollReveal';
+import {
+  ScrollReveal,
+  StaggerContainer,
+  StaggerItem,
+} from './ui/ScrollReveal';
 
 const githubUsername = process.env.GITHUB_USERNAME || 'saurabh7121';
 
 const quickTopics = [
-  { label: '💼 Full-Time Role', subject: 'Inquiry regarding Full-Time Developer Role', msg: 'Hi Saurabh, we are interested in discussing a potential full-time engineering position with our team.' },
-  { label: '🚀 Freelance Project', subject: 'Freelance Web Project Inquiry', msg: 'Hi Saurabh, I have an upcoming project and would love to get a quote and timeline from you.' },
-  { label: '⚡ AI / ML System', subject: 'AI System Integration Discussion', msg: 'Hi Saurabh, I would like to explore integrating AI/ML capabilities into our application.' },
-  { label: '☕ Say Hello', subject: 'General Hello & Networking', msg: 'Hi Saurabh, loved your portfolio and wanted to connect!' },
+  {
+    label: '💼 Full-Time Role',
+    subject: 'Inquiry regarding Full-Time Developer Role',
+    msg: 'Hi Saurabh, we are interested in discussing a potential full-time engineering position with our team.',
+  },
+  {
+    label: '🚀 Freelance Project',
+    subject: 'Freelance Web Project Inquiry',
+    msg: 'Hi Saurabh, I have an upcoming project and would love to get a quote and timeline from you.',
+  },
+  {
+    label: '⚡ AI / ML System',
+    subject: 'AI System Integration Discussion',
+    msg: 'Hi Saurabh, I would like to explore integrating AI/ML capabilities into our application.',
+  },
+  {
+    label: '☕ Say Hello',
+    subject: 'General Hello & Networking',
+    msg: 'Hi Saurabh, loved your portfolio and wanted to connect!',
+  },
 ];
 
-const Contact = ({ theme }) => {
+const cardClass =
+  'border-2 border-black bg-white text-black transition-colors duration-300 dark:border-zinc-800 dark:bg-[#090909] dark:text-white';
+
+const mutedClass = 'text-gray-600 dark:text-zinc-400';
+
+const inputClass =
+  'w-full rounded-none border-2 border-black bg-white px-4 py-3 text-sm text-black placeholder:text-gray-400 outline-none transition-colors duration-200 focus:border-red-500 focus:bg-gray-50 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-500 dark:focus:border-red-400 dark:focus:bg-zinc-900';
+
+const labelClass =
+  'mb-1.5 block font-mono text-[9px] font-bold uppercase tracking-widest text-gray-600 dark:text-zinc-400';
+
+const Contact = () => {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
 
   const socials = [
-    { icon: <FaGithub size={18} />, href: `https://github.com/${githubUsername}`, label: 'GitHub', color: theme === 'dark' ? '#ffffff' : '#0f172a' },
-    { icon: <FaLinkedin size={18} />, href: 'https://www.linkedin.com/in/jadhavsau777/', label: 'LinkedIn', color: '#3b82f6' },
-    { icon: <FaTwitter size={18} />, href: 'https://twitter.com/jadhavsau777', label: 'Twitter', color: '#1d9bf0' },
+    {
+      icon: <FaGithub size={18} />,
+      href: `https://github.com/${githubUsername}`,
+      label: 'GitHub',
+    },
+    {
+      icon: <FaLinkedin size={18} />,
+      href: 'https://www.linkedin.com/in/jadhavsau777/',
+      label: 'LinkedIn',
+    },
+    {
+      icon: <FaTwitter size={18} />,
+      href: 'https://twitter.com/jadhavsau777',
+      label: 'Twitter',
+    },
   ];
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText('work.jadhavsaurabh@gmail.com').then(() => {
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText('work.jadhavsaurabh@gmail.com');
       setCopied(true);
       setTimeout(() => setCopied(false), 2200);
-    });
+    } catch (error) {
+      console.error('Unable to copy email:', error);
+    }
   };
 
   const applyChip = (chip) => {
@@ -40,7 +101,12 @@ const Contact = ({ theme }) => {
     }));
   };
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setForm((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -51,68 +117,107 @@ const Contact = ({ theme }) => {
     const encodedBody = encodeURIComponent(body);
     const toEmail = 'work.jadhavsaurabh@gmail.com';
 
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(
+      navigator.userAgent
+    );
 
     if (isMobile) {
-      window.location.href = `mailto:${toEmail}?subject=${encodedSubject}&body=${encodedBody}`;
+      window.location.href =
+        `mailto:${toEmail}?subject=${encodedSubject}&body=${encodedBody}`;
     } else {
-      window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${toEmail}&su=${encodedSubject}&body=${encodedBody}`, '_blank');
+      window.open(
+        `https://mail.google.com/mail/?view=cm&fs=1&to=${toEmail}&su=${encodedSubject}&body=${encodedBody}`,
+        '_blank',
+        'noopener,noreferrer'
+      );
     }
 
     setSending(false);
     setSent(true);
   };
 
-  return (
-    <section id="contact" className="py-28 relative overflow-hidden">
-      {/* No ambient glows */}
+  const resetForm = () => {
+    setSent(false);
+    setForm({
+      name: '',
+      email: '',
+      subject: '',
+      message: '',
+    });
+  };
 
+  return (
+    <section
+      id="contact"
+      className="relative overflow-hidden bg-white py-28 text-black transition-colors duration-300 dark:bg-black dark:text-white"
+    >
       <div className="container mx-auto px-5 sm:px-8">
         {/* Header */}
-        <ScrollReveal variant="blur-in" className="mb-16 flex flex-col items-center text-center">
+        <ScrollReveal
+          variant="blur-in"
+          className="mb-16 flex flex-col items-center text-center"
+        >
           <span className="section-label">
             <MessageSquare size={12} />
             Contact
           </span>
+
           <h2
-            className="font-black text-primary leading-tight mb-4"
+            className="mb-4 font-black leading-tight text-black dark:text-white"
             style={{ fontSize: 'clamp(2rem, 6vw, 4.5rem)' }}
           >
             Let's Build{' '}
             <span className="text-gradient-red">Something</span> Great
           </h2>
+
           <div className="section-divider mx-auto" />
-          <p className="text-muted-1 max-w-md mt-4 text-sm leading-relaxed">
-            Have a project in mind, a job opportunity, or just want to discuss tech? Pick a topic chip below or fill out the form.
+
+          <p
+            className={`mt-4 max-w-md text-sm leading-relaxed ${mutedClass}`}
+          >
+            Have a project in mind, a job opportunity, or just want to discuss
+            tech? Pick a topic chip below or fill out the form.
           </p>
         </ScrollReveal>
 
-        <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          {/* ── Left info ── */}
-          <ScrollReveal variant="slide-right" className="flex flex-col justify-between gap-8">
+        <div className="mx-auto grid max-w-5xl gap-12 lg:grid-cols-2">
+          {/* Left: Contact Information */}
+          <ScrollReveal
+            variant="slide-right"
+            className="flex flex-col justify-between gap-8"
+          >
             <div className="space-y-6">
-              <h3 className="text-primary font-bold text-xl sm:text-2xl leading-snug">
-                Open to full-time roles,<br className="hidden sm:block" />
-                <span className="text-muted-1">freelance projects &amp; advisory.</span>
+              <h3 className="text-xl font-bold leading-snug text-black dark:text-white sm:text-2xl">
+                Open to full-time roles,
+                <br className="hidden sm:block" />
+                <span className={mutedClass}>
+                  freelance projects &amp; advisory.
+                </span>
               </h3>
-              <p className="text-muted-1 leading-relaxed text-sm">
-                Feel free to reach out directly via email or connect on social platforms. I typically respond within 24 hours.
+
+              <p className={`text-sm leading-relaxed ${mutedClass}`}>
+                Feel free to reach out directly via email or connect on social
+                platforms. I typically respond within 24 hours.
               </p>
 
-              {/* Quick pre-fill inquiry topic chips */}
+              {/* Quick Topic Chips */}
               <div className="pt-2">
-                <p className="text-[10px] text-muted-1 uppercase tracking-widest font-bold mb-3 flex items-center gap-1.5">
-                  <Sparkles size={12} className="text-[#f59e0b]" /> Tap to pre-fill topic:
+                <p
+                  className={`mb-3 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest ${mutedClass}`}
+                >
+                  <Sparkles size={12} className="text-amber-500" />
+                  Tap to pre-fill topic:
                 </p>
+
                 <div className="flex flex-wrap gap-2">
-                  {quickTopics.map((chip, idx) => (
+                  {quickTopics.map((chip) => (
                     <motion.button
-                      key={idx}
+                      key={chip.label}
                       type="button"
                       onClick={() => applyChip(chip)}
                       whileHover={{ scale: 1.04 }}
                       whileTap={{ scale: 0.96 }}
-                      className="px-3 py-1.5 rounded-none text-xs font-bold font-mono uppercase tracking-wider border-2 border-black bg-white hover:bg-[#FFD600] text-black transition-all cursor-pointer"
+                      className="cursor-pointer rounded-none border-2 border-black bg-white px-3 py-1.5 font-mono text-xs font-bold uppercase tracking-wider text-black transition-colors duration-200 hover:bg-[#FFD600] dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:hover:border-[#FFD600] dark:hover:bg-[#FFD600] dark:hover:text-black"
                     >
                       {chip.label}
                     </motion.button>
@@ -120,61 +225,90 @@ const Contact = ({ theme }) => {
                 </div>
               </div>
 
-              {/* Contact details */}
-              <StaggerContainer staggerDelay={0.1} className="space-y-4 pt-2">
+              {/* Contact Details */}
+              <StaggerContainer
+                staggerDelay={0.1}
+                className="space-y-4 pt-2"
+              >
                 <StaggerItem variant="fade-up">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-5 rounded-none border-2 border-black bg-white text-[#0a0a0a]">
-                    <div className="flex items-center gap-3.5 min-w-0">
-                      <div className="w-10 h-10 rounded-none flex items-center justify-center border-2 border-black bg-[#f5f5f0] text-black shrink-0">
+                  <div
+                    className={`flex flex-col justify-between gap-3 p-5 sm:flex-row sm:items-center ${cardClass}`}
+                  >
+                    <div className="flex min-w-0 items-center gap-3.5">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-black bg-gray-100 text-black dark:border-zinc-700 dark:bg-zinc-900 dark:text-white">
                         <Mail size={18} />
                       </div>
+
                       <div className="min-w-0 flex-1">
-                        <p className="text-[9px] text-[#666666] uppercase tracking-widest font-mono font-bold mb-0.5">Direct Email</p>
-                        <a href="mailto:work.jadhavsaurabh@gmail.com" className="text-[#0a0a0a] text-xs sm:text-sm font-black hover:text-[#E53935] transition-colors font-mono block truncate">
+                        <p className={`mb-0.5 font-mono text-[9px] font-bold uppercase tracking-widest ${mutedClass}`}>
+                          Direct Email
+                        </p>
+
+                        <a
+                          href="mailto:work.jadhavsaurabh@gmail.com"
+                          className="block truncate font-mono text-xs font-black text-black transition-colors hover:text-red-600 dark:text-white dark:hover:text-red-400 sm:text-sm"
+                        >
                           work.jadhavsaurabh@gmail.com
                         </a>
                       </div>
                     </div>
 
                     <button
+                      type="button"
                       onClick={handleCopyEmail}
-                      className="px-3 py-1.5 rounded-none border-2 border-black text-[10px] font-mono font-bold uppercase tracking-wider text-black bg-white hover:bg-[#FFD600] flex items-center justify-center gap-1 transition-all cursor-pointer self-start sm:self-auto shrink-0"
+                      className="flex shrink-0 cursor-pointer items-center justify-center gap-1 border-2 border-black bg-white px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-wider text-black transition-colors hover:bg-[#FFD600] dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:hover:border-[#FFD600] dark:hover:bg-[#FFD600] dark:hover:text-black self-start sm:self-auto"
                     >
-                      {copied ? <Check size={11} className="text-[#22c55e]" /> : <Copy size={11} />}
+                      {copied ? (
+                        <Check size={11} className="text-green-500" />
+                      ) : (
+                        <Copy size={11} />
+                      )}
                       <span>{copied ? 'Copied!' : 'Copy'}</span>
                     </button>
                   </div>
                 </StaggerItem>
 
                 <StaggerItem variant="fade-up">
-                  <div className="flex items-center gap-3.5 p-5 rounded-none border-2 border-black bg-white text-[#0a0a0a]">
-                    <div className="w-10 h-10 rounded-none flex items-center justify-center border-2 border-black bg-[#f5f5f0] text-black shrink-0">
+                  <div
+                    className={`flex items-center gap-3.5 p-5 ${cardClass}`}
+                  >
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-black bg-gray-100 text-black dark:border-zinc-700 dark:bg-zinc-900 dark:text-white">
                       <MapPin size={18} />
                     </div>
+
                     <div className="min-w-0 flex-1">
-                      <p className="text-[9px] text-[#666666] uppercase tracking-widest font-mono font-bold mb-0.5">Location</p>
-                      <p className="text-[#0a0a0a] text-xs sm:text-sm font-black truncate">Maharashtra, India 🇮🇳 (UTC +5:30)</p>
+                      <p className={`mb-0.5 font-mono text-[9px] font-bold uppercase tracking-widest ${mutedClass}`}>
+                        Location
+                      </p>
+
+                      <p className="truncate text-xs font-black text-black dark:text-white sm:text-sm">
+                        Maharashtra, India 🇮🇳 (UTC +5:30)
+                      </p>
                     </div>
                   </div>
                 </StaggerItem>
               </StaggerContainer>
             </div>
 
-            {/* Socials */}
+            {/* Social Links */}
             <div>
-              <p className="text-[#0a0a0a] text-xs uppercase tracking-widest mb-4 font-black">Connect Elsewhere</p>
+              <p className="mb-4 text-xs font-black uppercase tracking-widest text-black dark:text-white">
+                Connect Elsewhere
+              </p>
+
               <StaggerContainer staggerDelay={0.08} className="flex gap-3">
-                {socials.map((s, i) => (
-                  <StaggerItem key={i} variant="zoom-in">
+                {socials.map((social) => (
+                  <StaggerItem key={social.label} variant="zoom-in">
                     <motion.a
-                      href={s.href}
+                      href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.05 }}
-                      className="w-11 h-11 rounded-none border-2 border-black flex items-center justify-center text-black bg-white hover:bg-[#FFD600] transition-all duration-150 block shadow-[2px_2px_0px_#0a0a0a] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_#0a0a0a]"
-                      aria-label={s.label}
+                      whileTap={{ scale: 0.96 }}
+                      aria-label={social.label}
+                      className="block flex h-11 w-11 items-center justify-center border-2 border-black bg-white text-black shadow-[2px_2px_0px_#0a0a0a] transition-all duration-150 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:bg-[#FFD600] hover:shadow-[3px_3px_0px_#0a0a0a] dark:border-zinc-700 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_#52525b] dark:hover:border-[#FFD600] dark:hover:bg-[#FFD600] dark:hover:text-black dark:hover:shadow-[3px_3px_0px_#52525b]"
                     >
-                      {s.icon}
+                      {social.icon}
                     </motion.a>
                   </StaggerItem>
                 ))}
@@ -182,47 +316,72 @@ const Contact = ({ theme }) => {
             </div>
           </ScrollReveal>
 
-          {/* ── Right form ── */}
+          {/* Right: Contact Form */}
           <ScrollReveal variant="slide-left" delay={0.15}>
             {sent ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="p-8 sm:p-10 flex flex-col items-center justify-center text-center h-full gap-4 bg-white border-2 border-black rounded-none shadow-[6px_6px_0px_#0a0a0a]"
+                className={`flex h-full flex-col items-center justify-center gap-4 p-8 text-center shadow-[6px_6px_0px_#0a0a0a] dark:shadow-[6px_6px_0px_#52525b] sm:p-10 ${cardClass}`}
               >
-                <div className="w-16 h-16 rounded-none flex items-center justify-center mb-2 bg-[#FFD600] border-2 border-black text-black">
+                <div className="mb-2 flex h-16 w-16 items-center justify-center border-2 border-black bg-[#FFD600] text-black dark:border-zinc-700">
                   <Mail size={24} />
                 </div>
-                <h3 className="text-[#0a0a0a] font-black text-xl uppercase tracking-tight">Email Client Opened!</h3>
-                <p className="text-[#666666] text-sm leading-relaxed">Your default email app has been opened with your pre-filled message. Click Send to deliver!</p>
-                <button onClick={() => { setSent(false); setForm({ name: '', email: '', subject: '', message: '' }); }}
-                  className="btn-outline mt-4 rounded-none">
+
+                <h3 className="text-xl font-black uppercase tracking-tight text-black dark:text-white">
+                  Email Client Opened!
+                </h3>
+
+                <p className={`text-sm leading-relaxed ${mutedClass}`}>
+                  Your email draft has been prepared. Review it in your email
+                  app and click Send to deliver your message.
+                </p>
+
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="btn-outline mt-4 rounded-none"
+                >
                   Write Another Message
                 </button>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-4 bg-white border-2 border-black rounded-none shadow-[6px_6px_0px_#0a0a0a]">
-                <div className="grid sm:grid-cols-2 gap-4">
+              <form
+                onSubmit={handleSubmit}
+                className={`space-y-4 p-6 shadow-[6px_6px_0px_#0a0a0a] transition-colors duration-300 dark:shadow-[6px_6px_0px_#52525b] sm:p-8 ${cardClass}`}
+              >
+                {/* Name and Email */}
+                <div className="grid gap-4 sm:grid-cols-2">
                   {['name', 'email'].map((field) => (
-                     <div key={field}>
-                       <label className="text-[9px] text-[#666666] uppercase tracking-widest font-mono font-bold block mb-1.5">
-                         {field === 'name' ? 'Your Name' : 'Email Address'}
-                       </label>
-                       <input
-                         type={field === 'email' ? 'email' : 'text'}
-                         name={field}
-                         value={form[field]}
-                         onChange={handleChange}
-                         required
-                         placeholder={field === 'name' ? 'e.g. Alex Smith' : 'alex@company.com'}
-                         className="w-full px-4 py-3 rounded-none border-2 border-black text-sm text-[#0a0a0a] bg-white placeholder:text-neutral-400 outline-none transition-all focus:bg-[#f5f5f0]"
-                       />
-                     </div>
+                    <div key={field}>
+                      <label className={labelClass}>
+                        {field === 'name' ? 'Your Name' : 'Email Address'}
+                      </label>
+
+                      <input
+                        type={field === 'email' ? 'email' : 'text'}
+                        name={field}
+                        value={form[field]}
+                        onChange={handleChange}
+                        required
+                        autoComplete={
+                          field === 'name' ? 'name' : 'email'
+                        }
+                        placeholder={
+                          field === 'name'
+                            ? 'e.g. Alex Smith'
+                            : 'alex@company.com'
+                        }
+                        className={inputClass}
+                      />
+                    </div>
                   ))}
                 </div>
 
+                {/* Subject */}
                 <div>
-                  <label className="text-[9px] text-[#666666] uppercase tracking-widest font-mono font-bold block mb-1.5">Subject</label>
+                  <label className={labelClass}>Subject</label>
+
                   <input
                     type="text"
                     name="subject"
@@ -230,34 +389,43 @@ const Contact = ({ theme }) => {
                     onChange={handleChange}
                     required
                     placeholder="Project Inquiry / Job Offer / Networking"
-                    className="w-full px-4 py-3 rounded-none border-2 border-black text-sm text-[#0a0a0a] bg-white placeholder:text-neutral-400 outline-none transition-all focus:bg-[#f5f5f0]"
+                    className={inputClass}
                   />
                 </div>
 
+                {/* Message */}
                 <div>
-                  <label className="text-[9px] text-[#666666] uppercase tracking-widest font-mono font-bold block mb-1.5">Message</label>
+                  <label className={labelClass}>Message</label>
+
                   <textarea
                     name="message"
                     value={form.message}
                     onChange={handleChange}
                     required
-                    rows="5"
+                    rows={5}
                     placeholder="Describe your project, timeline, or inquiry..."
-                    className="w-full px-4 py-3 rounded-none border-2 border-black text-sm text-[#0a0a0a] bg-white placeholder:text-neutral-400 outline-none transition-all resize-none focus:bg-[#f5f5f0]"
+                    className={`${inputClass} resize-none`}
                   />
                 </div>
 
+                {/* Submit */}
                 <motion.button
                   type="submit"
                   disabled={sending}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full btn-primary justify-center py-4 text-xs tracking-widest disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="btn-primary flex w-full items-center justify-center gap-2 py-4 text-xs tracking-widest disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {sending ? (
-                    <><Loader2 size={16} className="animate-spin" /> Preparing Draft...</>
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      Preparing Draft...
+                    </>
                   ) : (
-                    <><Send size={16} /> Send Direct Inquiry</>
+                    <>
+                      <Send size={16} />
+                      Send Direct Inquiry
+                    </>
                   )}
                 </motion.button>
               </form>

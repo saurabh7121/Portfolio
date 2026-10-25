@@ -1,7 +1,15 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Globe, Layout, Server, Code, Zap, Layers, Smartphone } from 'lucide-react';
-import { MagicCard } from './ui/MagicCard';
+import {
+  Globe,
+  Layout,
+  Server,
+  Code,
+  Zap,
+  Layers,
+  Smartphone,
+} from 'lucide-react';
 import { ScrollReveal, StaggerContainer, StaggerItem } from './ui/ScrollReveal';
 
 const services = [
@@ -99,94 +107,105 @@ const services = [
 
 const getTechIconClass = (techName) => {
   const mapping = {
-    'React': 'devicon-react-original colored',
-    'TypeScript': 'devicon-typescript-plain colored',
+    React: 'devicon-react-original colored',
+    TypeScript: 'devicon-typescript-plain colored',
     'Tailwind CSS': 'devicon-tailwindcss-original colored',
-    'Next.js': 'devicon-nextjs-original colored',
-    'Vercel': 'devicon-vercel-original colored',
+    'Next.js': 'devicon-nextjs-original',
+    Vercel: 'devicon-vercel-original',
     'Node.js': 'devicon-nodejs-plain colored',
-    'Express.js': 'devicon-express-original colored',
-    'MongoDB': 'devicon-mongodb-plain colored',
-    'PostgreSQL': 'devicon-postgresql-plain colored',
+    'Express.js': 'devicon-express-original',
+    MongoDB: 'devicon-mongodb-plain colored',
+    PostgreSQL: 'devicon-postgresql-plain colored',
     'React Native': 'devicon-reactnative-original colored',
-    'Firebase': 'devicon-firebase-plain colored',
-    'Git': 'devicon-git-plain colored',
+    Firebase: 'devicon-firebase-plain colored',
+    Git: 'devicon-git-plain colored',
     'GitHub Actions': 'devicon-github-original colored',
-    'Vite': 'devicon-vitejs-plain colored',
-    'Webpack': 'devicon-webpack-plain colored',
+    Vite: 'devicon-vitejs-plain colored',
+    Webpack: 'devicon-webpack-plain colored',
   };
+
   return mapping[techName] || null;
 };
 
-const Services = ({ theme }) => {
+const Services = () => {
   const [activeId, setActiveId] = useState('frontend');
 
-  const resolvedServices = services.map(s => {
-    if (s.id === 'nextjs') {
-      return { ...s, accent: theme === 'dark' ? '#ffffff' : '#0f172a' };
-    }
-    return s;
-  });
-
-  const activeTab = resolvedServices.find((s) => s.id === activeId) || resolvedServices[0];
+  const activeTab =
+    services.find((service) => service.id === activeId) || services[0];
 
   return (
-    <section id="services" className="py-28 relative overflow-hidden">
-      {/* Ambient glow */}
-      {/* No ambient glows in editorial theme */}
-
+    <section
+      id="services"
+      className="relative overflow-hidden bg-white py-28 text-black transition-colors duration-300 dark:bg-black dark:text-white"
+    >
       <div className="container mx-auto px-5 sm:px-8">
         {/* Header */}
-        <ScrollReveal variant="blur-in" className="mb-16 flex flex-col items-center text-center">
+        <ScrollReveal
+          variant="blur-in"
+          className="mb-16 flex flex-col items-center text-center"
+        >
           <span className="section-label">
             <Code size={12} />
             What I Offer
           </span>
+
           <h2
-            className="font-black text-primary leading-tight mb-4"
+            className="mb-4 font-black leading-tight text-primary"
             style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}
           >
             Services &{' '}
             <span className="text-gradient-blue">Expertise</span>
           </h2>
+
           <div className="section-divider mx-auto" />
-          <p className="text-muted-1 max-w-md mt-4 text-sm leading-relaxed">
-            From concept to deployment — I deliver end-to-end solutions that are fast, elegant, and scalable.
+
+          <p className="mt-4 max-w-md text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+            From concept to deployment — I deliver end-to-end solutions that
+            are fast, elegant, and scalable.
           </p>
         </ScrollReveal>
 
-        {/* Tab Layout Grid */}
-        <div className="grid lg:grid-cols-12 gap-8 items-start mt-10">
-          {/* Left Column: Tab Selectors */}
-          <StaggerContainer staggerDelay={0.08} className="lg:col-span-5 flex flex-col gap-3">
-            {resolvedServices.map((s) => {
-              const isActive = activeId === s.id;
+        {/* Services layout */}
+        <div className="mt-10 grid items-start gap-8 lg:grid-cols-12">
+          {/* Left: Service selectors */}
+          <StaggerContainer
+            staggerDelay={0.08}
+            className="flex flex-col gap-3 lg:col-span-5"
+          >
+            {services.map((service) => {
+              const isActive = activeId === service.id;
+
               return (
-                <StaggerItem key={s.id} variant="slide-right">
+                <StaggerItem key={service.id} variant="slide-right">
                   <motion.button
-                    onClick={() => setActiveId(s.id)}
+                    type="button"
+                    aria-pressed={isActive}
+                    onClick={() => setActiveId(service.id)}
                     whileHover={{ x: isActive ? 0 : 4 }}
-                    className={`text-left w-full flex items-center justify-between p-4.5 rounded-none border-2 border-black transition-all duration-150 group cursor-pointer ${
+                    className={`group flex w-full cursor-pointer items-center justify-between rounded-none border-2 border-black p-4 text-left transition-all duration-150 dark:border-white ${
                       isActive
-                        ? 'bg-[#FFD600] text-black shadow-[4px_4px_0px_#0a0a0a] translate-x-[-2px] translate-y-[-2px]'
-                        : 'bg-white text-[#0a0a0a] hover:bg-neutral-50'
+                        ? 'translate-x-[-2px] translate-y-[-2px] bg-[#FFD600] text-black shadow-[4px_4px_0px_#0a0a0a] dark:shadow-[4px_4px_0px_#ffffff]'
+                        : 'bg-white text-black hover:bg-neutral-100 dark:bg-[#090909] dark:text-white dark:hover:bg-[#171717]'
                     }`}
                   >
                     <div className="flex items-center gap-4">
                       <div
-                        className={`w-9 h-9 rounded-none flex items-center justify-center border-2 border-black transition-colors shrink-0 ${
-                          isActive ? 'bg-black text-white' : 'bg-[#f5f5f0] text-black'
+                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-none border-2 border-black transition-colors dark:border-white ${
+                          isActive
+                            ? 'border-black bg-black text-white'
+                            : 'bg-gray-100 text-black dark:bg-[#171717] dark:text-white'
                         }`}
                       >
-                        {s.icon}
+                        {service.icon}
                       </div>
-                      <span className="font-bold text-sm tracking-wide uppercase">
-                        {s.title}
+
+                      <span className="text-sm font-bold uppercase tracking-wide">
+                        {service.title}
                       </span>
                     </div>
 
-                    <span className="text-[10px] font-mono font-bold tracking-widest uppercase">
-                      {s.tag}
+                    <span className="font-mono text-[10px] font-bold tracking-widest">
+                      {service.tag}
                     </span>
                   </motion.button>
                 </StaggerItem>
@@ -194,43 +213,60 @@ const Services = ({ theme }) => {
             })}
           </StaggerContainer>
 
-          {/* Right Column: Sliding Detail Panel */}
-          <ScrollReveal variant="slide-left" className="lg:col-span-7 min-h-[380px]">
+          {/* Right: Animated service details */}
+          <ScrollReveal
+            variant="slide-left"
+            className="min-h-[380px] lg:col-span-7"
+          >
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab.id}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                transition={{
+                  duration: 0.35,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
                 className="h-full"
               >
-                <div className="p-8 sm:p-10 relative overflow-hidden flex flex-col justify-between h-full bg-white border-2 border-black shadow-[6px_6px_0px_#0a0a0a]">
-                  {/* Large decorative watermark tag */}
-                  <div className="absolute right-6 top-6 text-8xl font-black text-black/[0.03] select-none pointer-events-none font-mono">
+                <div className="relative flex h-full flex-col justify-between overflow-hidden border-2 border-black bg-white p-6 shadow-[6px_6px_0px_#0a0a0a] transition-colors duration-300 sm:p-10 dark:border-white dark:bg-[#090909] dark:shadow-[6px_6px_0px_#ffffff]">
+                  {/* Decorative watermark */}
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute right-6 top-6 select-none font-mono text-8xl font-black text-black/[0.04] dark:text-white/[0.05]"
+                  >
                     {activeTab.tag}
                   </div>
 
                   <div>
-                    <div className="flex items-center gap-3 mb-6">
-                      <span className="text-xs font-mono uppercase tracking-widest font-bold text-[#E53935]">
+                    <div className="mb-6 flex items-center gap-3">
+                      <span className="font-mono text-xs font-bold uppercase tracking-widest text-[#E53935]">
                         Service Detail
                       </span>
                     </div>
-                    <h3 className="text-[#0a0a0a] text-2xl sm:text-3xl font-black mb-4 tracking-tight uppercase">
+
+                    <h3 className="mb-4 text-2xl font-black uppercase tracking-tight text-black sm:text-3xl dark:text-white">
                       {activeTab.title}
                     </h3>
-                    <p className="text-[#666666] text-sm leading-relaxed mb-8 max-w-xl">{activeTab.desc}</p>
 
-                    {/* Focus list */}
+                    <p className="mb-8 max-w-xl text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                      {activeTab.desc}
+                    </p>
+
+                    {/* Deliverables */}
                     <div className="mb-8">
-                      <h4 className="text-xs uppercase tracking-widest text-[#0a0a0a] font-black mb-4">
+                      <h4 className="mb-4 text-xs font-black uppercase tracking-widest text-black dark:text-white">
                         Core Focus & Deliverables
                       </h4>
-                      <ul className="grid sm:grid-cols-2 gap-3.5">
-                        {activeTab.deliverables.map((item, index) => (
-                          <li key={index} className="flex items-start gap-2.5 text-xs text-[#666666] leading-relaxed font-semibold uppercase tracking-wide">
-                            <span className="w-2.5 h-2.5 rounded-none border border-black bg-[#E53935] mt-1 shrink-0" />
+
+                      <ul className="grid gap-3.5 sm:grid-cols-2">
+                        {activeTab.deliverables.map((item) => (
+                          <li
+                            key={item}
+                            className="flex items-start gap-2.5 text-xs font-semibold uppercase leading-relaxed tracking-wide text-gray-600 dark:text-gray-400"
+                          >
+                            <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-none border border-black bg-[#E53935] dark:border-white" />
                             <span>{item}</span>
                           </li>
                         ))}
@@ -238,24 +274,35 @@ const Services = ({ theme }) => {
                     </div>
                   </div>
 
-                  {/* Tech stack */}
-                  <div className="pt-6 border-t border-black flex flex-wrap gap-2 items-center">
-                    <span className="text-[10px] uppercase tracking-widest text-[#0a0a0a] font-black mr-2">
+                  {/* Technology stack */}
+                  <div className="flex flex-wrap items-center gap-2 border-t border-black pt-6 dark:border-white">
+                    <span className="mr-2 text-[10px] font-black uppercase tracking-widest text-black dark:text-white">
                       Key Stack:
                     </span>
-                    {activeTab.tech.map((t) => {
-                      const iconClass = getTechIconClass(t);
+
+                    {activeTab.tech.map((tech) => {
+                      const iconClass = getTechIconClass(tech);
+
                       return (
                         <span
-                          key={t}
-                          className="text-[10px] font-mono font-bold uppercase tracking-wider px-3 py-1.5 bg-white border-2 border-black text-[#0a0a0a] flex items-center gap-2 hover:bg-[#FFD600] transition-colors"
+                          key={tech}
+                          className="flex items-center gap-2 border-2 border-black bg-white px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-wider text-black transition-colors hover:bg-[#FFD600] dark:border-white dark:bg-[#111111] dark:text-white dark:hover:border-black dark:hover:bg-[#FFD600] dark:hover:text-black"
                         >
                           {iconClass ? (
-                            <i className={`${iconClass} text-xs`} />
+                            <i
+                              className={`${iconClass} text-xs ${
+                                ['Next.js', 'Vercel', 'Express.js'].includes(
+                                  tech
+                                )
+                                  ? 'text-black dark:text-white'
+                                  : ''
+                              }`}
+                            />
                           ) : (
-                            <span className="w-1.5 h-1.5 rounded-none bg-black" />
+                            <span className="h-1.5 w-1.5 rounded-none bg-black dark:bg-white" />
                           )}
-                          {t}
+
+                          {tech}
                         </span>
                       );
                     })}
